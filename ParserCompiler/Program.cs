@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace ParserCompiler
 {
@@ -6,8 +7,6 @@ namespace ParserCompiler
     {
         public static void Main(string[] args)
         {
-            var x = new ParsingTable();
-            Console.WriteLine(x);
             Console.ReadLine();
         }
     }

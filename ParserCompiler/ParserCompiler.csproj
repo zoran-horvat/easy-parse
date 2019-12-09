@@ -44,19 +44,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ParsingTable.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ParsingTable.tt</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Grammar.txt" />
+    <Content Include="Grammar.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="ParsingTable.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>ParsingTable.cs</LastGenOutput>
+      <LastGenOutput>ParsingTable.txt</LastGenOutput>
+    </Content>
+    <Content Include="ParsingTable.txt">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParsingTable.tt</DependentUpon>
     </Content>
   </ItemGroup>
   <ItemGroup>
