@@ -3,20 +3,12 @@
 <#@ assembly name="System.Core" #>
 <#@ assembly name="EnvDte" #>
 <#@ import namespace="System.IO" #>
+<#@ assembly name="$(TargetPath)" #>
+<#@ import namespace="ParserCompiler" #>
 <#
-	string[] grammar = LoadRules();
-
-	foreach (string rule in grammar)
+	foreach (string rule in new RulesLoader(this.Host as IServiceProvider).LoadFrom("Grammar.txt"))
 	{
 		WriteLine(rule);
 	}
 	WriteLine(DateTime.Now.ToString());
-#><#
-string[] LoadRules()
-{
-	EnvDTE.DTE visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
-	EnvDTE.ProjectItem file = visualStudio.Solution.FindProjectItem("Grammar.txt");
-	string grammarFilePath = file.FileNames[0];
-	return File.ReadAllLines(grammarFilePath);
-}
 #>
