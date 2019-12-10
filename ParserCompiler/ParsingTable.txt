@@ -1,5 +1,15 @@
-﻿Something
-Again
-And
-Again
-12/10/2019 12:51:25 AM
+﻿Generated on 12/10/2019 10:40:39 AM UTC
+
+S -> G
+S -> SG
+G -> R
+G -> RL
+L -> .R
+L -> L.R
+R -> i
+R -> i()
+R -> i(A)
+A -> C
+A -> A,C
+C -> n
+C -> s

@@ -1,18 +1,27 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 
 namespace ParserCompiler
 {
-    public class RulesLoader
+    public class GrammarLoader
     {
         private IServiceProvider ServiceProvider { get; }
 
-        public RulesLoader(IServiceProvider serviceProvider)
+        public GrammarLoader(IServiceProvider serviceProvider)
         {
             this.ServiceProvider = serviceProvider;
         }
 
-        public string[] LoadFrom(string fileName) =>
+        public string[] From(string fileName) =>
+            this.RawLines(fileName)
+                .Where(line => !string.IsNullOrWhiteSpace(line))
+                .Select(line => line.Trim())
+                .Where(line => !(line.StartsWith("#")))
+                .ToArray();
+
+        private IEnumerable<string> RawLines(string fileName) =>
             this.GrammarItem(fileName).FileNames[0] is string filePath && File.Exists(filePath) ? File.ReadAllLines(filePath)
             : new string[0];
 
