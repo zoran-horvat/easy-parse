@@ -1,14 +1,15 @@
-﻿using ParserCompiler.Symbols;
+﻿using System;
+using ParserCompiler.Symbols;
 
 namespace ParserCompiler
 {
-    public abstract class Symbol
+    public abstract class Symbol : IEquatable<Symbol>
     {
-        private string Representation { get; }
+        public string Value { get; }
         
-        protected Symbol(string representation)
+        protected Symbol(string value)
         {
-            this.Representation = representation;
+            this.Value = value;
         }
 
         public static Symbol From(char representation) =>
@@ -16,6 +17,17 @@ namespace ParserCompiler
             : new Terminal(representation.ToString());
 
         public override string ToString() =>
-            this.Representation;
+            this.Value;
+
+        public override bool Equals(object obj) =>
+            this.Equals(obj as Symbol);
+
+        public bool Equals(Symbol other) =>
+            !(other is null) &&
+            other.GetType() == this.GetType() &&
+            other.Value == this.Value;
+
+        public override int GetHashCode() =>
+            this.Value.GetHashCode();
     }
 }

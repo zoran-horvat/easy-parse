@@ -5,10 +5,14 @@
 <#@ import namespace="System.IO" #>
 <#@ assembly name="$(TargetPath)" #>
 <#@ import namespace="ParserCompiler" #>
+<#@ import namespace="System.Linq" #>
 <#
 	WriteLine($"Generated on {DateTime.UtcNow:dd-MMM-yyyy HH:mm:ss} UTC");
 	WriteLine(string.Empty);
 
 	var grammar = new GrammarLoader(this.Host as IServiceProvider).From("Grammar.txt").ToGrammar();
 	WriteLine(grammar.ToString());
+
+	WriteLine(string.Empty);
+	WriteLine(grammar.FirstSets.ToString(string.Empty, Environment.NewLine, string.Empty));
 #>

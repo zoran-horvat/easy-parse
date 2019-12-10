@@ -6,8 +6,8 @@ namespace ParserCompiler
 {
     public class Rule
     {
-        private NonTerminal Head { get; }
-        private IEnumerable<Symbol> Body { get; }
+        public NonTerminal Head { get; }
+        public IEnumerable<Symbol> Body { get; }
      
         public Rule(NonTerminal head, IEnumerable<Symbol> body)
         {

@@ -52,9 +52,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FirstSet.cs" />
     <Compile Include="Grammar.cs" />
     <Compile Include="GrammarExtensions.cs" />
     <Compile Include="GrammarParser.cs" />
+    <Compile Include="KeyedSet.cs" />
+    <Compile Include="Set.cs" />
+    <Compile Include="SetExtensions.cs" />
     <Compile Include="Symbol.cs" />
     <Compile Include="Symbols\NonTerminal.cs" />
     <Compile Include="Program.cs" />

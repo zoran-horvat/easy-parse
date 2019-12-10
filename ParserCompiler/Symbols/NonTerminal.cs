@@ -2,7 +2,7 @@
 {
     public class NonTerminal : Symbol
     {
-        public NonTerminal(string representation) : base(representation)
+        public NonTerminal(string value) : base(value)
         {
         }
     }

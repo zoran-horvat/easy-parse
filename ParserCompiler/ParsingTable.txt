@@ -1,4 +1,4 @@
-﻿Generated on 10-Dec-2019 18:39:04 UTC
+﻿Generated on 10-Dec-2019 21:38:10 UTC
 
 S -> G
 S -> SG
@@ -13,3 +13,10 @@ A -> C
 A -> A,C
 C -> n
 C -> s
+
+FIRST(S) = {GS}
+FIRST(G) = {R}
+FIRST(L) = {.L}
+FIRST(R) = {i}
+FIRST(A) = {CA}
+FIRST(C) = {ns}
