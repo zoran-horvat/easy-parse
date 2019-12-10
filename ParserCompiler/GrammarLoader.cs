@@ -14,12 +14,11 @@ namespace ParserCompiler
             this.ServiceProvider = serviceProvider;
         }
 
-        public string[] From(string fileName) =>
+        public IEnumerable<string> From(string fileName) =>
             this.RawLines(fileName)
                 .Where(line => !string.IsNullOrWhiteSpace(line))
                 .Select(line => line.Trim())
-                .Where(line => !(line.StartsWith("#")))
-                .ToArray();
+                .Where(line => !line.StartsWith("#"));
 
         private IEnumerable<string> RawLines(string fileName) =>
             this.GrammarItem(fileName).FileNames[0] is string filePath && File.Exists(filePath) ? File.ReadAllLines(filePath)

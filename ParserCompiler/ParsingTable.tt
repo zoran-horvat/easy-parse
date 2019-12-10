@@ -6,11 +6,11 @@
 <#@ assembly name="$(TargetPath)" #>
 <#@ import namespace="ParserCompiler" #>
 <#
-	WriteLine($"Generated on {DateTime.UtcNow} UTC");
+	WriteLine($"Generated on {DateTime.UtcNow:dd-MMM-yyyy HH:mm:ss} UTC");
 	WriteLine(string.Empty);
 
-	foreach (string rule in new GrammarLoader(this.Host as IServiceProvider).From("Grammar.txt"))
+	foreach (Rule rule in new GrammarLoader(this.Host as IServiceProvider).From("Grammar.txt").ToRules())
 	{
-		WriteLine(rule);
+		WriteLine(rule.ToString());
 	}
 #>

@@ -52,9 +52,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GrammarExtensions.cs" />
+    <Compile Include="GrammarParser.cs" />
+    <Compile Include="Symbol.cs" />
+    <Compile Include="Symbols\NonTerminal.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GrammarLoader.cs" />
+    <Compile Include="Rule.cs" />
+    <Compile Include="Symbols\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Grammar.txt" />
@@ -74,5 +80,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
