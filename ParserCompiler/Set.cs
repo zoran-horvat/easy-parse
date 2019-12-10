@@ -1,29 +1,24 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace ParserCompiler
 {
     public class Set<TValue> : IEquatable<Set<TValue>>, IEnumerable<TValue>
     {
-        private HashSet<TValue> Representation {get;}
+        private ImmutableHashSet<TValue> Representation {get;}
 
-        public Set() : this(Enumerable.Empty<TValue>()) { }
+        public Set() : this(ImmutableHashSet<TValue>.Empty) { }
 
-        public Set(IEnumerable<TValue> content)
+        private Set(ImmutableHashSet<TValue> content)
         {
-            this.Representation = new HashSet<TValue>(content);
+            this.Representation = content;
         }
 
-        public void Add(TValue value) => 
-            this.Representation.Add(value);
-
-        public void Add(IEnumerable<TValue> values)
-        {
-            foreach (TValue item in values)
-                this.Representation.Add(item);
-        }
+        public Set<TValue> Union(IEnumerable<TValue> values) =>
+            new Set<TValue>(this.Representation.Union(values));
 
         public override bool Equals(object obj) => 
             this.Equals(obj as Set<TValue>);

@@ -8,15 +8,20 @@ namespace ParserCompiler
     public class KeyedSet<TKey, TValue> : IEquatable<KeyedSet<TKey, TValue>>, IEnumerable<TValue>
     {
         public TKey Key { get; }
-        private Set<TValue> Representation { get; }
+        protected Set<TValue> Representation { get; }
 
-        public KeyedSet(TKey key) : this(key, Enumerable.Empty<TValue>()) { }
+        protected KeyedSet(TKey key) : this(key, new Set<TValue>())
+        {
+        }
 
-        public KeyedSet(TKey key, IEnumerable<TValue> content)
+        protected KeyedSet(TKey key, Set<TValue> content)
         {
             this.Key = key;
-            this.Representation = new Set<TValue>(content);
+            this.Representation = content;
         }
+
+        public KeyedSet<TKey, TValue> Union(IEnumerable<TValue> values) =>
+            new KeyedSet<TKey, TValue>(this.Key, this.Representation.Union(values));
 
         public IEnumerator<TValue> GetEnumerator() =>
             this.Representation.GetEnumerator();
