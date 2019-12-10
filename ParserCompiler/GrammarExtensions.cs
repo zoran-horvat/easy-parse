@@ -4,7 +4,7 @@ namespace ParserCompiler
 {
     public static class GrammarExtensions
     {
-        public static IEnumerable<Rule> ToRules(this IEnumerable<string> rawRules) =>
-            new GrammarParser().GetRules(rawRules);
+        public static Grammar ToGrammar(this IEnumerable<string> rawRules) =>
+            new GrammarParser().Parse(rawRules);
     }
 }

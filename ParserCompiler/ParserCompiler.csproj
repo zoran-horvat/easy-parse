@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Grammar.cs" />
     <Compile Include="GrammarExtensions.cs" />
     <Compile Include="GrammarParser.cs" />
     <Compile Include="Symbol.cs" />

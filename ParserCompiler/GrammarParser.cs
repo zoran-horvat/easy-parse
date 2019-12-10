@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using ParserCompiler.Symbols;
@@ -8,8 +7,8 @@ namespace ParserCompiler
 {
     public class GrammarParser
     {
-        public IEnumerable<Rule> GetRules(IEnumerable<string> rawRules) =>
-            rawRules.SelectMany(this.Parse);
+        public Grammar Parse(IEnumerable<string> rawRules) =>
+            new Grammar(rawRules.SelectMany(this.Parse));
 
         private IEnumerable<Rule> Parse(string line) =>
             this.LineMatch(line).Select(this.Parse);
