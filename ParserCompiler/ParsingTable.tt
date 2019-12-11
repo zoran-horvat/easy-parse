@@ -14,5 +14,5 @@
 	WriteLine(grammar.ToString());
 
 	WriteLine(string.Empty);
-	WriteLine(grammar.FirstSets.ToString(string.Empty, Environment.NewLine, string.Empty));
+	WriteLine(grammar.FirstSets.ToString(string.Empty, Environment.NewLine, string.Empty, set => grammar.SortOrderFor(set.Key)));
 #>

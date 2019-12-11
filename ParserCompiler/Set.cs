@@ -42,5 +42,8 @@ namespace ParserCompiler
 
         public string ToString(string prefix, string separator, string suffix) =>
             $"{prefix}{string.Join(separator, this.Representation.Select(item => item.ToString()))}{suffix}";
+
+        public string ToString(string prefix, string separator, string suffix, Func<TValue, int> sortOrder) =>
+            $"{prefix}{string.Join(separator, this.Representation.OrderBy(sortOrder).Select(item => item.ToString()))}{suffix}";
     }
 }

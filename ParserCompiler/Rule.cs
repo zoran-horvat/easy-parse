@@ -15,6 +15,9 @@ namespace ParserCompiler
             this.Body = body.ToList();
         }
 
+        public static Rule AugmentedGrammarRoot(string startingSymbol) =>
+            new Rule(new NonTerminal("S'"), new Symbol[] {new NonTerminal("S")});
+
         public override string ToString() =>
             $"{this.Head} -> {string.Join(string.Empty, this.Body.Select(x => x.ToString()).ToArray())}";
     }

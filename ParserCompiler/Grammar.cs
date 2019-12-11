@@ -11,8 +11,17 @@ namespace ParserCompiler
      
         public Grammar(IEnumerable<Rule> rules)
         {
-            this.Rules = rules.ToList();
+            this.Rules = rules.SelectMany((rule, index) => index == 0
+                    ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule}
+                    : new[] {rule})
+                .ToList();
         }
+
+        public int SortOrderFor(NonTerminal nonTerminal) =>
+            Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);
+
+        private IEnumerable<NonTerminal> SortOrder =>
+            this.Rules.Select(rule => rule.Head).Distinct();
 
         public Set<FirstSet> FirstSets =>
             this.PurgeNonTerminals(this.Closure(this.InitialFirstSets));

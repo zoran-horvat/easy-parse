@@ -1,5 +1,6 @@
-﻿Generated on 10-Dec-2019 23:07:16 UTC
+﻿Generated on 11-Dec-2019 00:10:58 UTC
 
+S' -> S
 S -> G
 S -> SG
 G -> R
@@ -14,9 +15,10 @@ A -> A,C
 C -> n
 C -> s
 
-FIRST(R) = {i}
+FIRST(S') = {i}
 FIRST(S) = {i}
-FIRST(L) = {.}
 FIRST(G) = {i}
-FIRST(C) = {ns}
+FIRST(L) = {.}
+FIRST(R) = {i}
 FIRST(A) = {ns}
+FIRST(C) = {ns}
