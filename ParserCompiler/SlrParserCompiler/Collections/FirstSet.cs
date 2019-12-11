@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ParserCompiler.Symbols;
+using ParserCompiler.SlrParserCompiler.Models;
+using ParserCompiler.SlrParserCompiler.Models.Symbols;
 
-namespace ParserCompiler
+namespace ParserCompiler.SlrParserCompiler.Collections
 {
     public class FirstSet : KeyedSet<NonTerminal, Symbol>
     {

@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ParserCompiler</RootNamespace>
     <AssemblyName>ParserCompiler</AssemblyName>
@@ -31,8 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>
-    </StartupObject>
+    <StartupObject>ParserCompiler.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -56,20 +55,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FirstSet.cs" />
-    <Compile Include="Grammar.cs" />
-    <Compile Include="GrammarExtensions.cs" />
-    <Compile Include="GrammarParser.cs" />
-    <Compile Include="KeyedSet.cs" />
-    <Compile Include="Set.cs" />
-    <Compile Include="SetExtensions.cs" />
-    <Compile Include="Symbol.cs" />
-    <Compile Include="Symbols\NonTerminal.cs" />
+    <Compile Include="SlrParserCompiler\Collections\FirstSet.cs" />
+    <Compile Include="SlrParserCompiler\Models\Grammar.cs" />
+    <Compile Include="SlrParserCompiler\Models\GrammarExtensions.cs" />
+    <Compile Include="SlrParserCompiler\GrammarParser.cs" />
+    <Compile Include="SlrParserCompiler\Collections\KeyedSet.cs" />
+    <Compile Include="SlrParserCompiler\Collections\Set.cs" />
+    <Compile Include="SlrParserCompiler\Collections\SetExtensions.cs" />
+    <Compile Include="SlrParserCompiler\Models\Symbol.cs" />
+    <Compile Include="SlrParserCompiler\Models\Symbols\NonTerminal.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="GrammarLoader.cs" />
-    <Compile Include="Rule.cs" />
-    <Compile Include="Symbols\Terminal.cs" />
+    <Compile Include="SlrParserCompiler\GrammarLoader.cs" />
+    <Compile Include="SlrParserCompiler\Models\Rule.cs" />
+    <Compile Include="SlrParserCompiler\Models\Symbols\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Grammar.txt" />
