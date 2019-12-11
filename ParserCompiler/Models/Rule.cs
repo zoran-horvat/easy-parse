@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ParserCompiler.SlrParserCompiler.Models.Symbols;
+using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.SlrParserCompiler.Models
+namespace ParserCompiler.Models
 {
     public class Rule
     {

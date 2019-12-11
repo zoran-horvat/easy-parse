@@ -3,9 +3,9 @@
 <#@ assembly name="System.Core" #>
 <#@ assembly name="EnvDte" #>
 <#@ import namespace="System.IO" #>
-<#@ assembly name="$(TargetPath)" #>
-<#@ import namespace="ParserCompiler.SlrParserCompiler" #>
-<#@ import namespace="ParserCompiler.SlrParserCompiler.Models" #>
+<#@ assembly name="$(TargetDir)\ParserCompiler.dll" #>
+<#@ import namespace="ParserCompiler" #>
+<#@ import namespace="ParserCompiler.Models" #>
 <#@ import namespace="System.Linq" #>
 <#
 	WriteLine($"Generated on {DateTime.UtcNow:dd-MMM-yyyy HH:mm:ss} UTC");

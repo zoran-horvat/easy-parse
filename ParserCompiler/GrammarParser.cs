@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ParserCompiler.SlrParserCompiler.Models;
-using ParserCompiler.SlrParserCompiler.Models.Symbols;
+using ParserCompiler.Models;
+using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.SlrParserCompiler
+namespace ParserCompiler
 {
     public class GrammarParser
     {

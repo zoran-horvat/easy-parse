@@ -1,7 +1,7 @@
 ﻿using System;
-using ParserCompiler.SlrParserCompiler.Models.Symbols;
+using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.SlrParserCompiler.Models
+namespace ParserCompiler.Models
 {
     public abstract class Symbol : IEquatable<Symbol>
     {

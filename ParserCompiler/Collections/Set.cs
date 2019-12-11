@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
-namespace ParserCompiler.SlrParserCompiler.Collections
+namespace ParserCompiler.Collections
 {
     public class Set<TValue> : IEquatable<Set<TValue>>, IEnumerable<TValue>
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ParserCompiler.SlrParserCompiler.Models
+namespace ParserCompiler.Models
 {
     public static class GrammarExtensions
     {

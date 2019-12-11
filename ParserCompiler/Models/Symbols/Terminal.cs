@@ -1,4 +1,4 @@
-﻿namespace ParserCompiler.SlrParserCompiler.Models.Symbols
+﻿namespace ParserCompiler.Models.Symbols
 {
     public class Terminal : Symbol
     {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace ParserCompiler.SlrParserCompiler.Collections
+namespace ParserCompiler.Collections
 {
     public class KeyedSet<TKey, TValue> : IEquatable<KeyedSet<TKey, TValue>>, IEnumerable<TValue>
     {

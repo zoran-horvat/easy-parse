@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace ParserCompiler.SlrParserCompiler.Collections
+namespace ParserCompiler.Collections
 {
     public static class SetExtensions
     {

@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 
-namespace ParserCompiler.SlrParserCompiler
+namespace ParserCompiler
 {
     public class GrammarLoader
     {
