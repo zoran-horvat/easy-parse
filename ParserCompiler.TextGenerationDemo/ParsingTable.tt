@@ -19,4 +19,7 @@
 
 	WriteLine(string.Empty);
 	WriteLine(grammar.FirstSets.ToString(string.Empty, Environment.NewLine, string.Empty, set => grammar.SortOrderFor(set.Key)));
+
+	WriteLine(string.Empty);
+	WriteLine(grammar.FollowSets.ToString(string.Empty, Environment.NewLine, string.Empty, set => grammar.SortOrderFor(set.Key)));
 #>

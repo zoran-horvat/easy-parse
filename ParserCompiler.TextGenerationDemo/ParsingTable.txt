@@ -1,4 +1,4 @@
-﻿Generated on 11-Dec-2019 22:05:56 UTC
+﻿Generated on 11-Dec-2019 23:51:46 UTC
 
 S' -> S
 S -> G
@@ -22,3 +22,11 @@ FIRST(L) = {.}
 FIRST(R) = {i}
 FIRST(A) = {ns}
 FIRST(C) = {ns}
+
+FOLLOW(S') = {$}
+FOLLOW(S) = {i$}
+FOLLOW(G) = {i$}
+FOLLOW(L) = {.i$}
+FOLLOW(R) = {.i$}
+FOLLOW(A) = {),}
+FOLLOW(C) = {),}

@@ -5,24 +5,20 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
 {
-    public class NonTerminalToSymbols : KeyedSet<NonTerminal, Symbol>
+    public abstract class NonTerminalToSymbols : KeyedSet<NonTerminal, Symbol>
     {
-        public NonTerminalToSymbols(NonTerminal key) : base(key) { }
+        protected NonTerminalToSymbols(NonTerminal key) : base(key) { }
 
-        public NonTerminalToSymbols(NonTerminal key, IEnumerable<Symbol> content) : base(key, content.AsSet()) { }
+        protected NonTerminalToSymbols(NonTerminal key, IEnumerable<Symbol> content) : base(key, content.AsSet()) { }
 
         private NonTerminalToSymbols(NonTerminal key, Set<Symbol> content) : base(key, content) { }
 
-        public NonTerminalToSymbols Union(NonTerminalToSymbols other) =>
-            new NonTerminalToSymbols(this.Key, this.Representation.Union(other));
-
-        public NonTerminalToSymbols PurgeNonTerminals() =>
-            new NonTerminalToSymbols(this.Key, this.Representation.OfType<Terminal>());
+        protected abstract string PrintableName { get; }
 
         public override string ToString() =>
-            $"FIRST({base.Key.Value}) = {{{this.ValuesToString()}}}";
+            $"{this.PrintableName}({base.Key.Value}) = {{{this.ValuesToString()}}}";
 
         private string ValuesToString() =>
-            string.Join(string.Empty, this.Select(value => value.Value).ToArray());
+            string.Join(string.Empty, this.OrderBy(x => x).Select(value => value.Value).ToArray());
     }
 }

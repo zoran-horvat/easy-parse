@@ -24,8 +24,11 @@ namespace ParserCompiler.Models
         private IEnumerable<NonTerminal> SortOrder =>
             this.Rules.Select(rule => rule.Head).Distinct();
 
-        public Set<NonTerminalToSymbols> FirstSets => 
-            FirstSetsBuilder.From(this.Rules);
+        public Set<FirstSet> FirstSets => 
+            FirstSetsBuilder.BuildFor(this.Rules);
+
+        public Set<FollowSet> FollowSets =>
+            FollowSetsBuilder.BuildFor(this.Rules, this.FirstSets);
 
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Rules.Select(rule => rule.ToString()));

@@ -3,7 +3,7 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models
 {
-    public abstract class Symbol : IEquatable<Symbol>
+    public abstract class Symbol : IEquatable<Symbol>, IComparable<Symbol>
     {
         public string Value { get; }
         
@@ -15,6 +15,15 @@ namespace ParserCompiler.Models
         public static Symbol From(char representation) =>
             char.IsUpper(representation) ? (Symbol)new NonTerminal(representation.ToString()) 
             : new Terminal(representation.ToString());
+
+        public int CompareTo(Symbol other) =>
+            this.TypeOrder(this).CompareTo(this.TypeOrder(other)) is int typeComparison && typeComparison != 0 ? typeComparison
+            : StringComparer.Ordinal.Compare(this.Value, other.Value);
+
+        private int TypeOrder(Symbol obj) =>
+            obj is NonTerminal ? 0
+            : obj is EndOfInput ? 2
+            : 1;
 
         public override string ToString() =>
             this.Value;
