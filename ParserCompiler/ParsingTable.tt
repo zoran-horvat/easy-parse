@@ -4,13 +4,17 @@
 <#@ assembly name="EnvDte" #>
 <#@ import namespace="System.IO" #>
 <#@ assembly name="$(TargetPath)" #>
-<#@ import namespace="ParserCompiler" #>
+<#@ import namespace="ParserCompiler.SlrParserCompiler" #>
+<#@ import namespace="ParserCompiler.SlrParserCompiler.Models" #>
 <#@ import namespace="System.Linq" #>
 <#
 	WriteLine($"Generated on {DateTime.UtcNow:dd-MMM-yyyy HH:mm:ss} UTC");
 	WriteLine(string.Empty);
 
-	var grammar = new GrammarLoader(this.Host as IServiceProvider).From("Grammar.txt").ToGrammar();
+	var visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
+	string filePath = visualStudio.Solution.FindProjectItem("Grammar.txt").FileNames[0];
+
+	var grammar = new GrammarLoader().From(filePath).ToGrammar();
 	WriteLine(grammar.ToString());
 
 	WriteLine(string.Empty);
