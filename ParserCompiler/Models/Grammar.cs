@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ParserCompiler.Collections;
 using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models
@@ -24,11 +23,8 @@ namespace ParserCompiler.Models
         private IEnumerable<NonTerminal> SortOrder =>
             this.Rules.Select(rule => rule.Head).Distinct();
 
-        public Set<FirstSet> FirstSets => 
-            FirstSetsBuilder.BuildFor(this.Rules);
-
-        public Set<FollowSet> FollowSets =>
-            FollowSetsBuilder.BuildFor(this.Rules, this.FirstSets);
+        public Parser BuildParser() =>
+            ParserBuilder.For(this.Rules).Build();
 
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Rules.Select(rule => rule.ToString()));
