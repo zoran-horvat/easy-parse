@@ -71,6 +71,7 @@
     <Compile Include="Collections\SetExtensions.cs" />
     <Compile Include="Models\Parser.cs" />
     <Compile Include="Models\ParserBuilder.cs" />
+    <Compile Include="Models\Progression.cs" />
     <Compile Include="Models\Symbol.cs" />
     <Compile Include="Models\Symbols\EndOfInput.cs" />
     <Compile Include="Models\Symbols\NonTerminal.cs" />

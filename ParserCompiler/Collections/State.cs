@@ -8,14 +8,14 @@ namespace ParserCompiler.Collections
 {
     public class State
     {
-        private ImmutableList<Rule> Rules { get; }
+        private ImmutableList<Progression> Progressions { get; }
 
         public State(IEnumerable<Rule> rules)
         {
-            this.Rules = ImmutableList<Rule>.Empty.AddRange(rules);
+            this.Progressions = ImmutableList<Progression>.Empty.AddRange(rules.Select(rule => new Progression(rule)));
         }
 
         public override string ToString() =>
-            string.Join(string.Empty, this.Rules.Select(rule => $"{rule}{Environment.NewLine}").ToArray());
+            string.Join(string.Empty, this.Progressions.Select(line => $"{line}{Environment.NewLine}").ToArray());
     }
 }
