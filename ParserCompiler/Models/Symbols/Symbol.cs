@@ -1,7 +1,6 @@
 ﻿using System;
-using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Symbols
 {
     public abstract class Symbol : IEquatable<Symbol>, IComparable<Symbol>
     {

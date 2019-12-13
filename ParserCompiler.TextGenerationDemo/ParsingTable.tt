@@ -6,6 +6,7 @@
 <#@ assembly name="$(TargetDir)\ParserCompiler.dll" #>
 <#@ import namespace="ParserCompiler" #>
 <#@ import namespace="ParserCompiler.Models" #>
+<#@ import namespace="ParserCompiler.Models.Rules" #>
 <#@ import namespace="System.Linq" #>
 <#
 	WriteLine($"Generated on {DateTime.UtcNow:dd-MMM-yyyy HH:mm:ss} UTC");

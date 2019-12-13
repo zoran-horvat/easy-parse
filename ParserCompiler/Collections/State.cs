@@ -3,16 +3,18 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using ParserCompiler.Models;
+using ParserCompiler.Models.Rules;
+using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
 {
     public class State
     {
-        private ImmutableList<Progression> Progressions { get; }
+        private ImmutableList<StateElement> Progressions { get; }
 
-        public State(IEnumerable<Rule> rules)
+        public State(IEnumerable<Rule> rules, Set<FollowSet> followSets)
         {
-            this.Progressions = ImmutableList<Progression>.Empty.AddRange(rules.Select(rule => new Progression(rule)));
+            this.Progressions = ImmutableList<StateElement>.Empty.AddRange(rules.Select(rule => new StateElement(new Progression(rule), followSets.First(set => set.Key.Equals(rule.Head)).OfType<Terminal>().AsSet())));
         }
 
         public override string ToString() =>

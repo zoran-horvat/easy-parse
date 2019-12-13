@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ParserCompiler.Models.Builders;
 using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Rules
 {
     public class Grammar
     {

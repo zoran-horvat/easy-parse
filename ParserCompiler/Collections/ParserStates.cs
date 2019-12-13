@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Models;
+using ParserCompiler.Models.Rules;
 
 namespace ParserCompiler.Collections
 {
@@ -11,11 +12,11 @@ namespace ParserCompiler.Collections
 
         public int Length => this.Representation.Count;
 
-        public ParserStates(IEnumerable<Rule> rules)
+        public ParserStates(IEnumerable<Rule> rules, Set<FollowSet> followSets)
         {
             this.Representation = new List<State>()
             {
-                new State(rules)
+                new State(rules, followSets)
             };
         }
 

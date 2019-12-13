@@ -61,23 +61,24 @@
     <Compile Include="Collections\NonTerminalToSymbols.cs" />
     <Compile Include="Collections\ParserStates.cs" />
     <Compile Include="Collections\State.cs" />
-    <Compile Include="Models\FirstSetsBuilder.cs" />
-    <Compile Include="Models\FollowSetsBuilder.cs" />
-    <Compile Include="Models\Grammar.cs" />
-    <Compile Include="Models\GrammarExtensions.cs" />
+    <Compile Include="Models\Builders\FirstSetsBuilder.cs" />
+    <Compile Include="Models\Builders\FollowSetsBuilder.cs" />
+    <Compile Include="Models\Rules\Grammar.cs" />
+    <Compile Include="Models\Rules\GrammarExtensions.cs" />
     <Compile Include="GrammarParser.cs" />
     <Compile Include="Collections\KeyedSet.cs" />
     <Compile Include="Collections\Set.cs" />
     <Compile Include="Collections\SetExtensions.cs" />
     <Compile Include="Models\Parser.cs" />
-    <Compile Include="Models\ParserBuilder.cs" />
-    <Compile Include="Models\Progression.cs" />
-    <Compile Include="Models\Symbol.cs" />
+    <Compile Include="Models\Builders\ParserBuilder.cs" />
+    <Compile Include="Models\Rules\Progression.cs" />
+    <Compile Include="Models\Rules\StateElement.cs" />
+    <Compile Include="Models\Symbols\Symbol.cs" />
     <Compile Include="Models\Symbols\EndOfInput.cs" />
     <Compile Include="Models\Symbols\NonTerminal.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="GrammarLoader.cs" />
-    <Compile Include="Models\Rule.cs" />
+    <Compile Include="Models\Rules\Rule.cs" />
     <Compile Include="Models\Symbols\Terminal.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,7 @@
 using System.Linq;
 using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Rules
 {
     public class Rule
     {

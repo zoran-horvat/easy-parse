@@ -2,6 +2,7 @@
 using System.Collections.Immutable;
 using System.Linq;
 using ParserCompiler.Collections;
+using ParserCompiler.Models.Rules;
 
 namespace ParserCompiler.Models
 {

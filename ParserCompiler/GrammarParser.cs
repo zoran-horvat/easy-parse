@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using ParserCompiler.Models;
+using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler

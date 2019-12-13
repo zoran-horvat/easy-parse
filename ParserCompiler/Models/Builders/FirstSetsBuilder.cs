@@ -1,9 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Collections;
+using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Builders
 {
     static class FirstSetsBuilder
     {

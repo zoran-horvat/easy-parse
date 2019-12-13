@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using ParserCompiler.Collections;
+using ParserCompiler.Models.Rules;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Builders
 {
     public class ParserBuilder
     {
@@ -20,7 +21,7 @@ namespace ParserCompiler.Models
         {
             Set<FirstSet> firstSets = FirstSetsBuilder.BuildFor(this.Rules);
             Set<FollowSet> followSets = FollowSetsBuilder.BuildFor(this.Rules, firstSets);
-            ParserStates states = new ParserStates(this.Rules);
+            ParserStates states = new ParserStates(this.Rules, followSets);
 
             return new Parser(this.Rules, firstSets, followSets, states);
         }

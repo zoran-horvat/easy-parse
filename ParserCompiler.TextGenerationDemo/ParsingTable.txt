@@ -1,4 +1,4 @@
-﻿Generated on 12-Dec-2019 23:23:54 UTC
+﻿Generated on 13-Dec-2019 00:13:49 UTC
 
 S' -> S
 S -> G
@@ -32,18 +32,18 @@ FOLLOW(A) = {),}
 FOLLOW(C) = {),}
 
 S0
-S' -> ∙S
-S -> ∙G
-S -> ∙SG
-G -> ∙R
-G -> ∙RL
-L -> ∙.R
-L -> ∙L.R
-R -> ∙i
-R -> ∙i()
-R -> ∙i(A)
-A -> ∙C
-A -> ∙A,C
-C -> ∙n
-C -> ∙s
+S' -> ∘S {$}
+S -> ∘G {i$}
+S -> ∘SG {i$}
+G -> ∘R {i$}
+G -> ∘RL {i$}
+L -> ∘.R {.i$}
+L -> ∘L.R {.i$}
+R -> ∘i {.i$}
+R -> ∘i() {.i$}
+R -> ∘i(A) {.i$}
+A -> ∘C {),}
+A -> ∘A,C {),}
+C -> ∘n {),}
+C -> ∘s {),}
 

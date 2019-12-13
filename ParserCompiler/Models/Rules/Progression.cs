@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Rules
 {
     public class Progression
     {
@@ -17,6 +17,6 @@ namespace ParserCompiler.Models
             $"{this.Rule.Head} -> {this.BodyToString()}";
 
         private string BodyToString() =>
-            string.Join(string.Empty, this.Rule.Body.Select((item, index) => index == this.Position ? $"∙{item}" : $"{item}").ToArray());
+            string.Join(string.Empty, this.Rule.Body.Select((item, index) => index == this.Position ? $"∘{item}" : $"{item}").ToArray());
     }
 }
