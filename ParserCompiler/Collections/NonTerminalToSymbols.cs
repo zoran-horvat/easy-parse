@@ -4,13 +4,13 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
 {
-    public abstract class NonTerminalToSymbols : KeyedSet<NonTerminal, Symbol>
+    public abstract class NonTerminalToSymbols<TSymbol> : KeyedSet<NonTerminal, TSymbol> where TSymbol : Symbol
     {
         protected NonTerminalToSymbols(NonTerminal key) : base(key) { }
 
-        protected NonTerminalToSymbols(NonTerminal key, IEnumerable<Symbol> content) : base(key, content.AsSet()) { }
+        protected NonTerminalToSymbols(NonTerminal key, IEnumerable<TSymbol> content) : base(key, content.AsSet()) { }
 
-        private NonTerminalToSymbols(NonTerminal key, Set<Symbol> content) : base(key, content) { }
+        private NonTerminalToSymbols(NonTerminal key, Set<TSymbol> content) : base(key, content) { }
 
         protected abstract string PrintableName { get; }
 

@@ -5,7 +5,7 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
 {
-    public class FollowSet : NonTerminalToSymbols
+    public class FollowSet : NonTerminalToSymbols<Symbol>
     {
         public FollowSet(NonTerminal key) : base(key)
         {
