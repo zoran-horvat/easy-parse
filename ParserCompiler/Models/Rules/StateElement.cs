@@ -16,9 +16,9 @@ namespace ParserCompiler.Models.Rules
         }
 
         public override string ToString() =>
-            $"{this.Progression} {{{this.FollowedByToString()}}}";
+            $"{this.Progression,-10} {{{this.FollowedByToString()}}}";
 
-        private string FollowedByToString() =>
+        public string FollowedByToString() =>
             string.Join(string.Empty, this.FollowedBy.OrderBy(x => x).Select(x => $"{x}").ToArray());
     }
 }
