@@ -14,7 +14,7 @@ namespace ParserCompiler.Collections
 
         public State(IEnumerable<Rule> rules, Set<FollowSet> followSets)
         {
-            this.Progressions = ImmutableList<StateElement>.Empty.AddRange(rules.Select(rule => new StateElement(new Progression(rule), followSets.First(set => set.Key.Equals(rule.Head)).OfType<Terminal>().AsSet())));
+            this.Progressions = ImmutableList<StateElement>.Empty.AddRange(rules.Select(rule => new StateElement(new Progression(rule), followSets.First(set => set.Key.Equals(rule.Head)).AsSet())));
         }
 
         public override string ToString() =>

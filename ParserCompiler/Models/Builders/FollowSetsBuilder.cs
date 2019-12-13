@@ -11,16 +11,16 @@ namespace ParserCompiler.Models.Builders
         public static Set<FollowSet> BuildFor(IEnumerable<Rule> rules, Set<FirstSet> firstSets) =>
             PurgeNonTerminals(BuildFor(rules.ToList(), firstSets));
 
-        private static Set<FollowSet> PurgeNonTerminals(Set<FollowSet> followSets) =>
+        private static Set<FollowSet> PurgeNonTerminals(Set<IntermediateFollowSet> followSets) =>
             followSets.Select(followSet => followSet.PurgeNonTerminals()).AsSet();
 
-        private static Set<FollowSet> BuildFor(List<Rule> rules, Set<FirstSet> firstSets) =>
+        private static Set<IntermediateFollowSet> BuildFor(List<Rule> rules, Set<FirstSet> firstSets) =>
             Closure(rules, InitialFollowSets(rules), firstSets);
 
-        private static Set<FollowSet> InitialFollowSets(List<Rule> rules) =>
+        private static Set<IntermediateFollowSet> InitialFollowSets(List<Rule> rules) =>
             rules
                 .Select(rule => rule.Head)
-                .Select(nonTerminal => new FollowSet(nonTerminal, ImmediateFollowers(rules, nonTerminal)))
+                .Select(nonTerminal => new IntermediateFollowSet(nonTerminal, ImmediateFollowers(rules, nonTerminal)))
                 .AsSet();
 
         private static IEnumerable<Symbol> ImmediateFollowers(IEnumerable<Rule> rules, NonTerminal of) =>
@@ -41,30 +41,30 @@ namespace ParserCompiler.Models.Builders
                 .Where(tuple => tuple.preceding is NonTerminal)
                 .Select(tuple => ((NonTerminal) tuple.preceding, tuple.following));
 
-        private static Set<FollowSet> Closure(List<Rule> rules, Set<FollowSet> followSets, Set<FirstSet> firstSets)
+        private static Set<IntermediateFollowSet> Closure(List<Rule> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets)
         {
-            Set<FollowSet> result = followSets;
-            while (Advance(rules, result, firstSets) is Set<FollowSet> next && !(next.Equals(result)))
+            Set<IntermediateFollowSet> result = followSets;
+            while (Advance(rules, result, firstSets) is Set<IntermediateFollowSet> next && !(next.Equals(result)))
             {
                 result = next;
             }
             return result;
         }
 
-        private static Set<FollowSet> Advance(List<Rule> rules, Set<FollowSet> followSets, Set<FirstSet> firstSets) =>
+        private static Set<IntermediateFollowSet> Advance(List<Rule> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets) =>
             followSets.Select(set => Advance(set, rules, followSets, firstSets)).AsSet();
 
-        private static FollowSet Advance(FollowSet set, List<Rule> rules, Set<FollowSet> followSets, Set<FirstSet> firstSets) =>
+        private static IntermediateFollowSet Advance(IntermediateFollowSet set, List<Rule> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets) =>
             set.Union(SymbolsToAdd(set, firstSets)).Union(SymbolsToAdd(set, rules, followSets));
 
-        private static FollowSet SymbolsToAdd(FollowSet set, Set<FirstSet> firstSets) =>
-            new FollowSet(set.Key,
+        private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, Set<FirstSet> firstSets) =>
+            new IntermediateFollowSet(set.Key,
                 firstSets
                     .Where(firstSet => set.OfType<NonTerminal>().Contains(firstSet.Key))
                     .SelectMany(firstSet => firstSet));
 
-        private static FollowSet SymbolsToAdd(FollowSet set, List<Rule> rules, Set<FollowSet> followSets) =>
-            new FollowSet(set.Key,
+        private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, List<Rule> rules, Set<IntermediateFollowSet> followSets) =>
+            new IntermediateFollowSet(set.Key,
                 rules
                     .Where(rule => rule.Body.LastOrDefault() is NonTerminal last && last.Equals(set.Key))
                     .Select(rule => rule.Head)

@@ -57,8 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Collections\FirstSet.cs" />
-    <Compile Include="Collections\IntermediateFirstSet.cs" />
     <Compile Include="Collections\FollowSet.cs" />
+    <Compile Include="Collections\IntermediateFirstSet.cs" />
+    <Compile Include="Collections\IntermediateFollowSet.cs" />
     <Compile Include="Collections\NonTerminalToSymbols.cs" />
     <Compile Include="Collections\ParserStates.cs" />
     <Compile Include="Collections\State.cs" />
