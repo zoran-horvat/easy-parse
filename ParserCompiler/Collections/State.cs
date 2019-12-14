@@ -14,9 +14,17 @@ namespace ParserCompiler.Collections
             this.Elements = rules.Select(rule => rule.ToProgression().ToStateElement(followSets)).ToImmutableList();
         }
 
+        private State(IEnumerable<StateElement> elements)
+        {
+            this.Elements = elements.ToImmutableList();
+        }
+
         public IEnumerable<State> Advance()
         {
-            return Enumerable.Empty<State>();
+            return this.Elements
+                .SelectMany(element => element.Advance())
+                .GroupBy(move => move.consumed, move => move.rest)
+                .Select(group => new State(group));
         }
 
         public override string ToString() => Formatting.ToString(this);

@@ -13,7 +13,7 @@ namespace ParserCompiler
             $"{progression.Rule.Head} -> {BodyToString(progression)}";
 
         private static string BodyToString(Progression progression) =>
-            Join(progression.Rule.Body.Select((item, index) => index == progression.Position ? $"∘{item}" : $"{item}"));
+            Join(progression.ConsumedSymbols, string.Empty) + "∘" + Join(progression.PendingSymbols, string.Empty);
 
         public static string NamedToString<TSymbol>(NonTerminalToSymbols<TSymbol> set, string name) where TSymbol : Symbol =>
             $"{name}({set.Key.Value}) = {ToString(set, "{", string.Empty, "}")}";
@@ -31,7 +31,7 @@ namespace ParserCompiler
             ToString(states, ProgressionToStringWidth(states.States));
 
         private static string ToString(StateVector states, int progressionWidth) =>
-            Join(states.States.Select((state, index) => ToString(state, progressionWidth, index)), Environment.NewLine);
+            Join(states.States.Select((state, index) => ToString(state, progressionWidth, index)), $"{Environment.NewLine}{Environment.NewLine}");
 
         private static string ToString(State state, int progressionWidth, int stateIndex) =>
             $"S{stateIndex}{Environment.NewLine}{ToString(state, progressionWidth)}";
