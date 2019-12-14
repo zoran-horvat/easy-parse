@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using ParserCompiler.Models.Rules;
-using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
 {

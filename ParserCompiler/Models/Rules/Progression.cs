@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using ParserCompiler.Collections;
+﻿using ParserCompiler.Collections;
 
 namespace ParserCompiler.Models.Rules
 {
