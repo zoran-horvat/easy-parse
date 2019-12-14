@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models.Rules
 {
-    public class Rule
+    public class Rule : IEquatable<Rule>
     {
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
@@ -21,5 +22,21 @@ namespace ParserCompiler.Models.Rules
         public Progression ToProgression() => new Progression(this);
 
         public override string ToString() => Formatting.ToString(this);
+
+        public override bool Equals(object obj) =>
+            this.Equals(obj as Rule);
+
+        public bool Equals(Rule other) =>
+            !(other is null) &&
+            other.Head.Equals(this.Head) &&
+            other.Body.SequenceEqual(this.Body);
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return this.Body.Aggregate(this.Head.GetHashCode() * 397, (acc, symbol) => acc ^ symbol.GetHashCode());
+            }
+        }
     }
 }

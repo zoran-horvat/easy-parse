@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Collections;
 using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models.Rules
 {
-    public class Progression
+    public class Progression : IEquatable<Progression>
     {
         public Rule Rule { get; }
         public int Position { get; }
@@ -36,5 +37,24 @@ namespace ParserCompiler.Models.Rules
             (this.Rule.Body.ElementAt(this.Position), new Progression(this.Rule, this.Position + 1));
 
         public override string ToString() => Formatting.ToString(this);
+
+        public override bool Equals(object obj) => 
+            this.Equals(obj as Progression);
+
+        public bool Equals(Progression other) =>
+            !(other is null) &&
+            (other.Rule.Equals(this.Rule)) &&
+            (other.Position.Equals(this.Position));
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (this.Rule.GetHashCode() * 397) ^ this.Position;
+            }
+        }
+
+        public IEnumerable<Symbol> PeekTwo() =>
+            this.Rule.Body.Skip(this.Position).Take(2);
     }
 }
