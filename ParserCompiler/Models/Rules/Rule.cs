@@ -18,6 +18,8 @@ namespace ParserCompiler.Models.Rules
         public static Rule AugmentedGrammarRoot(string startingSymbol) =>
             new Rule(new NonTerminal("S'"), new Symbol[] {new NonTerminal("S")});
 
+        public Progression ToProgression() => new Progression(this);
+
         public override string ToString() =>
             $"{this.Head} -> {string.Join(string.Empty, this.Body.Select(x => x.ToString()).ToArray())}";
     }

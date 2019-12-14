@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using ParserCompiler.Collections;
 
 namespace ParserCompiler.Models.Rules
 {
@@ -12,6 +13,9 @@ namespace ParserCompiler.Models.Rules
             this.Rule = rule;
             this.Position = 0;
         }
+
+        public StateElement ToStateElement(Set<FollowSet> followSets) =>
+            new StateElement(this, followSets.Find(this.Rule.Head));
 
         public override string ToString() =>
             $"{this.Rule.Head} -> {this.BodyToString()}";

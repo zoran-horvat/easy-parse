@@ -15,7 +15,7 @@ namespace ParserCompiler.Collections
         }
 
         public IntermediateFollowSet Union(IntermediateFollowSet other) =>
-            new IntermediateFollowSet(base.Key, base.Representation.Union(other.Representation));
+            new IntermediateFollowSet(base.Key, base.Values.Union(other.Values));
 
         public FollowSet PurgeNonTerminals() =>
             new FollowSet(base.Key, this.OfType<Terminal>());

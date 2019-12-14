@@ -15,10 +15,10 @@ namespace ParserCompiler.Collections
         }
 
         public IntermediateFirstSet Union(IntermediateFirstSet other) =>
-            new IntermediateFirstSet(this.Key, this.Representation.Union(other));
+            new IntermediateFirstSet(this.Key, this.Values.Union(other));
 
         public FirstSet PurgeNonTerminals() =>
-            new FirstSet(this.Key, this.Representation.OfType<Terminal>());
+            new FirstSet(this.Key, this.Values.OfType<Terminal>());
 
         protected override string PrintableName => "FIRST";
     }

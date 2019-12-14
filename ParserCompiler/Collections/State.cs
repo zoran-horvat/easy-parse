@@ -13,17 +13,8 @@ namespace ParserCompiler.Collections
 
         public State(IEnumerable<Rule> rules, Set<FollowSet> followSets)
         {
-            this.Elements = this.ToElements(rules, followSets).ToImmutableList();
+            this.Elements = rules.Select(rule => rule.ToProgression().ToStateElement(followSets)).ToImmutableList();
         }
-
-        private IEnumerable<StateElement> ToElements(IEnumerable<Rule> rules, Set<FollowSet> followSets) =>
-            rules.Select(rule => this.ToElement(rule, followSets));
-
-        private StateElement ToElement(Rule rule, Set<FollowSet> followSets) =>
-            new StateElement(new Progression(rule), this.FollowSetFor(rule, followSets));
-
-        private Set<Terminal> FollowSetFor(Rule rule, Set<FollowSet> followSets) =>
-            followSets.First(set => set.Key.Equals(rule.Head)).AsSet();
 
         public override string ToString() =>
             this.ToString(this.ProgressionsToStringWidth);
