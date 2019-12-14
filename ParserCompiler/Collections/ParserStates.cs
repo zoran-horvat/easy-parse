@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
 
 namespace ParserCompiler.Collections
 {
     public class ParserStates
     {
+        public IEnumerable<State> States => this.Representation;
+
         private List<State> Representation { get; }
 
         public int Length => this.Representation.Count;
@@ -20,10 +21,6 @@ namespace ParserCompiler.Collections
             };
         }
 
-        public override string ToString() =>
-            string.Join(Environment.NewLine, this.Representation.Select(this.ToString).ToArray());
-
-        private string ToString(State state, int index) =>
-            $"S{index}{Environment.NewLine}{state}";
+        public override string ToString() => Formatting.ToString(this);
     }
 }

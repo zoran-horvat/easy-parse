@@ -20,7 +20,6 @@ namespace ParserCompiler.Models.Rules
 
         public Progression ToProgression() => new Progression(this);
 
-        public override string ToString() =>
-            $"{this.Head} -> {string.Join(string.Empty, this.Body.Select(x => x.ToString()).ToArray())}";
+        public override string ToString() => Formatting.ToString(this);
     }
 }

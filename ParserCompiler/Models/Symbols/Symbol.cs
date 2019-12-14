@@ -24,8 +24,7 @@ namespace ParserCompiler.Models.Symbols
             : obj is EndOfInput ? 2
             : 1;
 
-        public override string ToString() =>
-            this.Value;
+        public override string ToString() => this.Value;
 
         public override bool Equals(object obj) =>
             this.Equals(obj as Symbol);

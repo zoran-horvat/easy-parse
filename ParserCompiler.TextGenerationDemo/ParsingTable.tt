@@ -20,10 +20,10 @@
 
 	var parser = grammar.BuildParser();
 	WriteLine(string.Empty);
-	WriteLine(parser.FirstSets.ToString(string.Empty, Environment.NewLine, string.Empty, set => grammar.SortOrderFor(set.Key)));
+	WriteLine(parser.FirstSets.ToString(set => grammar.SortOrderFor(set.Key)));
 
 	WriteLine(string.Empty);
-	WriteLine(parser.FollowSets.ToString(string.Empty, Environment.NewLine, string.Empty, set => grammar.SortOrderFor(set.Key)));
+	WriteLine(parser.FollowSets.ToString(set => grammar.SortOrderFor(set.Key)));
 
 	WriteLine(string.Empty);
 	WriteLine(parser.States.ToString());

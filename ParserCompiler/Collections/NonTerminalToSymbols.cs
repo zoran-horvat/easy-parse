@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
@@ -10,14 +9,8 @@ namespace ParserCompiler.Collections
 
         protected NonTerminalToSymbols(NonTerminal key, IEnumerable<TSymbol> content) : base(key, content.AsSet()) { }
 
-        private NonTerminalToSymbols(NonTerminal key, Set<TSymbol> content) : base(key, content) { }
-
         protected abstract string PrintableName { get; }
 
-        public override string ToString() =>
-            $"{this.PrintableName}({base.Key.Value}) = {{{this.ValuesToString()}}}";
-
-        private string ValuesToString() =>
-            string.Join(string.Empty, this.OrderBy(x => x).Select(value => value.Value).ToArray());
+        public override string ToString() => Formatting.NamedToString(this, this.PrintableName);
     }
 }

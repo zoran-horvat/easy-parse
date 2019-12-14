@@ -8,7 +8,7 @@ namespace ParserCompiler.Models.Rules
 {
     public class Grammar
     {
-        private IEnumerable<Rule> Rules { get; }
+        public IEnumerable<Rule> Rules { get; }
      
         public Grammar(IEnumerable<Rule> rules)
         {
@@ -27,7 +27,6 @@ namespace ParserCompiler.Models.Rules
         public Parser BuildParser() =>
             ParserBuilder.For(this.Rules).Build();
 
-        public override string ToString() =>
-            string.Join(Environment.NewLine, this.Rules.Select(rule => rule.ToString()));
+        public override string ToString() => Formatting.ToString(this);
     }
 }

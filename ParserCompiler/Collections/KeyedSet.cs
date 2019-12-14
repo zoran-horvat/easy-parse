@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace ParserCompiler.Collections
 {
-    public class KeyedSet<TKey, TValue> : IEquatable<KeyedSet<TKey, TValue>>, IEnumerable<TValue>
+    public class KeyedSet<TKey, TValue> : IEquatable<KeyedSet<TKey, TValue>>, IEnumerable<TValue> where TValue : class
     {
         public TKey Key { get; }
         public Set<TValue> Values { get; }

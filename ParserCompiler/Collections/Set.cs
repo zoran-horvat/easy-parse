@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace ParserCompiler.Collections
 {
-    public class Set<TValue> : IEquatable<Set<TValue>>, IEnumerable<TValue>
+    public class Set<TValue> : IEquatable<Set<TValue>>, IEnumerable<TValue> where TValue : class
     {
         private ImmutableHashSet<TValue> Representation {get;}
 
@@ -37,13 +37,10 @@ namespace ParserCompiler.Collections
         IEnumerator IEnumerable.GetEnumerator() => 
             GetEnumerator();
 
-        public override string ToString() =>
-            this.ToString("{", ", ", "}");
+        public override string ToString() => Formatting.ToString(this, ", ");
 
-        public string ToString(string prefix, string separator, string suffix) =>
-            $"{prefix}{string.Join(separator, this.Representation.Select(item => item.ToString()))}{suffix}";
+        public string ToString(string prefix, string separator, string suffix, Func<TValue, int> sortOrder) => Formatting.ToString(this, prefix, separator, suffix, sortOrder);
 
-        public string ToString(string prefix, string separator, string suffix, Func<TValue, int> sortOrder) =>
-            $"{prefix}{string.Join(separator, this.Representation.OrderBy(sortOrder).Select(item => item.ToString()))}{suffix}";
+        public string ToString(Func<TValue, int> sortOrder) => Formatting.ToString(this, sortOrder);
     }
 }
