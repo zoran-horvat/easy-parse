@@ -27,10 +27,10 @@ namespace ParserCompiler
         public static string ToString(StateElement element, int progressionWidth) =>
             $"{element.Progression.ToString().PadRight(progressionWidth)} {ToString(element.FollowedBy)}";
 
-        public static string ToString(ParserStates states) =>
+        public static string ToString(StateVector states) =>
             ToString(states, ProgressionToStringWidth(states.States));
 
-        private static string ToString(ParserStates states, int progressionWidth) =>
+        private static string ToString(StateVector states, int progressionWidth) =>
             Join(states.States.Select((state, index) => ToString(state, progressionWidth, index)), Environment.NewLine);
 
         private static string ToString(State state, int progressionWidth, int stateIndex) =>

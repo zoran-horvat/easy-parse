@@ -61,7 +61,7 @@
     <Compile Include="Collections\IntermediateFirstSet.cs" />
     <Compile Include="Collections\IntermediateFollowSet.cs" />
     <Compile Include="Collections\NonTerminalToSymbols.cs" />
-    <Compile Include="Collections\ParserStates.cs" />
+    <Compile Include="Collections\StateVector.cs" />
     <Compile Include="Collections\State.cs" />
     <Compile Include="Models\Builders\FirstSetsBuilder.cs" />
     <Compile Include="Models\Builders\FollowSetsBuilder.cs" />

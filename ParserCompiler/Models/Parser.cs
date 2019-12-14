@@ -11,9 +11,9 @@ namespace ParserCompiler.Models
         private ImmutableList<Rule> RulesRepresentation { get; }
         public Set<FirstSet> FirstSets { get; }
         public Set<FollowSet> FollowSets { get; }
-        public ParserStates States { get; }
+        public StateVector States { get; }
 
-        public Parser(ImmutableList<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets, ParserStates states)
+        public Parser(ImmutableList<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets, StateVector states)
         {
             this.RulesRepresentation = rules;
             this.FirstSets = firstSets;

@@ -21,7 +21,7 @@ namespace ParserCompiler.Models.Builders
         {
             Set<FirstSet> firstSets = FirstSetsBuilder.BuildFor(this.Rules);
             Set<FollowSet> followSets = FollowSetsBuilder.BuildFor(this.Rules, firstSets);
-            ParserStates states = new ParserStates(this.Rules, followSets);
+            StateVector states = new StateVector(this.Rules, followSets).Closure();
 
             return new Parser(this.Rules, firstSets, followSets, states);
         }
