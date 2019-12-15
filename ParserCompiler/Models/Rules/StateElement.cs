@@ -21,16 +21,17 @@ namespace ParserCompiler.Models.Rules
             this.Progression.Advance()
                 .Select(tuple => (tuple.consumed, new StateElement(tuple.rest, this.FollowedBy)));
 
-        public IEnumerable<(NonTerminal next, Set<Terminal> follow)> PeekNonTerminal() =>
-            this.Peek(this.Progression.PeekTwo().ToArray());
+        public IEnumerable<(NonTerminal next, Set<Terminal> follow)> PeekNonTerminal(Set<FirstSet> firstSets) =>
+            this.Peek(this.Progression.PeekTwo().ToArray(), firstSets);
 
-        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(Symbol[] upcoming) =>
-            upcoming.Length > 0 && upcoming[0] is NonTerminal first ? this.Peek(first, upcoming.Skip(1).ToArray())
+        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(Symbol[] upcoming, Set<FirstSet> firstSets) =>
+            upcoming.Length > 0 && upcoming[0] is NonTerminal first ? this.Peek(first, upcoming.Skip(1).ToArray(), firstSets)
             : Enumerable.Empty<(NonTerminal, Set<Terminal>)>();
 
-        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, Symbol[] next) =>
+        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, Symbol[] next, Set<FirstSet> firstSets) =>
             next.Length == 0 ? this.Peek(first) 
             : next[0] is Terminal terminal ? this.Peek(first, terminal)
+            : next[0] is NonTerminal nonTerminal ? this.Peek(first, nonTerminal, firstSets)
             : Enumerable.Empty<(NonTerminal, Set<Terminal>)>();
 
         private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first) => 
@@ -38,6 +39,9 @@ namespace ParserCompiler.Models.Rules
 
         private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, Terminal follow) =>
             new[] {(upcoming: first, new[] {follow}.AsSet())};
+
+        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, NonTerminal follow, Set<FirstSet> firstSets) =>
+            new[] {(upcodming: first, firstSets.Find(follow))};
 
         public override string ToString() => Formatting.ToString(this);
 

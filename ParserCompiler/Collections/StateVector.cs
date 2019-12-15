@@ -12,9 +12,9 @@ namespace ParserCompiler.Collections
 
         public int Length => this.Representation.Length;
 
-        public StateVector(IEnumerable<Rule> rules, Set<FollowSet> followSets)
+        public StateVector(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets)
         {
-            this.Representation = new[] { new State(rules, followSets) }.ToImmutableArray();
+            this.Representation = new[] { new State(rules, firstSets, followSets) }.ToImmutableArray();
         }
 
         private StateVector(ImmutableArray<State> states)

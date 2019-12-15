@@ -1,4 +1,4 @@
-﻿Generated on 14-Dec-2019 23:54:47 UTC
+﻿Generated on 15-Dec-2019 19:28:06 UTC
 
 S' -> S
 S -> G
@@ -49,12 +49,12 @@ L -> ∘.R   {.i$}
 
 S1
 S' -> S∘   {$}
-R -> ∘i    {i$}
-R -> ∘i()  {i$}
 G -> ∘RL   {i$}
+R -> ∘i(A) {.i$}
+R -> ∘i    {.i$}
+R -> ∘i()  {.i$}
 G -> ∘R    {i$}
 S -> S∘G   {i$}
-R -> ∘i(A) {i$}
 
 S2
 S -> G∘    {i$}
