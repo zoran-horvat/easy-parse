@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Security.AccessControl;
 using ParserCompiler.Models.Rules;
 
 namespace ParserCompiler.Collections
@@ -35,8 +36,7 @@ namespace ParserCompiler.Collections
                 states = step.states;
             }
 
-            StateVector result = new StateVector(states.ToImmutableArray());
-            return result;
+            return new StateVector(states.ToImmutableArray());
         }
 
         private (List<int> modifications, List<State> states) Advance(List<int> modifications, List<State> states)
@@ -49,34 +49,26 @@ namespace ParserCompiler.Collections
             List<State> finalStates = new List<State>();
             List<int> modifiedIndexes = new List<int>();
 
-            foreach (State currentState in states)
+            foreach ((State state, int index) tuple in states.Select((state, index) => (state, index)))
             {
-                List<State> nextModifiedStates = new List<State>();
-                foreach (State modifiedState in new[] {currentState}.Concat(pendingChanges).Union())
-                {
-                    if (modifiedState.Core.Equals(currentState.Core))
-                    {
-                        if (!modifiedState.Equals(currentState))
-                            modifiedIndexes.Add(finalStates.Count);
-                        finalStates.Add(modifiedState);
-                    }
-                    else
-                    {
-                        nextModifiedStates.Add(modifiedState);
-                    }
-                }
+                var next = this.Advance(tuple.state, tuple.index, new[] {tuple.state}.Concat(pendingChanges).Union().ToList());
 
-                pendingChanges = nextModifiedStates;
+                modifiedIndexes.AddRange(next.modifiedIndex);
+                finalStates.Add(next.newCurrent);
+                pendingChanges = next.pendingChanges;
             }
 
-            foreach (State modifiedState in pendingChanges)
-            {
-                modifiedIndexes.Add(finalStates.Count);
-                finalStates.Add(modifiedState);
-            }
+            modifiedIndexes.AddRange(Enumerable.Range(finalStates.Count, pendingChanges.Count));
+            finalStates.AddRange(pendingChanges);
 
             return (modifiedIndexes, finalStates);
         }
+
+        private (State newCurrent, IEnumerable<int> modifiedIndex, List<State> pendingChanges) Advance(State current, int index, List<State> changes) =>
+            this.Advance(current, changes.First(change => change.Core.Equals(current.Core)), index, changes);
+
+        private (State newCurrent, IEnumerable<int> modifiedIndex, List<State> pendingChanges) Advance(State current, State newCurrent, int index, List<State> changes) =>
+            (newCurrent, newCurrent.Equals(current) ? new int[0] : new[] {index}, changes.Where(change => !change.Core.Equals(newCurrent.Core)).ToList());
 
         public override string ToString() => Formatting.ToString(this);
     }
