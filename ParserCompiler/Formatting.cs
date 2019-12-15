@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Collections;
+using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
 
@@ -9,6 +10,12 @@ namespace ParserCompiler
 {
     static class Formatting
     {
+        public static string ToString(Parser parser) =>
+            $"{parser.Grammar}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.FirstSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.FollowSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.States}";
+
         public static string ToString(Progression progression) =>
             $"{progression.Rule.Head} -> {BodyToString(progression)}";
 
@@ -57,7 +64,10 @@ namespace ParserCompiler
             $"{rule.Head} -> {ToString(rule.Body, string.Empty, string.Empty, string.Empty)}";
 
         public static string ToString(Grammar grammar) =>
-            ToString(grammar.Rules, string.Empty, Environment.NewLine, string.Empty);
+            ToString(grammar.Rules);
+
+        private static string ToString(IEnumerable<Rule> rules) =>
+            ToString(rules.Select((rule, index) => $"{index, 3}. {ToString(rule)}"), string.Empty, Environment.NewLine, string.Empty);
 
         private static int ProgressionToStringWidth(IEnumerable<State> states) =>
             states.Max(ProgressionToStringWidth);

@@ -25,7 +25,7 @@ namespace ParserCompiler.Models.Rules
             this.Rules.Select(rule => rule.Head).Distinct();
 
         public Parser BuildParser() =>
-            ParserBuilder.For(this.Rules).Build();
+            ParserBuilder.For(this).Build();
 
         public override string ToString() => Formatting.ToString(this);
     }

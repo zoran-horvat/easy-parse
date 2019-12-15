@@ -1,19 +1,19 @@
-﻿Generated on 15-Dec-2019 23:40:52 UTC
+﻿Generated on 15-Dec-2019 23:50:28 UTC
 
-S' -> S
-S -> G
-S -> SG
-G -> R
-G -> RL
-L -> .R
-L -> L.R
-R -> i
-R -> i()
-R -> i(A)
-A -> C
-A -> A,C
-C -> n
-C -> s
+  0. S' -> S
+  1. S -> G
+  2. S -> SG
+  3. G -> R
+  4. G -> RL
+  5. L -> .R
+  6. L -> L.R
+  7. R -> i
+  8. R -> i()
+  9. R -> i(A)
+ 10. A -> C
+ 11. A -> A,C
+ 12. C -> n
+ 13. C -> s
 
 FIRST(S') = {i}
 FIRST(S) = {i}

@@ -15,16 +15,6 @@
 	var visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
 	string filePath = visualStudio.Solution.FindProjectItem("Grammar.txt").FileNames[0];
 
-	var grammar = new GrammarLoader().From(filePath).ToGrammar();
-	WriteLine(grammar.ToString());
-
-	var parser = grammar.BuildParser();
-	WriteLine(string.Empty);
-	WriteLine(parser.FirstSets.ToString(set => grammar.SortOrderFor(set.Key)));
-
-	WriteLine(string.Empty);
-	WriteLine(parser.FollowSets.ToString(set => grammar.SortOrderFor(set.Key)));
-
-	WriteLine(string.Empty);
-	WriteLine(parser.States.ToString());
+	var parser = new GrammarLoader().From(filePath).ToGrammar().BuildParser();
+	WriteLine(parser.ToString());
 #>

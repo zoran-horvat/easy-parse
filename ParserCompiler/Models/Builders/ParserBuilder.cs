@@ -7,23 +7,23 @@ namespace ParserCompiler.Models.Builders
 {
     public class ParserBuilder
     {
-        private ImmutableList<Rule> Rules { get; }
+        private Grammar Grammar { get; }
 
-        private ParserBuilder(IEnumerable<Rule> rules)
+        private ParserBuilder(Grammar grammar)
         {
-            this.Rules = ImmutableList<Rule>.Empty.AddRange(rules);
+            this.Grammar = grammar;
         }
 
-        public static ParserBuilder For(IEnumerable<Rule> rules) =>
-            new ParserBuilder(rules);
+        public static ParserBuilder For(Grammar grammar) =>
+            new ParserBuilder(grammar);
 
         public Parser Build()
         {
-            Set<FirstSet> firstSets = FirstSetsBuilder.BuildFor(this.Rules);
-            Set<FollowSet> followSets = FollowSetsBuilder.BuildFor(this.Rules, firstSets);
-            StateVector states = new StateVector(this.Rules, firstSets, followSets).Closure();
+            Set<FirstSet> firstSets = FirstSetsBuilder.BuildFor(this.Grammar.Rules);
+            Set<FollowSet> followSets = FollowSetsBuilder.BuildFor(this.Grammar.Rules, firstSets);
+            StateVector states = new StateVector(this.Grammar.Rules, firstSets, followSets).Closure();
 
-            return new Parser(this.Rules, firstSets, followSets, states);
+            return new Parser(this.Grammar, firstSets, followSets, states);
         }
     }
 }
