@@ -11,12 +11,15 @@ namespace ParserCompiler.Collections
         private Set<FirstSet> FirstSets { get; }
         public Set<StateElement> Elements { get; }
 
+        public Set<Progression> Core { get; }
+
         public State(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets)
         {
             List<Rule> rulesList = new List<Rule>(rules);
             this.Rules = rulesList.AsSet();
             this.FirstSets = firstSets;
             this.Elements = rulesList.Select(rule => rule.ToProgression().ToStateElement(followSets)).AsSet();
+            this.Core = this.Elements.Select(element => element.Progression).AsSet();
         }
 
         private State(State copy, IEnumerable<StateElement> elements)
@@ -24,6 +27,7 @@ namespace ParserCompiler.Collections
             this.Rules = copy.Rules;
             this.FirstSets = copy.FirstSets;
             this.Elements = elements.AsSet();
+            this.Core = this.Elements.Select(element => element.Progression).AsSet();
         }
 
         public IEnumerable<State> Advance() =>
@@ -41,15 +45,10 @@ namespace ParserCompiler.Collections
                 .Aggregate(this, (state, element) => state.Append(element));
 
         private State Append(StateElement element) =>
-            new State(this, this.AppendToElements(element));
+            new State(this, this.Elements.Union(element));
 
-        private IEnumerable<StateElement> AppendToElements(StateElement element) =>
-            this.Elements
-                .Select(existing => (rule: existing.Progression, follow: existing.FollowedBy))
-                .Concat(new[] {(rule: element.Progression, follow: element.FollowedBy)})
-                .GroupBy(row => row.rule, row => row.follow)
-                .Select(group => (rule: group.Key, follow: group.Union()))
-                .Select(tuple => new StateElement(tuple.rule, tuple.follow));
+        public State Union(State other) =>
+            new State(this, this.Elements.Union(other.Elements));
 
         private State Closure()
         {
