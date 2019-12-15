@@ -25,11 +25,19 @@ namespace ParserCompiler.Models.Rules
             this.Peek(this.Progression.PeekTwo().ToArray());
 
         private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(Symbol[] upcoming) =>
-            upcoming.Length == 1 && upcoming[0] is NonTerminal first ? this.Peek(first)
+            upcoming.Length > 0 && upcoming[0] is NonTerminal first ? this.Peek(first, upcoming.Skip(1).ToArray())
             : Enumerable.Empty<(NonTerminal, Set<Terminal>)>();
 
-        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal upcoming) => 
-            new[] {(upcoming, this.FollowedBy)};
+        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, Symbol[] next) =>
+            next.Length == 0 ? this.Peek(first) 
+            : next[0] is Terminal terminal ? this.Peek(first, terminal)
+            : Enumerable.Empty<(NonTerminal, Set<Terminal>)>();
+
+        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first) => 
+            new[] {(upcoming: first, this.FollowedBy)};
+
+        private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, Terminal follow) =>
+            new[] {(upcoming: first, new[] {follow}.AsSet())};
 
         public override string ToString() => Formatting.ToString(this);
 
