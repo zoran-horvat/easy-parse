@@ -1,14 +1,18 @@
-﻿using System.Collections.Immutable;
+﻿using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
 using ParserCompiler.Models.Symbols;
 using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler.Collections
 {
-    public class TransitionTable<TState, TSymbol> where TSymbol : Symbol
+    public abstract class TransitionTable<TState, TSymbol> where TSymbol : Symbol
     {
+        public IEnumerable<Transition<TState, TSymbol>> Items => this.Content;
+
         protected ImmutableList<Transition<TState, TSymbol>> Content { get; }
 
-        public TransitionTable() : this(ImmutableList<Transition<TState, TSymbol>>.Empty)
+        protected TransitionTable() : this(ImmutableList<Transition<TState, TSymbol>>.Empty)
         {
         }
 

@@ -5,6 +5,7 @@ using ParserCompiler.Collections;
 using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
+using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler
 {
@@ -14,6 +15,7 @@ namespace ParserCompiler
             $"{parser.Grammar}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.FirstSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.FollowSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.Table}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.States}";
 
         public static string ToString(Progression progression) =>
@@ -65,6 +67,34 @@ namespace ParserCompiler
 
         public static string ToString(Grammar grammar) =>
             ToString(grammar.Rules);
+
+        public static string ToString(ParsingTable table) =>
+            $"{ToString(table.Shift)}{Environment.NewLine}{Environment.NewLine}{ToString(table.Goto)}";
+
+        public static string ToString(ShiftTable shift) =>
+            $"SHIFT{Environment.NewLine}{ToString((TransitionTable<int, Terminal>)shift)}";
+
+        public static string ToString(GotoTable @goto) =>
+            $"GOTO{Environment.NewLine}{ToString((TransitionTable<int, NonTerminal>)@goto)}";
+
+        private static string ToString<TState, TSymbol>(TransitionTable<TState, TSymbol> table) where TSymbol : Symbol =>
+            string.Join(Environment.NewLine, ToRowStrings(table).ToArray());
+
+        private static IEnumerable<string> ToRowStrings<TState, TSymbol>(TransitionTable<TState, TSymbol> table) where TSymbol : Symbol =>
+            table.Items
+                .GroupBy(item => item.From)
+                .OrderBy(group => group.Key)
+                .Select(group => ToRowString(group.Key, group));
+
+        private static string ToRowString<TState, TSymbol>(TState header, IEnumerable<Transition<TState, TSymbol>> row) where TSymbol : Symbol =>
+            $"  {header,4}: {ToRowElementsString(row)}";
+
+        private static string ToRowElementsString<TState, TSymbol>(IEnumerable<Transition<TState, TSymbol>> row) where TSymbol : Symbol =>
+            string.Join(" ", ToRowElementsStrings(row).ToArray());
+
+        private static IEnumerable<string> ToRowElementsStrings<TState, TSymbol>(IEnumerable<Transition<TState, TSymbol>> row) where TSymbol : Symbol =>
+            row.OrderBy(item => item.Symbol)
+                .Select(item => $"{item.Symbol}->{item.To}");
 
         private static string ToString(IEnumerable<Rule> rules) =>
             ToString(rules.Select((rule, index) => $"{index, 3}. {ToString(rule)}"), string.Empty, Environment.NewLine, string.Empty);

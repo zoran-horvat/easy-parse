@@ -25,5 +25,7 @@ namespace ParserCompiler.Collections
 
         IEnumerator IEnumerable.GetEnumerator() => 
             GetEnumerator();
+
+        public override string ToString() => Formatting.ToString(this);
     }
 }

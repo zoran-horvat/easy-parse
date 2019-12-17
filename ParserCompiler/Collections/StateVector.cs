@@ -10,32 +10,21 @@ namespace ParserCompiler.Collections
     {
         public IEnumerable<State> States => this.Representation;
 
-        public IEnumerable<ShiftCommand> ShiftCommands => this.ParsingTable.Shift;
-        public IEnumerable<GotoCommand> GotoCommands => this.ParsingTable.Goto;
-
         private ImmutableArray<State> Representation { get; }
 
         public int Length => this.Representation.Length;
-
-        private ParsingTable ParsingTable { get; }
 
         public StateVector(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets) : 
             this(new[] { new State(rules, firstSets, followSets) }.ToImmutableArray()) 
         {
         }
 
-        private StateVector(ImmutableArray<State> states) : this(states, new ParsingTable(states.ToList()))
-        {
-
-        }
-
-        private StateVector(ImmutableArray<State> states, ParsingTable parsingTable)
+        private StateVector(ImmutableArray<State> states)
         {
             this.Representation = states;
-            this.ParsingTable = parsingTable;
         }
 
-        public StateVector Closure()
+        public (StateVector vector, ParsingTable table) Closure()
         {
             List<int> modifications = Enumerable.Range(0, this.Representation.Length).ToList();
             List<State> states = this.Representation.ToList();
@@ -49,9 +38,7 @@ namespace ParserCompiler.Collections
                 transitions.AddRange(step.transitions);
             }
 
-            ParsingTable table = transitions.ToParsingTable(states);
-
-            return new StateVector(states.ToImmutableArray(), table);
+            return (new StateVector(states.ToImmutableArray()), transitions.ToParsingTable(states));
         }
 
         private (List<int> modifications, List<State> states, List<CoreTransition> transitions) Advance(List<int> modifications, List<State> states)

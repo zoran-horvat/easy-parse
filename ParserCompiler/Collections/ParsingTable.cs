@@ -29,5 +29,7 @@ namespace ParserCompiler.Collections
 
         public ParsingTable Add(CoreTransition transition) =>
             new ParsingTable(this, this.Shift.TryAdd(transition, this.CoreToIndex), this.Goto.TryAdd(transition, this.CoreToIndex));
+
+        public override string ToString() => Formatting.ToString(this);
     }
 }
