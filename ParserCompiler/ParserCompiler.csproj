@@ -62,6 +62,7 @@
     <Compile Include="Collections\IntermediateFirstSet.cs" />
     <Compile Include="Collections\IntermediateFollowSet.cs" />
     <Compile Include="Collections\NonTerminalToSymbols.cs" />
+    <Compile Include="Collections\ParsingTable.cs" />
     <Compile Include="Collections\ShiftTable.cs" />
     <Compile Include="Collections\StateExtensions.cs" />
     <Compile Include="Collections\StateVector.cs" />

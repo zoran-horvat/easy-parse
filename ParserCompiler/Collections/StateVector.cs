@@ -10,26 +10,29 @@ namespace ParserCompiler.Collections
     {
         public IEnumerable<State> States => this.Representation;
 
-        public IEnumerable<ShiftCommand> ShiftCommands => this.Shift;
-        public IEnumerable<GotoCommand> GotoCommands => this.Goto;
+        public IEnumerable<ShiftCommand> ShiftCommands => this.ParsingTable.Shift;
+        public IEnumerable<GotoCommand> GotoCommands => this.ParsingTable.Goto;
 
         private ImmutableArray<State> Representation { get; }
 
         public int Length => this.Representation.Length;
 
-        private ShiftTable Shift { get; }
-        private GotoTable Goto { get; }
+        private ParsingTable ParsingTable { get; }
 
         public StateVector(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets) : 
-            this(new[] { new State(rules, firstSets, followSets) }.ToImmutableArray(), new ShiftTable(), new GotoTable()) 
+            this(new[] { new State(rules, firstSets, followSets) }.ToImmutableArray()) 
         {
         }
 
-        private StateVector(ImmutableArray<State> states, ShiftTable shift, GotoTable @goto)
+        private StateVector(ImmutableArray<State> states) : this(states, new ParsingTable(states.ToList()))
+        {
+
+        }
+
+        private StateVector(ImmutableArray<State> states, ParsingTable parsingTable)
         {
             this.Representation = states;
-            this.Shift = shift;
-            this.Goto = @goto;
+            this.ParsingTable = parsingTable;
         }
 
         public StateVector Closure()
@@ -46,9 +49,9 @@ namespace ParserCompiler.Collections
                 transitions.AddRange(step.transitions);
             }
 
-            (ShiftTable shift, GotoTable @goto) = transitions.ToIndexTransitions(states);
+            ParsingTable table = transitions.ToParsingTable(states);
 
-            return new StateVector(states.ToImmutableArray(), shift, @goto);
+            return new StateVector(states.ToImmutableArray(), table);
         }
 
         private (List<int> modifications, List<State> states, List<CoreTransition> transitions) Advance(List<int> modifications, List<State> states)
