@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
 
 namespace ParserCompiler.Collections
@@ -30,12 +31,12 @@ namespace ParserCompiler.Collections
             this.Core = this.Elements.Select(element => element.Progression).AsSet();
         }
 
-        public IEnumerable<State> Advance() =>
+        public IEnumerable<Transition> Advance() =>
             this.Elements
                 .SelectMany(element => element.Advance())
                 .GroupBy(move => move.consumed, move => move.rest)
-                .Select(group => new State(this, group))
-                .Select(state => state.Closure());
+                .Select(group => new Transition(this, group.Key, new State(this, group)))
+                .Select(transition => transition.Closure());
 
         private State Expand() =>
             this.Elements
@@ -50,7 +51,7 @@ namespace ParserCompiler.Collections
         public State Union(State other) =>
             new State(this, this.Elements.Union(other.Elements));
 
-        private State Closure()
+        public State Closure()
         {
             State result = this;
             while (result.Expand() is State next && !next.Equals(result))
