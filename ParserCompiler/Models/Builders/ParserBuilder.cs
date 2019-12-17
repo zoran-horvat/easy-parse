@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
-using ParserCompiler.Collections;
+﻿using ParserCompiler.Collections;
 using ParserCompiler.Models.Rules;
 
 namespace ParserCompiler.Models.Builders

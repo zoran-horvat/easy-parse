@@ -1,11 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Security.AccessControl;
-using System.Threading;
 using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
-using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Collections
 {
@@ -13,25 +10,24 @@ namespace ParserCompiler.Collections
     {
         public IEnumerable<State> States => this.Representation;
 
-        public IEnumerable<IndexTransition<Terminal>> ShiftCommands => this.ShiftRepresentation;
-        public IEnumerable<IndexTransition<NonTerminal>> GotoCommands => this.GotoRepresentation;
+        public IEnumerable<ShiftCommand> ShiftCommands => this.ShiftRepresentation;
+        public IEnumerable<GotoCommand> GotoCommands => this.GotoRepresentation;
 
         private ImmutableArray<State> Representation { get; }
 
         public int Length => this.Representation.Length;
 
-        private ImmutableList<IndexTransition<Terminal>> ShiftRepresentation { get; }
-        private ImmutableList<IndexTransition<NonTerminal>> GotoRepresentation { get; }
+        private ImmutableList<ShiftCommand> ShiftRepresentation { get; }
+        private ImmutableList<GotoCommand> GotoRepresentation { get; }
 
         public StateVector(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets)
         {
             this.Representation = new[] { new State(rules, firstSets, followSets) }.ToImmutableArray();
-            this.ShiftRepresentation = ImmutableList<IndexTransition<Terminal>>.Empty;
-            this.GotoRepresentation = ImmutableList<IndexTransition<NonTerminal>>.Empty;
+            this.ShiftRepresentation = ImmutableList<ShiftCommand>.Empty;
+            this.GotoRepresentation = ImmutableList<GotoCommand>.Empty;
         }
 
-        private StateVector(ImmutableArray<State> states, 
-            ImmutableList<IndexTransition<Terminal>> shiftRepresentation, ImmutableList<IndexTransition<NonTerminal>> gotoRepresentation)
+        private StateVector(ImmutableArray<State> states, ImmutableList<ShiftCommand> shiftRepresentation, ImmutableList<GotoCommand> gotoRepresentation)
         {
             this.Representation = states;
             this.ShiftRepresentation = shiftRepresentation;
@@ -52,7 +48,7 @@ namespace ParserCompiler.Collections
                 transitions.AddRange(step.transitions);
             }
 
-            (ImmutableList<IndexTransition<Terminal>> shifts, ImmutableList<IndexTransition<NonTerminal>> gotos) = transitions.ToIndexTransitions(states);
+            (ImmutableList<ShiftCommand> shifts, ImmutableList<GotoCommand> gotos) = transitions.ToIndexTransitions(states);
 
             return new StateVector(states.ToImmutableArray(), shifts, gotos);
         }

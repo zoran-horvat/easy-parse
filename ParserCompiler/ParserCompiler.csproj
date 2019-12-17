@@ -68,6 +68,7 @@
     <Compile Include="Models\Builders\FollowSetsBuilder.cs" />
     <Compile Include="Formatting.cs" />
     <Compile Include="Models\CoreTransition.cs" />
+    <Compile Include="Models\GotoCommand.cs" />
     <Compile Include="Models\IndexTransition.cs" />
     <Compile Include="Models\Rules\Grammar.cs" />
     <Compile Include="Models\Rules\GrammarExtensions.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Models\Builders\ParserBuilder.cs" />
     <Compile Include="Models\Rules\Progression.cs" />
     <Compile Include="Models\Rules\StateElement.cs" />
+    <Compile Include="Models\ShiftCommand.cs" />
     <Compile Include="Models\Symbols\Symbol.cs" />
     <Compile Include="Models\Symbols\EndOfInput.cs" />
     <Compile Include="Models\Symbols\NonTerminal.cs" />
