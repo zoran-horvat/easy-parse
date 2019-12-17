@@ -72,27 +72,27 @@ namespace ParserCompiler
             $"{ToString(table.Shift)}{Environment.NewLine}{Environment.NewLine}{ToString(table.Goto)}";
 
         public static string ToString(ShiftTable shift) =>
-            $"SHIFT{Environment.NewLine}{ToString((TransitionTable<int, Terminal>)shift)}";
+            $"SHIFT{Environment.NewLine}{ToString((TransitionTable<int, Terminal, int>)shift)}";
 
         public static string ToString(GotoTable @goto) =>
-            $"GOTO{Environment.NewLine}{ToString((TransitionTable<int, NonTerminal>)@goto)}";
+            $"GOTO{Environment.NewLine}{ToString((TransitionTable<int, NonTerminal, int>)@goto)}";
 
-        private static string ToString<TState, TSymbol>(TransitionTable<TState, TSymbol> table) where TSymbol : Symbol =>
+        private static string ToString<TState, TSymbol, TResult>(TransitionTable<TState, TSymbol, TResult> table) where TSymbol : Symbol =>
             string.Join(Environment.NewLine, ToRowStrings(table).ToArray());
 
-        private static IEnumerable<string> ToRowStrings<TState, TSymbol>(TransitionTable<TState, TSymbol> table) where TSymbol : Symbol =>
+        private static IEnumerable<string> ToRowStrings<TState, TSymbol, TResult>(TransitionTable<TState, TSymbol, TResult> table) where TSymbol : Symbol =>
             table.Items
                 .GroupBy(item => item.From)
                 .OrderBy(group => group.Key)
                 .Select(group => ToRowString(group.Key, group));
 
-        private static string ToRowString<TState, TSymbol>(TState header, IEnumerable<Transition<TState, TSymbol>> row) where TSymbol : Symbol =>
-            $"  {header,4}: {ToRowElementsString(row)}";
+        private static string ToRowString<TState, TSymbol, TResult>(TState header, IEnumerable<Transition<TState, TSymbol, TResult>> row) where TSymbol : Symbol =>
+            $"{header,4}: {ToRowElementsString(row)}";
 
-        private static string ToRowElementsString<TState, TSymbol>(IEnumerable<Transition<TState, TSymbol>> row) where TSymbol : Symbol =>
+        private static string ToRowElementsString<TState, TSymbol, TResult>(IEnumerable<Transition<TState, TSymbol, TResult>> row) where TSymbol : Symbol =>
             string.Join(" ", ToRowElementsStrings(row).ToArray());
 
-        private static IEnumerable<string> ToRowElementsStrings<TState, TSymbol>(IEnumerable<Transition<TState, TSymbol>> row) where TSymbol : Symbol =>
+        private static IEnumerable<string> ToRowElementsStrings<TState, TSymbol, TResult>(IEnumerable<Transition<TState, TSymbol, TResult>> row) where TSymbol : Symbol =>
             row.OrderBy(item => item.Symbol)
                 .Select(item => $"{item.Symbol}->{item.To}");
 

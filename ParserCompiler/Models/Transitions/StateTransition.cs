@@ -3,7 +3,7 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models.Transitions
 {
-    public class StateTransition : Transition<State, Symbol>
+    public class StateTransition : Transition<State, Symbol, State>
     {
         public StateTransition(State @from, Symbol symbol, State to) : base(@from, symbol, to)
         {

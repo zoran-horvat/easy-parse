@@ -8,11 +8,11 @@ using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler.Collections
 {
-    public class ShiftTable : TransitionTable<int, Terminal>, IEnumerable<ShiftCommand>
+    public class ShiftTable : TransitionTable<int, Terminal, int>, IEnumerable<ShiftCommand>
     {
         public ShiftTable() { }
 
-        private ShiftTable(ImmutableList<Transition<int, Terminal>> content) : base(content) { }
+        private ShiftTable(ImmutableList<Transition<int, Terminal, int>> content) : base(content) { }
 
         public ShiftTable Add(ShiftCommand command) =>
             new ShiftTable(base.Content.Add(command));
