@@ -1,7 +1,7 @@
 ﻿using ParserCompiler.Collections;
 using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Transitions
 {
     public class Transition
     {

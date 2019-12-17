@@ -1,6 +1,6 @@
 ﻿using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Transitions
 {
     public abstract class IndexTransition<T> where T : Symbol
     {

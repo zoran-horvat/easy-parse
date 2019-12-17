@@ -4,7 +4,7 @@ using System.Linq;
 using ParserCompiler.Collections;
 using ParserCompiler.Models.Rules;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Transitions
 {
     public static class TransitionExtensions
     {

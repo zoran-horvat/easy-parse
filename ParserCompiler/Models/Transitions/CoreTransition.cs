@@ -2,7 +2,7 @@
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
 
-namespace ParserCompiler.Models
+namespace ParserCompiler.Models.Transitions
 {
     public class CoreTransition
     {

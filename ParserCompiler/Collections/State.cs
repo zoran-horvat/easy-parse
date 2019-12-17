@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
+using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler.Collections
 {
