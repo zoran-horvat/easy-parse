@@ -63,6 +63,7 @@
     <Compile Include="Collections\IntermediateFollowSet.cs" />
     <Compile Include="Collections\NonTerminalToSymbols.cs" />
     <Compile Include="Collections\ParsingTable.cs" />
+    <Compile Include="Collections\ReduceTable.cs" />
     <Compile Include="Collections\ShiftTable.cs" />
     <Compile Include="Collections\StateExtensions.cs" />
     <Compile Include="Collections\StateVector.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="Models\Builders\FirstSetsBuilder.cs" />
     <Compile Include="Models\Builders\FollowSetsBuilder.cs" />
     <Compile Include="Formatting.cs" />
+    <Compile Include="Models\Transitions\CoreReduction.cs" />
     <Compile Include="Models\Transitions\CoreTransition.cs" />
     <Compile Include="Models\Transitions\GotoCommand.cs" />
     <Compile Include="Models\Transitions\IndexTransition.cs" />
@@ -84,6 +86,7 @@
     <Compile Include="Models\Builders\ParserBuilder.cs" />
     <Compile Include="Models\Rules\Progression.cs" />
     <Compile Include="Models\Rules\StateElement.cs" />
+    <Compile Include="Models\Transitions\ReduceCommand.cs" />
     <Compile Include="Models\Transitions\ShiftCommand.cs" />
     <Compile Include="Models\Symbols\Symbol.cs" />
     <Compile Include="Models\Symbols\EndOfInput.cs" />

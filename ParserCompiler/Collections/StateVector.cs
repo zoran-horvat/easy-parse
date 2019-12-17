@@ -8,6 +8,7 @@ namespace ParserCompiler.Collections
 {
     public class StateVector
     {
+        private List<Rule> Rules { get; }
         public IEnumerable<State> States => this.Representation;
 
         private ImmutableArray<State> Representation { get; }
@@ -15,12 +16,13 @@ namespace ParserCompiler.Collections
         public int Length => this.Representation.Length;
 
         public StateVector(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets) : 
-            this(new[] { new State(rules, firstSets, followSets) }.ToImmutableArray()) 
+            this(rules, new[] { new State(rules, firstSets, followSets) }.ToImmutableArray()) 
         {
         }
 
-        private StateVector(ImmutableArray<State> states)
+        private StateVector(IEnumerable<Rule> rules, ImmutableArray<State> states)
         {
+            this.Rules = rules.ToList();
             this.Representation = states;
         }
 
@@ -38,7 +40,7 @@ namespace ParserCompiler.Collections
                 transitions.AddRange(step.transitions);
             }
 
-            return (new StateVector(states.ToImmutableArray()), transitions.ToParsingTable(states));
+            return (new StateVector(this.Rules, states.ToImmutableArray()), transitions.ToParsingTable(states, this.Rules).AddRange(states.Reductions()));
         }
 
         private (List<int> modifications, List<State> states, List<CoreTransition> transitions) Advance(List<int> modifications, List<State> states)

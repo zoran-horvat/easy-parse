@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Models.Rules;
+using ParserCompiler.Models.Symbols;
 using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler.Collections
@@ -60,6 +61,9 @@ namespace ParserCompiler.Collections
             }
             return result;
         }
+
+        public IEnumerable<(Set<Progression> core, Rule reduce, Set<Terminal> terminals)> Reductions =>
+            this.Elements.SelectMany(element => element.Reductions).Select(tuple => (this.Core, tuple.reduce, tuple.terminals));
 
         public override string ToString() => Formatting.ToString(this);
 

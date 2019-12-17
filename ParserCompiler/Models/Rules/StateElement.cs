@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ParserCompiler.Collections;
 using ParserCompiler.Models.Symbols;
+using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler.Models.Rules
 {
@@ -42,6 +43,10 @@ namespace ParserCompiler.Models.Rules
 
         private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, NonTerminal follow, Set<FirstSet> firstSets) =>
             new[] {(upcodming: first, firstSets.Find(follow))};
+
+        public IEnumerable<(Rule reduce, Set<Terminal> terminals)> Reductions =>
+            this.Progression.Position < this.Progression.Length ? Enumerable.Empty<(Rule, Set<Terminal>)>()
+            : new[] {(this.Progression.Rule, this.FollowedBy)};
 
         public override string ToString() => Formatting.ToString(this);
 
