@@ -4,17 +4,10 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models.Transitions
 {
-    public class CoreTransition
+    public class CoreTransition : Transition<Set<Progression>, Symbol>
     {
-        public Set<Progression> FromCore { get; }
-        public Symbol Symbol { get; }
-        public Set<Progression> ToCore { get; }
-
-        public CoreTransition(Set<Progression> fromCore, Symbol symbol, Set<Progression> toCore)
+        public CoreTransition(Set<Progression> from, Symbol symbol, Set<Progression> to) : base(from, symbol, to)
         {
-            this.FromCore = fromCore;
-            this.Symbol = symbol;
-            this.ToCore = toCore;
         }
     }
 }

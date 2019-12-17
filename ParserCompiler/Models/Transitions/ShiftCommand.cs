@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
 using ParserCompiler.Collections;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
@@ -12,7 +12,8 @@ namespace ParserCompiler.Models.Transitions
         {
         }
 
-        public static ImmutableList<ShiftCommand> Add(CoreTransition transition, IDictionary<Set<Progression>, int> coreToInt, ImmutableList<ShiftCommand> to) =>
-            transition.Symbol is Terminal symbol ? to.Add(new ShiftCommand(coreToInt[transition.FromCore], symbol, coreToInt[transition.ToCore])) : to;
+        public static ShiftCommand Of(CoreTransition transition, IDictionary<Set<Progression>, int> coreToIndex) =>
+            transition.Symbol is Terminal terminal ? new ShiftCommand(coreToIndex[transition.From], terminal, coreToIndex[transition.To]) 
+            : throw new ArgumentException(); 
     }
 }

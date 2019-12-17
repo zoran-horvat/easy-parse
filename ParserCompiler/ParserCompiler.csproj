@@ -58,12 +58,15 @@
   <ItemGroup>
     <Compile Include="Collections\FirstSet.cs" />
     <Compile Include="Collections\FollowSet.cs" />
+    <Compile Include="Collections\GotoTable.cs" />
     <Compile Include="Collections\IntermediateFirstSet.cs" />
     <Compile Include="Collections\IntermediateFollowSet.cs" />
     <Compile Include="Collections\NonTerminalToSymbols.cs" />
+    <Compile Include="Collections\ShiftTable.cs" />
     <Compile Include="Collections\StateExtensions.cs" />
     <Compile Include="Collections\StateVector.cs" />
     <Compile Include="Collections\State.cs" />
+    <Compile Include="Collections\TransitionTable.cs" />
     <Compile Include="Models\Builders\FirstSetsBuilder.cs" />
     <Compile Include="Models\Builders\FollowSetsBuilder.cs" />
     <Compile Include="Formatting.cs" />
@@ -84,6 +87,7 @@
     <Compile Include="Models\Symbols\Symbol.cs" />
     <Compile Include="Models\Symbols\EndOfInput.cs" />
     <Compile Include="Models\Symbols\NonTerminal.cs" />
+    <Compile Include="Models\Transitions\StateTransition.cs" />
     <Compile Include="Models\Transitions\Transition.cs" />
     <Compile Include="Models\Transitions\TransitionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

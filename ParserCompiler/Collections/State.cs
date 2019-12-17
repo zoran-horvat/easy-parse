@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using ParserCompiler.Models;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Transitions;
 
@@ -32,11 +31,11 @@ namespace ParserCompiler.Collections
             this.Core = this.Elements.Select(element => element.Progression).AsSet();
         }
 
-        public IEnumerable<Transition> Advance() =>
+        public IEnumerable<StateTransition> Advance() =>
             this.Elements
                 .SelectMany(element => element.Advance())
                 .GroupBy(move => move.consumed, move => move.rest)
-                .Select(group => new Transition(this, group.Key, new State(this, group)))
+                .Select(group => new StateTransition(this, group.Key, new State(this, group)))
                 .Select(transition => transition.Closure());
 
         private State Expand() =>

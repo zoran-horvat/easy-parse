@@ -2,19 +2,12 @@
 
 namespace ParserCompiler.Models.Transitions
 {
-    public abstract class IndexTransition<T> where T : Symbol
+    public abstract class IndexTransition<T> : Transition<int, T> where T : Symbol
     {
-        public int FromState { get; }
-        public T Symbol { get; }
-        public int ToState { get; }
-
-        protected IndexTransition(int fromState, T symbol, int toState)
+        protected IndexTransition(int @from, T symbol, int to) : base(@from, symbol, to)
         {
-            FromState = fromState;
-            Symbol = symbol;
-            ToState = toState;
         }
 
-        public override string ToString() => $"({this.FromState}, {this.Symbol}) -> {this.ToState}";
+        public override string ToString() => $"({this.From}, {this.Symbol}) -> {this.To}";
     }
 }

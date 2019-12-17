@@ -1,25 +1,18 @@
-﻿using ParserCompiler.Collections;
-using ParserCompiler.Models.Symbols;
+﻿using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models.Transitions
 {
-    public class Transition
+    public abstract class Transition<TState, TSymbol> where TSymbol : Symbol
     {
-        public State From { get; }
-        public Symbol Symbol { get; }
-        public State To { get; }
+        public TState From { get; }
+        public TSymbol Symbol { get; }
+        public TState To { get; }
 
-        public Transition(State from, Symbol symbol, State to)
+        public Transition(TState @from, TSymbol symbol, TState to)
         {
             this.From = from;
             this.Symbol = symbol;
             this.To = to;
         }
-
-        public Transition Closure() =>
-            new Transition(this.From, this.Symbol, this.To.Closure());
-
-        public CoreTransition ToCore() =>
-            new CoreTransition(this.From.Core, this.Symbol, this.To.Core);
     }
 }

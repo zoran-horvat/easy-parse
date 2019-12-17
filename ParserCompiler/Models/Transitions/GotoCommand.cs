@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Collections.Immutable;
+﻿using System;
+using System.Collections.Generic;
 using ParserCompiler.Collections;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
@@ -12,7 +12,8 @@ namespace ParserCompiler.Models.Transitions
         {
         }
 
-        public static ImmutableList<GotoCommand> Add(CoreTransition transition, IDictionary<Set<Progression>, int> coreToInt, ImmutableList<GotoCommand> to) =>
-            transition.Symbol is NonTerminal symbol ? to.Add(new GotoCommand(coreToInt[transition.FromCore], symbol, coreToInt[transition.ToCore])) : to;
+        public static GotoCommand Of(CoreTransition transition, IDictionary<Set<Progression>, int> coreToIndex) =>
+            transition.Symbol is NonTerminal symbol ? new GotoCommand(coreToIndex[transition.From], symbol, coreToIndex[transition.To])
+            : throw new ArgumentException();
     }
 }
