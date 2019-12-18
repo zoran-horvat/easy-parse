@@ -13,9 +13,9 @@ namespace ParserCompiler
     {
         public static string ToString(Parser parser) =>
             $"{parser.Grammar}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.Table}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.FirstSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.FollowSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
-            $"{parser.Table}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.States}";
 
         public static string ToString(Progression progression) =>
@@ -68,8 +68,15 @@ namespace ParserCompiler
         public static string ToString(Grammar grammar) =>
             ToString(grammar.Rules);
 
-        public static string ToString(ParsingTable table) =>
-            $"{ToString(table.Shift)}{Environment.NewLine}{Environment.NewLine}{ToString(table.Goto)}";
+        public static string ToString(ParsingTable table, List<Rule> rules) =>
+            ToString(table, rules.AllSymbols().OfType<Terminal>().OrderBy(x => x).Concat(new[] {new EndOfInput()}).ToList());
+
+        private static string ToString(ParsingTable table, List<Terminal> terminals) =>
+            new TableFormat<int, Symbol>()
+                .AddHeader((string.Empty, 1), ("SHIFT/REDUCE", terminals.Count))
+                .AddRows(table.StateIndexes.OrderBy(n => n))
+                .AddColumns(terminals)
+                .ToString();
 
         public static string ToString(ShiftTable shift) =>
             $"SHIFT{Environment.NewLine}{ToString((TransitionTable<int, Terminal, int>)shift)}";

@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Transitions;
@@ -12,9 +14,14 @@ namespace ParserCompiler.Collections
         public ShiftTable Shift { get; }
         public GotoTable Goto { get; }
         public ReduceTable Reduce { get; }
+        private ImmutableList<Rule> Rules { get; }
+
+        public IEnumerable<int> StateIndexes => this.CoreToIndex.Values;
 
         public ParsingTable(List<State> parserStates, List<Rule> rules)
         {
+            this.Rules = rules.ToImmutableList();
+
             this.CoreToIndex = parserStates
                 .Select((state, index) => (state, index))
                 .ToDictionary(tuple => tuple.state.Core, tuple => tuple.index);
@@ -30,6 +37,7 @@ namespace ParserCompiler.Collections
 
         private ParsingTable(ParsingTable table, ShiftTable shift, GotoTable @goto, ReduceTable reduce)
         {
+            this.Rules = table.Rules;
             this.CoreToIndex = table.CoreToIndex;
             this.RuleToIndex = table.RuleToIndex;
             this.Shift = shift;
@@ -46,7 +54,6 @@ namespace ParserCompiler.Collections
         private ParsingTable AddRange(IEnumerable<ReduceCommand> reductions) =>
             new ParsingTable(this, this.Shift, this.Goto, this.Reduce.AddRange(reductions));
 
-        public override string ToString() => Formatting.ToString(this);
+        public override string ToString() => Formatting.ToString(this, this.Rules.ToList());
     }
-
 }
