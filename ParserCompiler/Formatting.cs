@@ -69,15 +69,28 @@ namespace ParserCompiler
             ToString(grammar.Rules);
 
         public static string ToString(ParsingTable table, List<Rule> rules) =>
-            ToString(table, rules.AllSymbols().OfType<Terminal>().OrderBy(x => x).Concat(new[] {new EndOfInput()}).ToList());
+            ToString(table, SortedTerminals(rules).ToList(), SortedNonTerminals(rules).ToList());
 
-        private static string ToString(ParsingTable table, List<Terminal> terminals) =>
+        private static IEnumerable<Terminal> SortedTerminals(List<Rule> rules) =>
+            rules.AllSymbols().OfType<Terminal>().OrderBy(x => x).Concat(new[] {new EndOfInput()});
+
+        private static IEnumerable<NonTerminal> SortedNonTerminals(List<Rule> rules) =>
+            rules
+                .Select((rule, index) => (symbol: rule.Head, index))
+                .GroupBy(tuple => tuple.symbol, tuple => tuple.index)
+                .Select(group => (symbol: group.Key, index: group.Min()))
+                .OrderBy(tuple => tuple.index)
+                .Select(tuple => tuple.symbol);
+
+        private static string ToString(ParsingTable table, List<Terminal> terminals, List<NonTerminal> nonTerminals) =>
             new TableFormat<int, Symbol>()
-                .AddHeader((string.Empty, 1), ("SHIFT/REDUCE", terminals.Count))
+                .AddHeader((string.Empty, 1), ("SHIFT/REDUCE", terminals.Count), ("GOTO", nonTerminals.Count))
                 .AddRows(table.StateIndexes.OrderBy(n => n))
                 .AddColumns(terminals)
+                .AddColumns(nonTerminals)
                 .AddContent(table.Shift.Select(shift => (shift.From, (Symbol)shift.Symbol, $"S{shift.To}")))
                 .AddContent(table.Reduce.Select(reduce => (reduce.From, (Symbol)reduce.Symbol, $"R{reduce.To}")))
+                .AddContent(table.Goto.Select(@goto => (@goto.From, (Symbol)@goto.Symbol, $"{@goto.To}")))
                 .ToString();
 
         public static string ToString(ShiftTable shift) =>

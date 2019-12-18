@@ -46,7 +46,7 @@ namespace ParserCompiler
                 this.RowHeaders, 
                 this.ColumnHeaders.AddRange(columnHeaders),
                 this.Content.AddRange(columnHeaders.Select((header, index) =>
-                    new KeyValuePair<(int row, int column), (string value, int span)>((this.ColumnHeadersLine, index + 1), (header.ToString(), 1)))));
+                    new KeyValuePair<(int row, int column), (string value, int span)>((this.ColumnHeadersLine, index + this.ColumnHeaders.Count + 1), (header.ToString(), 1)))));
 
         public TableFormat<TRow, TColumn> AddHeader(params (string label, int span)[] labels)
         {
