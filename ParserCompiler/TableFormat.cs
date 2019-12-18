@@ -76,6 +76,9 @@ namespace ParserCompiler
         public TableFormat<TRow, TColumn> AddContent(IEnumerable<(TRow row, TColumn column, string value)> values) =>
             this.AddContent(values.Select(value => (this.RowIndex(value.row), this.ColumnIndex(value.column), value.value)));
 
+        public TableFormat<TRow, TColumn> AddContent(TRow row, TColumn column, string value) =>
+            this.AddContent(new[] {(row, column, value)});
+
         private int RowIndex(TRow row) =>
             Array.IndexOf(this.RowHeaders.ToArray(), row) + this.ColumnHeadersLine + 1;
 
@@ -96,23 +99,41 @@ namespace ParserCompiler
             this.Lines(this.ColumnWidths());
 
         private IEnumerable<string> Lines(IDictionary<int, int> columnWidths) =>
-            this.RowIndexes.Select(row => this.RowToString(row, columnWidths));
+            this.RowIndexes
+                .SelectMany(row => new[] {this.RowDelimiter(row, columnWidths), this.RowToString(row, columnWidths)})
+                .Concat(new[] {this.RowDelimiter(this.RowsCount - 1, columnWidths)});
+
+        private string RowDelimiter(int rowIndex, IDictionary<int, int> columnWidths)
+        {
+            StringBuilder row = new StringBuilder("+");
+            int position = 0;
+            int width = this.ColumnsCount;
+
+            while (position < width)
+            {
+                (string _, int span) = this.CellContent(rowIndex, position);
+                int spanWidth = Enumerable.Range(position, span).Sum(col => columnWidths[col]) + span - 1;
+                row.Append(new string('-', spanWidth));
+                row.Append("+");
+                position += span;
+            }
+
+            return row.ToString();
+        }
 
         private string RowToString(int rowIndex, IDictionary<int, int> columnWidths)
         {
-            StringBuilder row = new StringBuilder();
+            StringBuilder row = new StringBuilder("|");
             int position = 0;
             int width = this.ColumnsCount;
             
             while (position < width)
             {
-                row.Append("|");
                 (string value, int span) = this.CellContent(rowIndex, position);
                 row.Append(this.Center(value, position, span, columnWidths));
+                row.Append("|");
                 position += span;
             }
-
-            row.Append("|");
 
             return row.ToString();
         }
