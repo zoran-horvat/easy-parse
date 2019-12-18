@@ -76,6 +76,8 @@ namespace ParserCompiler
                 .AddHeader((string.Empty, 1), ("SHIFT/REDUCE", terminals.Count))
                 .AddRows(table.StateIndexes.OrderBy(n => n))
                 .AddColumns(terminals)
+                .AddContent(table.Shift.Select(shift => (shift.From, (Symbol)shift.Symbol, $"S{shift.To}")))
+                .AddContent(table.Reduce.Select(reduce => (reduce.From, (Symbol)reduce.Symbol, $"R{reduce.To}")))
                 .ToString();
 
         public static string ToString(ShiftTable shift) =>

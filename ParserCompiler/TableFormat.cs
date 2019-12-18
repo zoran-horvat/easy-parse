@@ -73,6 +73,22 @@ namespace ParserCompiler
                         new KeyValuePair<(int, int), (string, int)>((label.row, label.column), (label.value, label.span))))
                     .ToImmutableDictionary());
 
+        public TableFormat<TRow, TColumn> AddContent(IEnumerable<(TRow row, TColumn column, string value)> values) =>
+            this.AddContent(values.Select(value => (this.RowIndex(value.row), this.ColumnIndex(value.column), value.value)));
+
+        private int RowIndex(TRow row) =>
+            Array.IndexOf(this.RowHeaders.ToArray(), row) + this.ColumnHeadersLine + 1;
+
+        private int ColumnIndex(TColumn column) =>
+            Array.IndexOf(this.ColumnHeaders.ToArray(), column) + 1;
+
+        private TableFormat<TRow, TColumn> AddContent(IEnumerable<(int row, int column, string value)> values) =>
+            new TableFormat<TRow, TColumn>(
+                this.ColumnHeadersLine, this.MinimumColumnWidth,
+                this.RowHeaders,
+                this.ColumnHeaders,
+                this.Content.AddRange(values.Select(tuple => new KeyValuePair<(int, int), (string, int)>((tuple.row, tuple.column), (tuple.value, 1)))));
+
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines());
 
