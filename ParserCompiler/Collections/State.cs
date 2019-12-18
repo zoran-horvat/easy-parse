@@ -13,7 +13,7 @@ namespace ParserCompiler.Collections
         private Set<FirstSet> FirstSets { get; }
         public Set<StateElement> Elements { get; }
 
-        public Set<Progression> Core { get; }
+        public Core Core { get; }
 
         public State(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets)
         {
@@ -21,7 +21,7 @@ namespace ParserCompiler.Collections
             this.Rules = rulesList.AsSet();
             this.FirstSets = firstSets;
             this.Elements = rulesList.Select(rule => rule.ToProgression().ToStateElement(followSets)).AsSet();
-            this.Core = this.Elements.Select(element => element.Progression).AsSet();
+            this.Core = new Core(this.Elements.Select(element => element.Progression));
         }
 
         private State(State copy, IEnumerable<StateElement> elements)
@@ -29,7 +29,7 @@ namespace ParserCompiler.Collections
             this.Rules = copy.Rules;
             this.FirstSets = copy.FirstSets;
             this.Elements = elements.AsSet();
-            this.Core = this.Elements.Select(element => element.Progression).AsSet();
+            this.Core = new Core(this.Elements.Select(element => element.Progression));
         }
 
         public IEnumerable<StateTransition> Advance() =>
@@ -62,7 +62,7 @@ namespace ParserCompiler.Collections
             return result;
         }
 
-        public IEnumerable<(Set<Progression> core, Rule reduce, Set<Terminal> terminals)> Reductions =>
+        public IEnumerable<(Core core, Rule reduce, Set<Terminal> terminals)> Reductions =>
             this.Elements.SelectMany(element => element.Reductions).Select(tuple => (this.Core, tuple.reduce, tuple.terminals));
 
         public override string ToString() => Formatting.ToString(this);

@@ -18,7 +18,7 @@ namespace ParserCompiler.Collections
         public GotoTable Add(GotoCommand command) =>
             new GotoTable(base.Content.Add(command));
 
-        public GotoTable TryAdd(CoreTransition transition, IDictionary<Set<Progression>, int> coreToIndex) =>
+        public GotoTable TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is NonTerminal ? this.Add(GotoCommand.Of(transition, coreToIndex)) : this;
 
         public IEnumerator<GotoCommand> GetEnumerator() =>

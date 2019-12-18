@@ -7,7 +7,7 @@ namespace ParserCompiler.Collections
 {
     public class ParsingTable
     {
-        private IDictionary<Set<Progression>, int> CoreToIndex { get; }
+        private IDictionary<Core, int> CoreToIndex { get; }
         private IDictionary<Rule, int> RuleToIndex { get; }
         public ShiftTable Shift { get; }
         public GotoTable Goto { get; }

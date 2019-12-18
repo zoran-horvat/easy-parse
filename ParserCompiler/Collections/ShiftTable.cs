@@ -17,7 +17,7 @@ namespace ParserCompiler.Collections
         public ShiftTable Add(ShiftCommand command) =>
             new ShiftTable(base.Content.Add(command));
 
-        public ShiftTable TryAdd(CoreTransition transition, IDictionary<Set<Progression>, int> coreToIndex) =>
+        public ShiftTable TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is Terminal ? this.Add(ShiftCommand.Of(transition, coreToIndex)) : this;
 
         public IEnumerator<ShiftCommand> GetEnumerator() => 

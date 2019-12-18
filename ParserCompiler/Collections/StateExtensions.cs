@@ -28,7 +28,7 @@ namespace ParserCompiler.Collections
         private static IEnumerable<CoreReduction> Reductions(State state) =>
             state.Reductions.SelectMany(tuple => Reductions(tuple.core, tuple.reduce, tuple.terminals));
 
-        private static IEnumerable<CoreReduction> Reductions(Set<Progression> core, Rule reduce, Set<Terminal> terminals) =>
+        private static IEnumerable<CoreReduction> Reductions(Core core, Rule reduce, Set<Terminal> terminals) =>
             terminals.Select(terminal => new CoreReduction(core, terminal, reduce));
     }
 }

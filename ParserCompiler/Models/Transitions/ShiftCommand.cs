@@ -12,7 +12,7 @@ namespace ParserCompiler.Models.Transitions
         {
         }
 
-        public static ShiftCommand Of(CoreTransition transition, IDictionary<Set<Progression>, int> coreToIndex) =>
+        public static ShiftCommand Of(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is Terminal terminal ? new ShiftCommand(coreToIndex[transition.From], terminal, coreToIndex[transition.To]) 
             : throw new ArgumentException(); 
     }

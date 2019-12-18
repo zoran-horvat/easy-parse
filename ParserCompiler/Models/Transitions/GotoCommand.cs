@@ -12,7 +12,7 @@ namespace ParserCompiler.Models.Transitions
         {
         }
 
-        public static GotoCommand Of(CoreTransition transition, IDictionary<Set<Progression>, int> coreToIndex) =>
+        public static GotoCommand Of(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is NonTerminal symbol ? new GotoCommand(coreToIndex[transition.From], symbol, coreToIndex[transition.To])
             : throw new ArgumentException();
     }

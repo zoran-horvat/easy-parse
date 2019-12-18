@@ -4,9 +4,9 @@ using ParserCompiler.Models.Symbols;
 
 namespace ParserCompiler.Models.Transitions
 {
-    public class CoreTransition : Transition<Set<Progression>, Symbol, Set<Progression>>
+    public class CoreTransition : Transition<Core, Symbol, Core>
     {
-        public CoreTransition(Set<Progression> from, Symbol symbol, Set<Progression> to) : base(from, symbol, to)
+        public CoreTransition(Core from, Symbol symbol, Core to) : base(from, symbol, to)
         {
         }
     }
