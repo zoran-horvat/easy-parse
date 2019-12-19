@@ -14,8 +14,8 @@ namespace ParserCompiler
         public static string ToString(Parser parser) =>
             $"{parser.Grammar}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.Table}{Environment.NewLine}{Environment.NewLine}" +
-            $"{parser.FirstSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
-            $"{parser.FollowSets.ToString(set => parser.Grammar.SortOrderFor(set.Key))}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.FirstSets.ToString(set => parser.Grammar.SortOrderFor(set.Label))}{Environment.NewLine}{Environment.NewLine}" +
+            $"{parser.FollowSets.ToString(set => parser.Grammar.SortOrderFor(set.Label))}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.States}";
 
         public static string ToString(Progression progression) =>
@@ -25,7 +25,7 @@ namespace ParserCompiler
             Join(progression.ConsumedSymbols, string.Empty) + "∘" + Join(progression.PendingSymbols, string.Empty);
 
         public static string NamedToString<TSymbol>(NonTerminalToSymbols<TSymbol> set, string name) where TSymbol : Symbol =>
-            $"{name}({set.Key.Value}) = {ToString(set, "{", string.Empty, "}")}";
+            $"{name}({set.Label.Value}) = {ToString(set, "{", string.Empty, "}")}";
 
         public static string ToString(State state) =>
             ToString(state, ProgressionToStringWidth(state));

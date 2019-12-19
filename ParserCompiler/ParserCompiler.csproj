@@ -80,7 +80,7 @@
     <Compile Include="Models\Rules\Grammar.cs" />
     <Compile Include="Models\Rules\GrammarExtensions.cs" />
     <Compile Include="GrammarParser.cs" />
-    <Compile Include="Collections\KeyedSet.cs" />
+    <Compile Include="Collections\LabeledSet.cs" />
     <Compile Include="Collections\Set.cs" />
     <Compile Include="Collections\SetExtensions.cs" />
     <Compile Include="Models\Parser.cs" />

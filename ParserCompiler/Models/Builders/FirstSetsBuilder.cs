@@ -37,6 +37,6 @@ namespace ParserCompiler.Models.Builders
 
         private static IntermediateFirstSet Advance(IntermediateFirstSet set, Set<IntermediateFirstSet> firstSets) =>
             set.OfType<NonTerminal>()
-                .Select(nonTerminal => firstSets.First(expansion => expansion.Key.Equals(nonTerminal)))
+                .Select(nonTerminal => firstSets.First(expansion => expansion.Label.Equals(nonTerminal)))
                 .Aggregate(set, (acc, extension) => acc.Union(extension));    }
 }

@@ -58,17 +58,17 @@ namespace ParserCompiler.Models.Builders
             set.Union(SymbolsToAdd(set, firstSets)).Union(SymbolsToAdd(set, rules, followSets));
 
         private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, Set<FirstSet> firstSets) =>
-            new IntermediateFollowSet(set.Key,
+            new IntermediateFollowSet(set.Label,
                 firstSets
-                    .Where(firstSet => set.OfType<NonTerminal>().Contains(firstSet.Key))
+                    .Where(firstSet => set.OfType<NonTerminal>().Contains(firstSet.Label))
                     .SelectMany(firstSet => firstSet));
 
         private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, List<Rule> rules, Set<IntermediateFollowSet> followSets) =>
-            new IntermediateFollowSet(set.Key,
+            new IntermediateFollowSet(set.Label,
                 rules
-                    .Where(rule => rule.Body.LastOrDefault() is NonTerminal last && last.Equals(set.Key))
+                    .Where(rule => rule.Body.LastOrDefault() is NonTerminal last && last.Equals(set.Label))
                     .Select(rule => rule.Head)
                     .Distinct()
-                    .SelectMany(head => followSets.First(followSet => followSet.Key.Equals(head))));
+                    .SelectMany(head => followSets.First(followSet => followSet.Label.Equals(head))));
     }
 }

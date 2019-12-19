@@ -5,9 +5,9 @@ namespace ParserCompiler.Collections
 {
     public class FirstSet : NonTerminalToSymbols<Terminal>
     {
-        public FirstSet(NonTerminal key) : base(key) { }
+        public FirstSet(NonTerminal label) : base(label) { }
 
-        public FirstSet(NonTerminal key, IEnumerable<Terminal> content) : base(key, content)
+        public FirstSet(NonTerminal label, IEnumerable<Terminal> content) : base(label, content)
         {
         }
 

@@ -5,11 +5,11 @@ namespace ParserCompiler.Collections
 {
     public class FollowSet : NonTerminalToSymbols<Terminal>
     {
-        public FollowSet(NonTerminal key) : base(key)
+        public FollowSet(NonTerminal label) : base(label)
         {
         }
 
-        public FollowSet(NonTerminal key, IEnumerable<Terminal> content) : base(key, content)
+        public FollowSet(NonTerminal label, IEnumerable<Terminal> content) : base(label, content)
         {
         }
 

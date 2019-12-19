@@ -10,10 +10,10 @@ namespace ParserCompiler.Collections
             new Set<T>().Union(values);
 
         public static Set<Terminal> Find(this Set<FollowSet> followSets, NonTerminal key) =>
-            followSets.First(set => set.Key.Equals(key)).Values;
+            followSets.First(set => set.Label.Equals(key)).Values;
 
         public static Set<Terminal> Find(this Set<FirstSet> firstSets, NonTerminal key) =>
-            firstSets.First(set => set.Key.Equals(key)).Values;
+            firstSets.First(set => set.Label.Equals(key)).Values;
 
         public static Set<T> Union<T>(this IEnumerable<Set<T>> sets) where T : class =>
             sets.Aggregate((union, next) => union.Union(next));

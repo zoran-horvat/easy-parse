@@ -6,19 +6,19 @@ namespace ParserCompiler.Collections
 {
     public class IntermediateFirstSet : NonTerminalToSymbols<Symbol>
     {
-        public IntermediateFirstSet(NonTerminal key) : base(key)
+        public IntermediateFirstSet(NonTerminal label) : base(label)
         {
         }
 
-        public IntermediateFirstSet(NonTerminal key, IEnumerable<Symbol> content) : base(key, content)
+        public IntermediateFirstSet(NonTerminal label, IEnumerable<Symbol> content) : base(label, content)
         {
         }
 
         public IntermediateFirstSet Union(IntermediateFirstSet other) =>
-            new IntermediateFirstSet(this.Key, this.Values.Union(other));
+            new IntermediateFirstSet(this.Label, this.Values.Union(other));
 
         public FirstSet PurgeNonTerminals() =>
-            new FirstSet(this.Key, this.Values.OfType<Terminal>());
+            new FirstSet(this.Label, this.Values.OfType<Terminal>());
 
         protected override string PrintableName => "FIRST";
     }
