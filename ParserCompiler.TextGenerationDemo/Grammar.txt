@@ -1,24 +1,3 @@
-﻿# S - script
-# G - global expression, e.g. 'file("Something.txt").line("some content").beginning'
-# R - reference - either attribute reference like 'beginning', or a method call like 'delete()', 'file("Something.txt")'
-# L - local expression, i.e. expression relative to previous result; in global expression 'something.else', '.else' is local expression
-# A - argument list, e.g in global expression 'snippets.add(15, "Some text")', segment '15, "Some text"' is the argument list
-# C - constant - either a number or a string
-# i - identifier, e.g. 'snippets', 'add'
-# ., (, ) - operators
-# n - numeric literal (integer)
-# s - string literal
-
-S -> G
-S -> SG
-G -> R
-G -> RL
-L -> .R
-L -> L.R
-R -> i
-R -> i()
-R -> i(A)
-A -> C
-A -> A,C
-C -> n
-C -> s
+﻿E -> A
+A -> n
+A -> A+n
