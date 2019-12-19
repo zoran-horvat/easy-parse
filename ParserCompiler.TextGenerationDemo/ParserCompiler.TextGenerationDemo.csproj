@@ -68,9 +68,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ParserCompiler\ParserCompiler.csproj">
+    <ProjectReference Include="..\EasyParse\EasyParse.csproj">
       <Project>{4a11bd6a-0dda-42d9-8ebe-176f044810cf}</Project>
-      <Name>ParserCompiler</Name>
+      <Name>EasyParse</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>EasyParse</RootNamespace>
+    <AssemblyName>EasyParse</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\EnvDTE.8.0.2\lib\net10\EnvDTE.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <HintPath>..\packages\stdole.7.0.3302\lib\net10\stdole.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Collections.Immutable, Version=1.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Collections.Immutable.1.3.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Collections\Core.cs" />
+    <Compile Include="Collections\FirstSet.cs" />
+    <Compile Include="Collections\FollowSet.cs" />
+    <Compile Include="Collections\GotoTable.cs" />
+    <Compile Include="Collections\IntermediateFirstSet.cs" />
+    <Compile Include="Collections\IntermediateFollowSet.cs" />
+    <Compile Include="Collections\NonTerminalToSymbols.cs" />
+    <Compile Include="Collections\ParsingTable.cs" />
+    <Compile Include="Collections\ReduceTable.cs" />
+    <Compile Include="Collections\ShiftTable.cs" />
+    <Compile Include="Collections\StateExtensions.cs" />
+    <Compile Include="Collections\StateVector.cs" />
+    <Compile Include="Collections\State.cs" />
+    <Compile Include="Collections\TransitionTable.cs" />
+    <Compile Include="Models\Builders\FirstSetsBuilder.cs" />
+    <Compile Include="Models\Builders\FollowSetsBuilder.cs" />
+    <Compile Include="Formatting.cs" />
+    <Compile Include="Models\Transitions\CoreReduction.cs" />
+    <Compile Include="Models\Transitions\CoreTransition.cs" />
+    <Compile Include="Models\Transitions\GotoCommand.cs" />
+    <Compile Include="Models\Transitions\IndexTransition.cs" />
+    <Compile Include="Models\Rules\Grammar.cs" />
+    <Compile Include="Models\Rules\GrammarExtensions.cs" />
+    <Compile Include="GrammarParser.cs" />
+    <Compile Include="Collections\LabeledSet.cs" />
+    <Compile Include="Collections\Set.cs" />
+    <Compile Include="Collections\SetExtensions.cs" />
+    <Compile Include="Models\Parser.cs" />
+    <Compile Include="Models\Builders\ParserBuilder.cs" />
+    <Compile Include="Models\Rules\Progression.cs" />
+    <Compile Include="Models\Rules\StateElement.cs" />
+    <Compile Include="Models\Transitions\ReduceCommand.cs" />
+    <Compile Include="Models\Transitions\ShiftCommand.cs" />
+    <Compile Include="Models\Symbols\Symbol.cs" />
+    <Compile Include="Models\Symbols\EndOfInput.cs" />
+    <Compile Include="Models\Symbols\NonTerminal.cs" />
+    <Compile Include="Models\Transitions\StateTransition.cs" />
+    <Compile Include="Models\Transitions\Transition.cs" />
+    <Compile Include="Models\Transitions\TransitionExtensions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="GrammarLoader.cs" />
+    <Compile Include="Models\Rules\Rule.cs" />
+    <Compile Include="Models\Symbols\Terminal.cs" />
+    <Compile Include="TableFormat.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
