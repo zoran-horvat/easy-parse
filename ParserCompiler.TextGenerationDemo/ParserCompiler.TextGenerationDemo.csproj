@@ -45,6 +45,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Grammar.txt" />
+    <Content Include="ParserDefinition.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ParserDefinition.xml</LastGenOutput>
+    </Content>
+    <Content Include="ParserDefinition.xml">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ParserDefinition.tt</DependentUpon>
+    </Content>
     <Content Include="ParsingTable.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ParsingTable.txt</LastGenOutput>
