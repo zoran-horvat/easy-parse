@@ -4,10 +4,10 @@
 <#@ assembly name="System.Xml.Linq" #>
 <#@ assembly name="System" #>
 <#@ assembly name="EnvDte" #>
-<#@ assembly name="$(TargetDir)\ParserCompiler.dll" #>
-<#@ import namespace="ParserCompiler" #>
-<#@ import namespace="ParserCompiler.Models" #>
-<#@ import namespace="ParserCompiler.Models.Rules" #>
+<#@ assembly name="$(TargetDir)\EasyParse.dll" #>
+<#@ import namespace="EasyParse.ParserGenerator" #>
+<#@ import namespace="EasyParse.ParserGenerator.Models" #>
+<#@ import namespace="EasyParse.ParserGenerator.Models.Rules" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Xml.Linq" #>
 <#
