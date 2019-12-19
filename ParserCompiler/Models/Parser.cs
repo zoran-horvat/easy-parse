@@ -4,6 +4,7 @@ using System.Xml.Linq;
 using ParserCompiler.Collections;
 using ParserCompiler.Models.Rules;
 using ParserCompiler.Models.Symbols;
+using ParserCompiler.Models.Transitions;
 
 namespace ParserCompiler.Models
 {
@@ -60,7 +61,7 @@ namespace ParserCompiler.Models
             this.Table.Reduce.Select(reduce =>
                 new XElement("Reduce",
                     new XAttribute("State", reduce.From),
-                    new XAttribute("Terminal", reduce.Symbol.Value),
+                    new XAttribute(reduce.Symbol is EndOfInput ? "EndOfInput" : "Terminal", reduce.Symbol.Value),
                     new XAttribute("RuleOrdinal", reduce.To)));
 
         private IEnumerable<XElement> GotosToXml() =>
