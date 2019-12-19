@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="LexicalAnalysis\Lexeme.cs" />
     <Compile Include="LexicalAnalysis\Lexer.cs" />
+    <Compile Include="LexicalAnalysis\Pattern.cs" />
     <Compile Include="ParserGenerator\Collections\Core.cs" />
     <Compile Include="ParserGenerator\Collections\FirstSet.cs" />
     <Compile Include="ParserGenerator\Collections\FollowSet.cs" />
