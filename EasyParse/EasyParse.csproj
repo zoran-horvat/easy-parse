@@ -103,6 +103,7 @@
     <Compile Include="ParserGenerator\Models\Transitions\StateTransition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\Transition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\TransitionExtensions.cs" />
+    <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserGenerator\GrammarLoader.cs" />
     <Compile Include="ParserGenerator\Models\Rules\Rule.cs" />

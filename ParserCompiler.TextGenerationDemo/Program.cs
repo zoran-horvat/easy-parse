@@ -1,33 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.Parsing;
 
 namespace ParserCompiler.TextGenerationDemo
 {
     public static class Program
     {
-        private static Lexer CreateLexer() =>
-            new Lexer()
-                .AddPattern(@"\d+", "n")
-                .AddPattern(@"\+", "+")
-                .IgnorePattern(@"\s+");
-
         public static void Main(string[] args)
         {
-            Lexer lexer = CreateLexer();
+            Parser parser = new ParserBuilder("ParserDefinition.xml").Build();
 
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
             {
-                Process(lexer, line);
+                Process(parser, line);
             }
         }
 
-        private static void Process(Lexer lexer, string line)
+        private static void Process(Parser parser, string line)
         {
-            List<Token> tokens = lexer.Tokenize(line).ToList();
+            List<Token> tokens = parser.Lexer.Tokenize(line).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
             Console.WriteLine($"Tokens: {tokensReport}");
         }
