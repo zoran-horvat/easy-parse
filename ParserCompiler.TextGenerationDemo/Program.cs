@@ -8,6 +8,12 @@ namespace ParserCompiler.TextGenerationDemo
 {
     public static class Program
     {
+        private static Lexer CreateLexer() =>
+            new Lexer()
+                .AddPattern(@"\d+", "n")
+                .AddPattern(@"\+", "+")
+                .IgnorePattern(@"\s+");
+
         public static void Main(string[] args)
         {
             Lexer lexer = CreateLexer();
@@ -18,12 +24,6 @@ namespace ParserCompiler.TextGenerationDemo
                 Process(lexer, line);
             }
         }
-
-        private static Lexer CreateLexer() =>
-            new Lexer()
-                .AddPattern(@"\d+", "n")
-                .AddPattern(@"\+", "+")
-                .IgnorePattern(@"\s+");
 
         private static void Process(Lexer lexer, string line)
         {

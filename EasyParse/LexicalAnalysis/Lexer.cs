@@ -37,6 +37,9 @@ namespace EasyParse.LexicalAnalysis
                 matches = this.Advance(matches, output.PositionAfter).ToList();
                 position = output.PositionAfter;
             }
+
+            if (position < input.Length)
+                yield return new InvalidInput(position, input.Substring(position));
         }
 
         private Token TokenAt(int position, string input, IEnumerable<Match> matches) =>
