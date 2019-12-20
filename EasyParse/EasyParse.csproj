@@ -56,9 +56,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="LexicalAnalysis\Lexeme.cs" />
+    <Compile Include="LexicalAnalysis\Match.cs" />
+    <Compile Include="LexicalAnalysis\PatternExtensions.cs" />
+    <Compile Include="LexicalAnalysis\Tokens\Ignored.cs" />
+    <Compile Include="LexicalAnalysis\Tokens\InvalidInput.cs" />
+    <Compile Include="LexicalAnalysis\Tokens\Lexeme.cs" />
     <Compile Include="LexicalAnalysis\Lexer.cs" />
     <Compile Include="LexicalAnalysis\Pattern.cs" />
+    <Compile Include="LexicalAnalysis\Tokens\Token.cs" />
     <Compile Include="ParserGenerator\Collections\Core.cs" />
     <Compile Include="ParserGenerator\Collections\FirstSet.cs" />
     <Compile Include="ParserGenerator\Collections\FollowSet.cs" />

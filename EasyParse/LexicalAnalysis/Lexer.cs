@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using EasyParse.LexicalAnalysis.Tokens;
 
 namespace EasyParse.LexicalAnalysis
 {
@@ -23,6 +25,31 @@ namespace EasyParse.LexicalAnalysis
         public Lexer IgnorePattern(string regex) =>
             new Lexer(this.Patterns.Add(new Pattern(regex)));
 
-        public IEnumerable<Lexeme> Tokenize(string input) => Enumerable.Empty<Lexeme>();
+        public IEnumerable<Token> Tokenize(string input)
+        {
+            List<Match> matches = input.FirstMatches(this.Patterns).ToList();
+            int position = 0;
+
+            while (matches.Any() && position < input.Length)
+            {
+                Token output = TokenAt(position, input, matches);
+                if (!(output is Ignored)) yield return output;
+                matches = this.Advance(matches, output.PositionAfter).ToList();
+                position = output.PositionAfter;
+            }
+        }
+
+        private Token TokenAt(int position, string input, IEnumerable<Match> matches) =>
+            matches
+                .Where(match => match.Position == position)
+                .Select(match => (position: match.Position, length: match.Length, tokenFactory: (Func<Token>) (() => match.Token)))
+                .DefaultIfEmpty((position: position, length: input.Length - position, () => new InvalidInput(position, input.Substring(position))))
+                .Aggregate((longest, cur) => cur.length > longest.length ? cur : longest)
+                .tokenFactory();
+
+        private IEnumerable<Match> Advance(IEnumerable<Match> matches, int position) =>
+            matches.SelectMany(match => 
+                match.Position < position ? match.Next(position)
+                : new [] {match});
     }
 }
