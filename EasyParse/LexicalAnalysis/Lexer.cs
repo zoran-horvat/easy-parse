@@ -40,6 +40,8 @@ namespace EasyParse.LexicalAnalysis
 
             if (position < input.Length)
                 yield return new InvalidInput(position, input.Substring(position));
+            else
+                yield return new EndOfInput(position);
         }
 
         private Token TokenAt(int position, string input, IEnumerable<Match> matches) =>

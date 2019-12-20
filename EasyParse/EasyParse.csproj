@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="LexicalAnalysis\Match.cs" />
     <Compile Include="LexicalAnalysis\PatternExtensions.cs" />
+    <Compile Include="LexicalAnalysis\Tokens\EndOfInput.cs" />
     <Compile Include="LexicalAnalysis\Tokens\Ignored.cs" />
     <Compile Include="LexicalAnalysis\Tokens\InvalidInput.cs" />
     <Compile Include="LexicalAnalysis\Tokens\Lexeme.cs" />
@@ -103,7 +104,15 @@
     <Compile Include="ParserGenerator\Models\Transitions\StateTransition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\Transition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\TransitionExtensions.cs" />
+    <Compile Include="Parsing\Collections\ShiftTable.cs" />
+    <Compile Include="Parsing\Nodes\Error.cs" />
+    <Compile Include="Parsing\Nodes\Node.cs" />
+    <Compile Include="Parsing\Nodes\NonTerminalNode.cs" />
+    <Compile Include="Parsing\Nodes\Success.cs" />
+    <Compile Include="Parsing\Nodes\TerminalNode.cs" />
     <Compile Include="Parsing\Parser.cs" />
+    <Compile Include="Parsing\ParsingStack.cs" />
+    <Compile Include="Parsing\Collections\XmlDefinitionUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserGenerator\GrammarLoader.cs" />
     <Compile Include="ParserGenerator\Models\Rules\Rule.cs" />

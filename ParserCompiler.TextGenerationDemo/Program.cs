@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing;
+using EasyParse.Parsing.Nodes;
 
 namespace ParserCompiler.TextGenerationDemo
 {
@@ -10,7 +11,7 @@ namespace ParserCompiler.TextGenerationDemo
     {
         public static void Main(string[] args)
         {
-            Parser parser = new ParserBuilder("ParserDefinition.xml").Build();
+            Parser parser = new ParserBuilder("ParserCompiler.TextGenerationDemo.ParserDefinition.xml").Build();
 
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
@@ -24,6 +25,8 @@ namespace ParserCompiler.TextGenerationDemo
             List<Token> tokens = parser.Lexer.Tokenize(line).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
             Console.WriteLine($"Tokens: {tokensReport}");
+            Node result = parser.Parse(line);
+            Console.WriteLine($"Result: {result}");
         }
     }
 }
