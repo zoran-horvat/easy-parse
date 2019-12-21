@@ -13,18 +13,17 @@ namespace EasyParse.Parsing
     {
         public Lexer Lexer { get; }
         private ShiftTable Shift { get; }
+        private ReduceTable Reduce { get; }
 
-        private Parser(Lexer lexer, ShiftTable shift)
+        private Parser(Lexer lexer, ShiftTable shift, ReduceTable reduce)
         {
             this.Lexer = lexer;
             this.Shift = shift;
+            this.Reduce = reduce;
         }
 
-        public static Parser From(XDocument definition, Lexer lexer)
-        {
-            var x = XmlDefinitionUtils.ExtractReduce(definition);
-            return new Parser(lexer, new ShiftTable(definition));
-        }
+        public static Parser From(XDocument definition, Lexer lexer) => 
+            new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition));
 
         public Node Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
