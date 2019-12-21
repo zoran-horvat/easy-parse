@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
@@ -26,7 +27,30 @@ namespace EasyParse.Parsing
 
         private Node Parse(IEnumerable<Token> input)
         {
-            return new Error("Not parsed.");
+            using (IEnumerator<Token> current = input.GetEnumerator())
+            {
+                return this.ParseInitial(current, new ParsingStack());
+            }
         }
+
+        private Node ParseInitial(IEnumerator<Token> input, ParsingStack stack) =>
+            input.MoveNext() ? this.Parse(input, stack)
+            : new Error("Internal error: Missing end of input.");
+
+        private Node Parse(IEnumerator<Token> input, ParsingStack stack)
+        {
+            while (true)
+            {
+                foreach (Node output in Process(input, stack))
+                    return output;
+            }
+        }
+
+        private IEnumerable<Node> Process(IEnumerator<Token> input, ParsingStack stack) =>
+            input.Current is InvalidInput invalid ? new [] {new Error($"Unexpected input: {invalid.Value}")}
+            : this.ShiftReduce(stack, input);
+
+        private IEnumerable<Node> ShiftReduce(ParsingStack stack, IEnumerator<Token> current) =>
+            new[] {new Error("Error")};
     }
 }
