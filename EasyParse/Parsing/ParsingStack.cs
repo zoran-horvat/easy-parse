@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using EasyParse.LexicalAnalysis.Tokens;
-using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing.Nodes;
 
 namespace EasyParse.Parsing
@@ -20,11 +17,10 @@ namespace EasyParse.Parsing
         public int StateIndex =>
             (int) this.Content.Peek();
 
-        public bool Shift(IEnumerator<Lexeme> input, int nextState)
+        public void Shift(Lexeme input, int nextState)
         {
-            this.Content.Push(new TerminalNode(input.Current?.Label ?? string.Empty, input.Current?.Value ?? string.Empty));
+            this.Content.Push(new TerminalNode(input.Label, input.Value));
             this.Content.Push(nextState);
-            return input.MoveNext();
         }
     }
 }

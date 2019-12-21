@@ -12,7 +12,7 @@ namespace EasyParse.Parsing.Collections
                 .SelectMany(table => table.Elements("Shift"))
                 .Select(el => (
                     state: int.Parse(el.Attribute("State")?.Value ?? "-1"),
-                    label: el.Attribute("Label")?.Value ?? string.Empty,
+                    label: el.Attribute("Terminal")?.Value ?? string.Empty,
                     toState: int.Parse(el.Attribute("TransitionTo")?.Value ?? "-1")))
                 .ToDictionary(tuple => (tuple.state, tuple.label), tuple => tuple.toState) 
                 ?? new Dictionary<(int state, string label), int>();
