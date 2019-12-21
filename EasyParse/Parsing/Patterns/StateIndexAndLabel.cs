@@ -15,7 +15,7 @@
             $"({this.StateIndex}, {this.Label})";
 
         public override bool Equals(object obj) =>
-            obj?.GetType() == typeof(StateIndexAndLabel) &&
+            obj?.GetType() == this.GetType() &&
             obj is StateIndexAndLabel other &&
             other.StateIndex == this.StateIndex &&
             other.Label.Equals(this.Label);

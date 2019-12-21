@@ -33,23 +33,25 @@ namespace EasyParse.Parsing.Collections
 
         private static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition, RulePattern[] rules) =>
             definition.Root?.Element("ParsingTable")?.Elements("Reduce")
-                .SelectMany(reduce => ExtractReduce(reduce, rules))
+                .Select(reduce => ExtractReduce(reduce, rules))
                 .ToDictionary(tuple => tuple.pattern, tuple => tuple.rule)
             ?? new Dictionary<StatePattern, RulePattern>();
 
-        private static IEnumerable<(StatePattern pattern, RulePattern rule)> ExtractReduce(XElement reduce, RulePattern[] rules) =>
-            reduce.Attributes("Terminal").Select(terminal => ExtractTerminalReduce(reduce, terminal, rules));
-
-        private static (StatePattern pattern, RulePattern rule) ExtractTerminalReduce(
-            XElement reduce, XAttribute terminal, RulePattern[] rules) =>
-            ExtractTerminalReduce(
+        private static (StatePattern pattern, RulePattern rule) ExtractReduce(XElement reduce, RulePattern[] rules) =>
+            ExtractReduce(
                 int.Parse(reduce.Attribute("State")?.Value ?? "-1"),
-                terminal?.Value ?? string.Empty,
+                reduce.Attributes("Terminal").Select(attribute => attribute.Value),
                 int.Parse(reduce.Attribute("RuleOrdinal")?.Value ?? "-1"),
                 rules);
 
-        private static (StatePattern pattern, RulePattern rule) ExtractTerminalReduce(
-            int stateIndex, string terminal, int ruleOrdinal, RulePattern[] rules) =>
-            (new StateIndexAndLabel(stateIndex, terminal), rules[ruleOrdinal]);
+        private static (StatePattern pattern, RulePattern rule) ExtractReduce(
+            int stateIndex, IEnumerable<string> terminal, int ruleIndex, RulePattern[] rules) => 
+            (StatePattern(stateIndex, terminal), rules[ruleIndex]);
+
+        private static StatePattern StatePattern(int stateIndex, IEnumerable<string> terminal) =>
+            terminal
+                .Select<string, StatePattern>(label => new StateIndexAndLabel(stateIndex, label))
+                .DefaultIfEmpty(new StateEnd(stateIndex))
+                .First();
     }
 }

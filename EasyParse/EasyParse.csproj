@@ -114,6 +114,7 @@
     <Compile Include="Parsing\ParsingStack.cs" />
     <Compile Include="Parsing\Collections\XmlDefinitionUtils.cs" />
     <Compile Include="Parsing\Patterns\RulePattern.cs" />
+    <Compile Include="Parsing\Patterns\StateEnd.cs" />
     <Compile Include="Parsing\Patterns\StateIndexAndLabel.cs" />
     <Compile Include="Parsing\Patterns\StatePattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
