@@ -32,6 +32,24 @@ namespace EasyParse.Parsing.Collections
                 .ToArray();
 
         private static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition, RulePattern[] rules) =>
-            new Dictionary<StatePattern, RulePattern>();
+            definition.Root?.Element("ParsingTable")?.Elements("Reduce")
+                .SelectMany(reduce => ExtractReduce(reduce, rules))
+                .ToDictionary(tuple => tuple.pattern, tuple => tuple.rule)
+            ?? new Dictionary<StatePattern, RulePattern>();
+
+        private static IEnumerable<(StatePattern pattern, RulePattern rule)> ExtractReduce(XElement reduce, RulePattern[] rules) =>
+            reduce.Attributes("Terminal").Select(terminal => ExtractTerminalReduce(reduce, terminal, rules));
+
+        private static (StatePattern pattern, RulePattern rule) ExtractTerminalReduce(
+            XElement reduce, XAttribute terminal, RulePattern[] rules) =>
+            ExtractTerminalReduce(
+                int.Parse(reduce.Attribute("State")?.Value ?? "-1"),
+                terminal?.Value ?? string.Empty,
+                int.Parse(reduce.Attribute("RuleOrdinal")?.Value ?? "-1"),
+                rules);
+
+        private static (StatePattern pattern, RulePattern rule) ExtractTerminalReduce(
+            int stateIndex, string terminal, int ruleOrdinal, RulePattern[] rules) =>
+            (new StateIndexAndLabel(stateIndex, terminal), rules[ruleOrdinal]);
     }
 }

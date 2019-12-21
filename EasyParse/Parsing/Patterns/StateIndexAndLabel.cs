@@ -1,6 +1,6 @@
 ﻿namespace EasyParse.Parsing.Patterns
 {
-    class StateIndexAndLabel
+    class StateIndexAndLabel : StatePattern
     {
         private int StateIndex { get; }
         private string Label { get; }
