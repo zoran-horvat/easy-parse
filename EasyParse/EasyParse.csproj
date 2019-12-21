@@ -113,6 +113,8 @@
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\ParsingStack.cs" />
     <Compile Include="Parsing\Collections\XmlDefinitionUtils.cs" />
+    <Compile Include="Parsing\Patterns\StateIndexAndLabel.cs" />
+    <Compile Include="Parsing\Patterns\StatePattern.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ParserGenerator\GrammarLoader.cs" />
     <Compile Include="ParserGenerator\Models\Rules\Rule.cs" />

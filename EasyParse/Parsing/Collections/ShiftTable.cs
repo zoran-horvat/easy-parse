@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.Parsing.Patterns;
 
 namespace EasyParse.Parsing.Collections
 {
     class ShiftTable
     {
-        private IDictionary<(int state, string label), int> StateToNextState { get; }
+        private IDictionary<StateIndexAndLabel, int> StateToNextState { get; }
      
         public ShiftTable(XDocument definition)
         {
@@ -16,7 +16,7 @@ namespace EasyParse.Parsing.Collections
         }
 
         public IEnumerable<int> StateFor(IEnumerator<Token> input, ParsingStack stack) =>
-            input.Current is Lexeme lexeme && this.StateToNextState.TryGetValue((stack.StateIndex, lexeme.Label), out int nextState) ? new [] {nextState}
+            input.Current is Lexeme lexeme && this.StateToNextState.TryGetValue(new StateIndexAndLabel(stack.StateIndex, lexeme.Label), out int nextState) ? new [] {nextState}
             : Enumerable.Empty<int>();
     }
 }
