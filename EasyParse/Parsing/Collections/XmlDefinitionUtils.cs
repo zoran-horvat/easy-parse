@@ -18,13 +18,20 @@ namespace EasyParse.Parsing.Collections
                 .ToDictionary(tuple => new StateIndexAndLabel(tuple.state, tuple.label), tuple => tuple.toState) 
                 ?? new Dictionary<StateIndexAndLabel, int>();
 
-        public static (string nonTerminal, int bodyLength)[] ExtractRules(XDocument definition) =>
+        public static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition) =>
+            ExtractReduce(definition, ExtractRules(definition));
+
+        private static RulePattern[] ExtractRules(XDocument definition) =>
             definition.Root
                 ?.Elements("Grammar")
                 .Elements("Rule")
                 .Select(rule => (
                     head: rule.Element("Head")?.Element("NonTerminal")?.Attribute("Name")?.Value ?? string.Empty,
                     count: rule.Element("Body")?.Elements().Count() ?? 0))
+                .Select(tuple => new RulePattern(tuple.head, tuple.count))
                 .ToArray();
+
+        private static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition, RulePattern[] rules) =>
+            new Dictionary<StatePattern, RulePattern>();
     }
 }

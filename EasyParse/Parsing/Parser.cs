@@ -20,8 +20,11 @@ namespace EasyParse.Parsing
             this.Shift = shift;
         }
 
-        public static Parser From(XDocument definition, Lexer lexer) =>
-            new Parser(lexer, new ShiftTable(definition));
+        public static Parser From(XDocument definition, Lexer lexer)
+        {
+            var x = XmlDefinitionUtils.ExtractReduce(definition);
+            return new Parser(lexer, new ShiftTable(definition));
+        }
 
         public Node Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
