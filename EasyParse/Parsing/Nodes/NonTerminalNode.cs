@@ -11,5 +11,11 @@ namespace EasyParse.Parsing.Nodes
         {
             this.Children = children.ToArray();
         }
+
+        public override string ToString() =>
+            $"[{base.Value} -> {this.ChildrenToString()}]";
+
+        private string ChildrenToString() =>
+            string.Join(string.Empty, this.Children.Select(child => $"{child}").ToArray());
     }
 }

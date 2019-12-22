@@ -100,7 +100,8 @@ namespace EasyParse.Parsing
 
         private IEnumerable<TreeElement> ExecuteReduce(ParsingStack stack, RulePattern rule)
         {
-            yield return new Error($"Not reduced {rule}");
+            int state = stack.Reduce(rule);
+            yield return new Error($"Pending GOTO {rule.NonTerminal} in {state}");
         }
     }
 }

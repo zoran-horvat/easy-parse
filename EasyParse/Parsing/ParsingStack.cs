@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing.Nodes;
+using EasyParse.Parsing.Patterns;
 
 namespace EasyParse.Parsing
 {
@@ -21,6 +22,20 @@ namespace EasyParse.Parsing
         {
             this.Content.Push(new TerminalNode(input.Label, input.Value));
             this.Content.Push(nextState);
+        }
+
+        public int Reduce(RulePattern rule)
+        {
+            Stack<TreeElement> children = new Stack<TreeElement>();
+            for (int i = 0; i < rule.BodyLength; i++)
+            {
+                this.Content.Pop();
+                children.Push((TreeElement) this.Content.Pop());
+            }
+
+            int stateIndex = (int) this.Content.Peek();
+            this.Content.Push(new NonTerminalNode(rule.NonTerminal, children));
+            return stateIndex;
         }
     }
 }
