@@ -107,9 +107,9 @@
     <Compile Include="Parsing\Collections\ReduceTable.cs" />
     <Compile Include="Parsing\Collections\ShiftTable.cs" />
     <Compile Include="Parsing\Nodes\Error.cs" />
-    <Compile Include="Parsing\Nodes\Node.cs" />
+    <Compile Include="Parsing\Nodes\TreeElement.cs" />
     <Compile Include="Parsing\Nodes\NonTerminalNode.cs" />
-    <Compile Include="Parsing\Nodes\Success.cs" />
+    <Compile Include="Parsing\Nodes\Node.cs" />
     <Compile Include="Parsing\Nodes\TerminalNode.cs" />
     <Compile Include="Parsing\Parser.cs" />
     <Compile Include="Parsing\ParsingStack.cs" />

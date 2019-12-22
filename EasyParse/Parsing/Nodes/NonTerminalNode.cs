@@ -3,11 +3,11 @@ using System.Linq;
 
 namespace EasyParse.Parsing.Nodes
 {
-    public class NonTerminalNode : Success
+    public class NonTerminalNode : Node
     {
-        public Node[] Children { get; }
+        public TreeElement[] Children { get; }
 
-        public NonTerminalNode(string label, IEnumerable<Node> children) : base(label)
+        public NonTerminalNode(string label, IEnumerable<TreeElement> children) : base(label)
         {
             this.Children = children.ToArray();
         }

@@ -25,7 +25,7 @@ namespace ParserCompiler.TextGenerationDemo
             List<Token> tokens = parser.Lexer.Tokenize(line).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
             Console.WriteLine($"Tokens: {tokensReport}");
-            Node result = parser.Parse(line);
+            TreeElement result = parser.Parse(line);
             Console.WriteLine($"Result: {result}");
         }
     }

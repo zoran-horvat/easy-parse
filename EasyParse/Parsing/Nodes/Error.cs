@@ -1,6 +1,6 @@
 ﻿namespace EasyParse.Parsing.Nodes
 {
-    public class Error : Node
+    public class Error : TreeElement
     {
         public string Message { get; }
 

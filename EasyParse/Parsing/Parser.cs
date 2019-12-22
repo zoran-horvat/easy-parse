@@ -26,10 +26,10 @@ namespace EasyParse.Parsing
         public static Parser From(XDocument definition, Lexer lexer) => 
             new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition));
 
-        public Node Parse(string input) =>
+        public TreeElement Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
 
-        private Node Parse(IEnumerable<Token> input)
+        private TreeElement Parse(IEnumerable<Token> input)
         {
             using (IEnumerator<Token> current = input.GetEnumerator())
             {
@@ -37,48 +37,48 @@ namespace EasyParse.Parsing
             }
         }
 
-        private Node ParseInitial(IEnumerator<Token> input, ParsingStack stack) =>
+        private TreeElement ParseInitial(IEnumerator<Token> input, ParsingStack stack) =>
             input.MoveNext() ? this.Parse(input, stack)
             : new Error("Internal error: Missing end of input.");
 
-        private Node Parse(IEnumerator<Token> input, ParsingStack stack)
+        private TreeElement Parse(IEnumerator<Token> input, ParsingStack stack)
         {
             while (true)
             {
-                foreach (Node output in Process(input, stack))
+                foreach (TreeElement output in Process(input, stack))
                     return output;
             }
         }
 
-        private IEnumerable<Node> Process(IEnumerator<Token> input, ParsingStack stack) =>
+        private IEnumerable<TreeElement> Process(IEnumerator<Token> input, ParsingStack stack) =>
             this.NextAction(input, stack).Invoke();
 
-        private Func<IEnumerable<Node>> NextAction(IEnumerator<Token> input, ParsingStack stack) =>
+        private Func<IEnumerable<TreeElement>> NextAction(IEnumerator<Token> input, ParsingStack stack) =>
             this.InvalidInputAction(input, stack)
                 .Concat(this.ShiftAction(input, stack))
                 .Concat(this.ReduceAction(input, stack))
                 .Concat(this.DefaultAction(input))
                 .First();
 
-        private IEnumerable<Func<IEnumerable<Node>>> InvalidInputAction(IEnumerator<Token> input, ParsingStack stack)
+        private IEnumerable<Func<IEnumerable<TreeElement>>> InvalidInputAction(IEnumerator<Token> input, ParsingStack stack)
         {
             if (input.Current is InvalidInput invalid)
                 yield return () => new [] {new Error($"Unexpected input: {invalid.Value}")};
         }
 
-        private IEnumerable<Func<IEnumerable<Node>>> ShiftAction(IEnumerator<Token> input, ParsingStack stack)
+        private IEnumerable<Func<IEnumerable<TreeElement>>> ShiftAction(IEnumerator<Token> input, ParsingStack stack)
         {
             if (this.Shift.StateFor(this.StatePatternFor(input, stack)).ToList() is List<int> nextState && nextState.Any())
                 yield return () => this.ExecuteShift(input, stack, nextState.First());
         }
 
-        private IEnumerable<Func<IEnumerable<Node>>> ReduceAction(IEnumerator<Token> input, ParsingStack stack)
+        private IEnumerable<Func<IEnumerable<TreeElement>>> ReduceAction(IEnumerator<Token> input, ParsingStack stack)
         {
             if (this.Reduce.ReductionFor(this.StatePatternFor(input, stack)).ToList() is List<RulePattern> rule && rule.Any())
                 yield return () => this.ExecuteReduce(stack, rule.First());
         }
 
-        private IEnumerable<Func<IEnumerable<Node>>> DefaultAction(IEnumerator<Token> input)
+        private IEnumerable<Func<IEnumerable<TreeElement>>> DefaultAction(IEnumerator<Token> input)
         {
             yield return () => new[]
             {
@@ -92,13 +92,13 @@ namespace EasyParse.Parsing
             : input.Current is EndOfInput ? new StateEnd(stack.StateIndex)
             : throw new ArgumentException($"Internal error: {input.Current} not expected.");
 
-        private IEnumerable<Node> ExecuteShift(IEnumerator<Token> input, ParsingStack stack, int nextState)
+        private IEnumerable<TreeElement> ExecuteShift(IEnumerator<Token> input, ParsingStack stack, int nextState)
         {
             stack.Shift(input.Current as Lexeme, nextState);
             if (!input.MoveNext()) yield return new Error("Unexpected end of input.");
         }
 
-        private IEnumerable<Node> ExecuteReduce(ParsingStack stack, RulePattern rule)
+        private IEnumerable<TreeElement> ExecuteReduce(ParsingStack stack, RulePattern rule)
         {
             yield return new Error($"Not reduced {rule}");
         }

@@ -1,6 +1,6 @@
 ﻿namespace EasyParse.Parsing.Nodes
 {
-    public class TerminalNode : Success
+    public class TerminalNode : Node
     {
         public string Value { get; }
      
