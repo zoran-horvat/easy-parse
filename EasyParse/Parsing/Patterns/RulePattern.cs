@@ -2,8 +2,8 @@
 {
     class RulePattern
     {
-        private string NonTerminal { get; }
-        private int BodyLength { get; }
+        public string NonTerminal { get; }
+        public int BodyLength { get; }
 
         public RulePattern(string nonTerminal, int bodyLength)
         {

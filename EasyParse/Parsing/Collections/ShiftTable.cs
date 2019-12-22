@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
-using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing.Patterns;
 
 namespace EasyParse.Parsing.Collections
@@ -15,8 +14,8 @@ namespace EasyParse.Parsing.Collections
             this.StateToNextState = XmlDefinitionUtils.ExtractShift(definition);
         }
 
-        public IEnumerable<int> StateFor(IEnumerator<Token> input, ParsingStack stack) =>
-            input.Current is Lexeme lexeme && this.StateToNextState.TryGetValue(new StateIndexAndLabel(stack.StateIndex, lexeme.Label), out int nextState) ? new [] {nextState}
+        public IEnumerable<int> StateFor(StatePattern pattern) =>
+            pattern is StateIndexAndLabel indexAndLabel && this.StateToNextState.TryGetValue(indexAndLabel, out int nextState) ? new [] {nextState}
             : Enumerable.Empty<int>();
     }
 }
