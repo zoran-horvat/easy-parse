@@ -108,6 +108,7 @@
     <Compile Include="Parsing\Collections\ReduceTable.cs" />
     <Compile Include="Parsing\Collections\ShiftTable.cs" />
     <Compile Include="Parsing\Formatting\Formatter.cs" />
+    <Compile Include="Parsing\ICompiler.cs" />
     <Compile Include="Parsing\Nodes\Error.cs" />
     <Compile Include="Parsing\Nodes\TreeElement.cs" />
     <Compile Include="Parsing\Nodes\NonTerminalNode.cs" />

@@ -20,20 +20,22 @@ namespace EasyParse.Parsing
         public bool IsSuccess =>
             this.Content is Node;
 
-        public object Compile(Func<string, object[], object> nodeCompiler) =>
+        public object Compile(ICompiler nodeCompiler) =>
             this.Content is Node node ? this.Compile(node, nodeCompiler)
             : throw new InvalidOperationException("Cannot compile failed parse result.");
 
-        private object Compile(Node node, Func<string, object[], object> nodeCompiler) =>
+        private object Compile(Node node, ICompiler nodeCompiler) =>
             node is TerminalNode terminal ? this.Compile(terminal, nodeCompiler)
             : node is NonTerminalNode nonTerminal ? this.Compile(nonTerminal, nodeCompiler)
             : throw new InvalidOperationException($"Internal error compiling {node}");
 
-        private object Compile(TerminalNode terminal, Func<string, object[], object> nodeCompiler) =>
-            nodeCompiler(terminal.Label, new object[] {terminal.Value});
+        private object Compile(TerminalNode terminal, ICompiler nodeCompiler) =>
+            nodeCompiler.CompileTerminal(terminal.Label, terminal.Value);
 
-        private object Compile(NonTerminalNode nonTerminal, Func<string, object[], object> nodeCompiler) =>
-            nodeCompiler(nonTerminal.Label, nonTerminal.Children.Select(child => this.Compile(child, nodeCompiler)).ToArray());
+        private object Compile(NonTerminalNode nonTerminal, ICompiler nodeCompiler) =>
+            nodeCompiler.CompileNonTerminal(
+                nonTerminal.Label, 
+                nonTerminal.Children.Select(child => this.Compile(child, nodeCompiler)).ToArray());
 
         public override string ToString() => 
             this.Content.Printable();
