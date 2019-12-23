@@ -28,14 +28,14 @@ namespace EasyParse.Parsing
         public static Parser From(XDocument definition, Lexer lexer) => 
             new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
 
-        public TreeElement Parse(string input) =>
+        public ParsingResult Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
 
-        private TreeElement Parse(IEnumerable<Token> input)
+        private ParsingResult Parse(IEnumerable<Token> input)
         {
             using (IEnumerator<Token> current = input.GetEnumerator())
             {
-                return this.ParseInitial(current, new ParsingStack());
+                return new ParsingResult(this.ParseInitial(current, new ParsingStack()));
             }
         }
 

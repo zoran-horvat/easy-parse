@@ -13,7 +13,7 @@ namespace EasyParse.Parsing.Nodes
         }
 
         public override string ToString() =>
-            $"[{base.Value} -> {this.ChildrenToString()}]";
+            $"[{base.Label} -> {this.ChildrenToString()}]";
 
         private string ChildrenToString() =>
             string.Join(string.Empty, this.Children.Select(child => $"{child}").ToArray());

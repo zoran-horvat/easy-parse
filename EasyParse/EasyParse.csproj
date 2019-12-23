@@ -107,14 +107,16 @@
     <Compile Include="Parsing\Collections\GotoTable.cs" />
     <Compile Include="Parsing\Collections\ReduceTable.cs" />
     <Compile Include="Parsing\Collections\ShiftTable.cs" />
+    <Compile Include="Parsing\Formatting\Formatter.cs" />
     <Compile Include="Parsing\Nodes\Error.cs" />
     <Compile Include="Parsing\Nodes\TreeElement.cs" />
     <Compile Include="Parsing\Nodes\NonTerminalNode.cs" />
     <Compile Include="Parsing\Nodes\Node.cs" />
     <Compile Include="Parsing\Nodes\TerminalNode.cs" />
     <Compile Include="Parsing\Parser.cs" />
-    <Compile Include="Parsing\ParsingStack.cs" />
+    <Compile Include="Parsing\Collections\ParsingStack.cs" />
     <Compile Include="Parsing\Collections\XmlDefinitionUtils.cs" />
+    <Compile Include="Parsing\ParsingResult.cs" />
     <Compile Include="Parsing\Patterns\RulePattern.cs" />
     <Compile Include="Parsing\Patterns\StateEnd.cs" />
     <Compile Include="Parsing\Patterns\StateIndexAndLabel.cs" />

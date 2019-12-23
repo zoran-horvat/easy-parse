@@ -5,7 +5,7 @@ using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Patterns;
 
-namespace EasyParse.Parsing
+namespace EasyParse.Parsing.Collections
 {
     class ParsingStack
     {

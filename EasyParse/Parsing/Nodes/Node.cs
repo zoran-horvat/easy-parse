@@ -2,11 +2,11 @@
 {
     public abstract class Node : TreeElement
     {
-        public string Value { get; }
+        public string Label { get; }
      
-        protected Node(string value)
+        protected Node(string label)
         {
-            this.Value = value;
+            this.Label = label;
         }
     }
 }
