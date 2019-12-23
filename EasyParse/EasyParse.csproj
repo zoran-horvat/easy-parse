@@ -104,6 +104,7 @@
     <Compile Include="ParserGenerator\Models\Transitions\StateTransition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\Transition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\TransitionExtensions.cs" />
+    <Compile Include="Parsing\Collections\GotoTable.cs" />
     <Compile Include="Parsing\Collections\ReduceTable.cs" />
     <Compile Include="Parsing\Collections\ShiftTable.cs" />
     <Compile Include="Parsing\Nodes\Error.cs" />

@@ -34,17 +34,34 @@
         <Terminal Name="n" />
       </Body>
     </Rule>
+    <Rule Ordinal="4">
+      <Head>
+        <NonTerminal Name="A" />
+      </Head>
+      <Body>
+        <NonTerminal Name="A" />
+        <Terminal Name="-" />
+        <Terminal Name="n" />
+      </Body>
+    </Rule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="n" TransitionTo="3" />
-    <Shift State="2" Terminal="+" TransitionTo="4" />
-    <Shift State="4" Terminal="n" TransitionTo="5" />
+    <Shift State="2" Terminal="-" TransitionTo="4" />
+    <Shift State="2" Terminal="+" TransitionTo="5" />
+    <Shift State="4" Terminal="n" TransitionTo="6" />
+    <Shift State="5" Terminal="n" TransitionTo="7" />
     <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
     <Reduce State="2" EndOfInput="$" RuleOrdinal="1" />
     <Reduce State="3" EndOfInput="$" RuleOrdinal="2" />
+    <Reduce State="3" Terminal="-" RuleOrdinal="2" />
     <Reduce State="3" Terminal="+" RuleOrdinal="2" />
-    <Reduce State="5" EndOfInput="$" RuleOrdinal="3" />
-    <Reduce State="5" Terminal="+" RuleOrdinal="3" />
+    <Reduce State="6" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="6" Terminal="-" RuleOrdinal="4" />
+    <Reduce State="6" Terminal="+" RuleOrdinal="4" />
+    <Reduce State="7" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="7" Terminal="-" RuleOrdinal="3" />
+    <Reduce State="7" Terminal="+" RuleOrdinal="3" />
     <Goto State="0" NonTerminal="E" TransitionTo="1" />
     <Goto State="0" NonTerminal="A" TransitionTo="2" />
   </ParsingTable>

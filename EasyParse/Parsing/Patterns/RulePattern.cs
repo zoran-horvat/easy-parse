@@ -11,6 +11,8 @@
             this.BodyLength = bodyLength;
         }
 
+        public static string AugmentedRootNonTerminal => "S'";
+
         public override string ToString() =>
             $"{this.NonTerminal} -> ({this.BodyLength} symbol(s))";
     }

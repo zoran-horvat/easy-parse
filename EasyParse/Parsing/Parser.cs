@@ -15,16 +15,18 @@ namespace EasyParse.Parsing
         public Lexer Lexer { get; }
         private ShiftTable Shift { get; }
         private ReduceTable Reduce { get; }
+        private GotoTable Goto { get; }
 
-        private Parser(Lexer lexer, ShiftTable shift, ReduceTable reduce)
+        private Parser(Lexer lexer, ShiftTable shift, ReduceTable reduce, GotoTable @goto)
         {
             this.Lexer = lexer;
             this.Shift = shift;
             this.Reduce = reduce;
+            this.Goto = @goto;
         }
 
         public static Parser From(XDocument definition, Lexer lexer) => 
-            new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition));
+            new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
 
         public TreeElement Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
@@ -50,8 +52,8 @@ namespace EasyParse.Parsing
             }
         }
 
-        private IEnumerable<TreeElement> Process(IEnumerator<Token> input, ParsingStack stack) =>
-            this.NextAction(input, stack).Invoke();
+        private IEnumerable<TreeElement> Process(IEnumerator<Token> input, ParsingStack stack) => 
+            this.NextAction(input, stack).Invoke().ToList();
 
         private Func<IEnumerable<TreeElement>> NextAction(IEnumerator<Token> input, ParsingStack stack) =>
             this.InvalidInputAction(input, stack)
@@ -63,7 +65,7 @@ namespace EasyParse.Parsing
         private IEnumerable<Func<IEnumerable<TreeElement>>> InvalidInputAction(IEnumerator<Token> input, ParsingStack stack)
         {
             if (input.Current is InvalidInput invalid)
-                yield return () => new [] {new Error($"Unexpected input: {invalid.Value}")};
+                yield return () => new [] {this.InputError(input.Current)};
         }
 
         private IEnumerable<Func<IEnumerable<TreeElement>>> ShiftAction(IEnumerator<Token> input, ParsingStack stack)
@@ -75,21 +77,17 @@ namespace EasyParse.Parsing
         private IEnumerable<Func<IEnumerable<TreeElement>>> ReduceAction(IEnumerator<Token> input, ParsingStack stack)
         {
             if (this.Reduce.ReductionFor(this.StatePatternFor(input, stack)).ToList() is List<RulePattern> rule && rule.Any())
-                yield return () => this.ExecuteReduce(stack, rule.First());
+                yield return () => this.ExecuteReduce(input, stack, rule.First());
         }
 
         private IEnumerable<Func<IEnumerable<TreeElement>>> DefaultAction(IEnumerator<Token> input)
         {
-            yield return () => new[]
-            {
-                input.Current is EndOfInput ? new Error("Unexpected end of input.") : 
-                new Error($"Unexpected input: {input.Current}")
-            };
+            yield return () => new[] { this.InputError(input.Current) };
         }
 
         private StatePattern StatePatternFor(IEnumerator<Token> input, ParsingStack stack) =>
-            input.Current is Lexeme lexeme ? (StatePattern)new StateIndexAndLabel(stack.StateIndex, lexeme.Label)
-            : input.Current is EndOfInput ? new StateEnd(stack.StateIndex)
+            input.Current is EndOfInput ? new StateEnd(stack.StateIndex)
+            : input.Current is Lexeme lexeme ? (StatePattern)new StateIndexAndLabel(stack.StateIndex, lexeme.Label)
             : throw new ArgumentException($"Internal error: {input.Current} not expected.");
 
         private IEnumerable<TreeElement> ExecuteShift(IEnumerator<Token> input, ParsingStack stack, int nextState)
@@ -98,10 +96,28 @@ namespace EasyParse.Parsing
             if (!input.MoveNext()) yield return new Error("Unexpected end of input.");
         }
 
-        private IEnumerable<TreeElement> ExecuteReduce(ParsingStack stack, RulePattern rule)
+        private IEnumerable<TreeElement> ExecuteReduce(IEnumerator<Token> input, ParsingStack stack, RulePattern rule)
         {
-            int state = stack.Reduce(rule);
-            yield return new Error($"Pending GOTO {rule.NonTerminal} in {state}");
+            int stateIndex = stack.Reduce(rule);
+            StateIndexAndLabel statePattern = new StateIndexAndLabel(stateIndex, rule.NonTerminal);
+
+            if (rule.NonTerminal == RulePattern.AugmentedRootNonTerminal)
+            {
+                yield return stack.Result;
+            }
+            else if (this.Goto.NextStateFor(statePattern).ToList() is List<int> nextState && nextState.Any())
+            {
+                stack.Goto(nextState.First());
+            }
+            else
+            {
+                yield return this.InputError(input.Current);
+            }
         }
+
+        private TreeElement InputError(Token input) =>
+            input is InvalidInput invalid ? new Error($"Unexpected input: {invalid.Value}")
+            : input is EndOfInput ? new Error("Unexpected end of input.") 
+            : new Error($"Unexpected input: {input}");
     }
 }

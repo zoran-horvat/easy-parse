@@ -30,7 +30,7 @@ namespace EasyParse.ParserGenerator.Models.Builders
                 .Concat(EndOfInputFollow(of));
 
         private static IEnumerable<Symbol> EndOfInputFollow(NonTerminal of) =>
-            of.Equals(new NonTerminal("S'")) ? new[] {new EndOfInput(),} : Enumerable.Empty<Symbol>();
+            of.Equals(new NonTerminal(Rule.AugmentedRootNonTerminal)) ? new[] {new EndOfInput(),} : Enumerable.Empty<Symbol>();
 
         private static IEnumerable<(NonTerminal preceding, Symbol following)> ImmediateFollowers(IEnumerable<Rule> rules) =>
             rules.SelectMany(ImmediateFollowers);

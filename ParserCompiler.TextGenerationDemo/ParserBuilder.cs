@@ -22,7 +22,7 @@ namespace ParserCompiler.TextGenerationDemo
         private Lexer CreateLexer() =>
             new Lexer()
                 .AddPattern(@"\d+", "n")
-                .AddPattern(@"\+", "+")
+                .AddPattern(@"[\+\-]", "+")
                 .IgnorePattern(@"\s+");
 
         private XDocument LoadDefinition() => 

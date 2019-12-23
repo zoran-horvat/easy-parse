@@ -91,7 +91,7 @@ namespace EasyParse.ParserGenerator.Formatting
                 .AddContent(table.Shift.Select(shift => (shift.From, (Symbol)shift.Symbol, $"S{shift.To}")))
                 .AddContent(table.Reduce.Select(reduce => (reduce.From, (Symbol)reduce.Symbol, $"R{reduce.To}")))
                 .AddContent(table.Goto.Select(@goto => (@goto.From, (Symbol)@goto.Symbol, $"{@goto.To}")))
-                .AddContent(0, new NonTerminal("S'"), "ACC")
+                .AddContent(0, new NonTerminal(Rule.AugmentedRootNonTerminal), "ACC")
                 .ToString();
 
         public static string ToString(ShiftTable shift) =>

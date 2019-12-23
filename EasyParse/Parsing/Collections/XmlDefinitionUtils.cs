@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing.Patterns;
 
 namespace EasyParse.Parsing.Collections
@@ -20,6 +21,15 @@ namespace EasyParse.Parsing.Collections
 
         public static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition) =>
             ExtractReduce(definition, ExtractRules(definition));
+
+        public static IDictionary<StateIndexAndLabel, int> ExtractGoto(XDocument definition) =>
+            definition.Root?.Element("ParsingTable")?.Elements("Goto")
+                .Select(@goto => (
+                    nonTerminal: @goto.Attribute("NonTerminal")?.Value ?? string.Empty,
+                    stateIndex: int.Parse(@goto.Attribute("State")?.Value ?? "-1"),
+                    nextState: int.Parse(@goto.Attribute("TransitionTo")?.Value ?? "-1")))
+                .ToDictionary(tuple => new StateIndexAndLabel(tuple.stateIndex, tuple.nonTerminal), tuple => tuple.nextState)
+            ?? new Dictionary<StateIndexAndLabel, int>();
 
         private static RulePattern[] ExtractRules(XDocument definition) =>
             definition.Root
