@@ -11,46 +11,31 @@ namespace ParserCompiler.TextGenerationDemo
 
         public object CompileNonTerminal(string label, object[] children) =>
             label == "U" ? this.CompileUnit(children)
-            : label == "A" ? this.CompileAddition(children)
-            : label == "M" ? this.CompileMultiplicative(children)
+            : label == "A" ? this.CompileBinaryOperator(children)
+            : label == "M" ? this.CompileBinaryOperator(children)
             : "<Internal error>";
 
         private object CompileUnit(object[] children) =>
             children.Length == 1 ? children[0]
             : children[1];
 
-        private object CompileAddition(object[] children) =>
+        private object CompileBinaryOperator(object[] children) =>
             children.Length == 1 ? children[0]
             : children[0] is string leftError ? leftError
             : children[2] is string rightError ? rightError
-            : children[1].Equals("+") ? this.Add((int)children[0], (int)children[2])
-            : children[1].Equals("-") ? this.Subtract((int)children[0], (int)children[2])
+            : this.CompileBinaryOperator((int)children[0], (string)children[1], (int)children[2]);
+
+        private object CompileBinaryOperator(long left, string operation, int right) =>
+            operation == "+" ? this.ResultOf(left + right)
+            : operation == "-" ? this.ResultOf(left - right)
+            : operation == "*" && left == int.MinValue && right == int.MinValue ? "<Overflow>"
+            : operation == "*" ? this.ResultOf(left * right)
+            : operation == "/" && right == 0 ? "<Divide by zero>"
+            : operation == "/" ? this.ResultOf(left / right)
             : "<Internal error>";
 
-        private object CompileMultiplicative(object[] children) =>
-            children.Length == 1 ? children[0]
-            : children[0] is string leftError ? leftError
-            : children[2] is string rightError ? rightError
-            : children[1].Equals("*") ? this.Multiply((int) children[0], (int) children[2])
-            : children[1].Equals("/") ? this.Divide((int)children[0], (int)children[2])
-            : "<Internal error>";
-
-        private object Add(int a, int b) =>
-            (long)a + b is long result && result >= int.MinValue && result <= int.MaxValue ? (object)(int)result
-            : "<Overflow>";
-
-        private object Subtract(int a, int b) =>
-            (long)a - b is long result && result >= int.MinValue && result <= int.MaxValue ? (object)(int)result
-            : "<Overflow>";
-
-        private object Multiply(int a, int b) =>
-            a == int.MinValue && b == int.MinValue ? "<Overflow>"
-            : (long)a * b is long result && result >= int.MinValue && result <= int.MaxValue ? (object) (int) result
-            : "<Overflow>";
-
-        private object Divide(int a, int b) =>
-            b == 0 ? "<Divide by zero>"
-            : (long) a / b is long result && result >= int.MinValue && result <= int.MaxValue ? (object) (int) result
+        private object ResultOf(long x) =>
+            x >= int.MinValue && x <= int.MaxValue ? (object)(int)x
             : "<Overflow>";
     }
 }
