@@ -23,6 +23,7 @@ namespace ParserCompiler.TextGenerationDemo
             new Lexer()
                 .AddPattern(@"\d+", "n")
                 .AddPattern(@"[\+\-]", "+")
+                .AddPattern(@"[\*\/]", "*")
                 .AddPattern(@"\(", "(")
                 .AddPattern(@"\)", ")")
                 .IgnorePattern(@"\s+");

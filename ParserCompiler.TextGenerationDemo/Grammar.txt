@@ -1,5 +1,8 @@
-﻿A -> S
-A -> A+S
-A -> A-S
-S -> n
-S -> (A)
+﻿A -> M
+A -> A+M
+A -> A-M
+U -> n
+U -> (A)
+M -> U
+M -> M*U
+M -> M/U

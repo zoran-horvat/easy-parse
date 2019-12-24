@@ -51,21 +51,21 @@ namespace EasyParse.ParserGenerator.Models
                 this.GotosToXml());
 
         private IEnumerable<XElement> ShiftsToXml() =>
-            this.Table.Shift.Select(shift => 
+            this.Table.Shift.OrderBy(shift => shift.From).ThenBy(shift => shift.Symbol.Value).Select(shift => 
                 new XElement("Shift", 
                     new XAttribute("State", shift.From), 
                     new XAttribute("Terminal", shift.Symbol.Value), 
                     new XAttribute("TransitionTo", shift.To)));
 
         private IEnumerable<XElement> ReducesToXml() =>
-            this.Table.Reduce.Select(reduce =>
+            this.Table.Reduce.OrderBy(reduce => reduce.From).ThenBy(reduce => reduce.Symbol.Value).Select(reduce =>
                 new XElement("Reduce",
                     new XAttribute("State", reduce.From),
                     new XAttribute(reduce.Symbol is EndOfInput ? "EndOfInput" : "Terminal", reduce.Symbol.Value),
                     new XAttribute("RuleOrdinal", reduce.To)));
 
         private IEnumerable<XElement> GotosToXml() =>
-            this.Table.Goto.Select(@goto =>
+            this.Table.Goto.OrderBy(@goto => @goto.From).ThenBy(@goto => @goto.Symbol.Value).Select(@goto =>
                 new XElement("Goto",
                     new XAttribute("State", @goto.From),
                     new XAttribute("NonTerminal", @goto.Symbol.Value),
