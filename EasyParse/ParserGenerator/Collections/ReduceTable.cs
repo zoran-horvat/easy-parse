@@ -11,10 +11,10 @@ namespace EasyParse.ParserGenerator.Collections
     {
         public ReduceTable() { }
 
-        public ReduceTable(ImmutableList<Transition<int, Terminal, int>> content) : base(content) { }
+        public ReduceTable(Set<Transition<int, Terminal, int>> content) : base(content) { }
 
         public ReduceTable AddRange(IEnumerable<ReduceCommand> reductions) =>
-            new ReduceTable(base.Content.AddRange(reductions));
+            new ReduceTable(base.Content.Union(reductions));
 
         public IEnumerator<ReduceCommand> GetEnumerator() =>
             base.Content.OfType<ReduceCommand>().GetEnumerator();

@@ -1,5 +1,4 @@
-﻿using System;
-using EasyParse.Parsing;
+﻿using EasyParse.Parsing;
 
 namespace ParserCompiler.TextGenerationDemo
 {
@@ -11,9 +10,13 @@ namespace ParserCompiler.TextGenerationDemo
             : value;
 
         public object CompileNonTerminal(string label, object[] children) =>
-            label == "A" ? this.CompileAddition(children)
-            : label == "E" ? children[0]
+            label == "S" ? this.CompileSimple(children)
+            : label == "A" ? this.CompileAddition(children)
             : "<Internal error>";
+
+        private object CompileSimple(object[] children) =>
+            children.Length == 1 ? children[0]
+            : children[1];
 
         private object CompileAddition(object[] children) =>
             children.Length == 1 ? children[0]
@@ -23,19 +26,12 @@ namespace ParserCompiler.TextGenerationDemo
             : children[1].Equals("-") ? this.Subtract((int)children[0], (int)children[2])
             : "<Internal error>";
 
-
         private object Add(int a, int b) =>
-            a < 0 && b > 0 ? a + b
-            : a > 0 && b < 0 ? a + b
-            : a < 0 && b < 0 && int.MinValue - a <= b ? a + b
-            : int.MaxValue - a >= b ? (object)(a + b)
+            (long)a + b is long result && result >= int.MinValue && result <= int.MaxValue ? (object)(int)result
             : "<Overflow>";
 
         private object Subtract(int a, int b) =>
-            a > 0 && b > 0 ? a - b
-            : a < 0 && b < 0 ? a - b
-            : a < 0 && b > 0 && int.MinValue + b <= a ? a - b
-            : int.MinValue - a <= b ? (object) (a - b)
+            (long)a - b is long result && result >= int.MinValue && result <= int.MaxValue ? (object)(int)result
             : "<Overflow>";
     }
 }

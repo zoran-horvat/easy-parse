@@ -12,10 +12,10 @@ namespace EasyParse.ParserGenerator.Collections
     {
         public GotoTable() { }
 
-        private GotoTable(ImmutableList<Transition<int, NonTerminal, int>> content) : base(content) { }
+        private GotoTable(Set<Transition<int, NonTerminal, int>> content) : base(content) { }
 
         public GotoTable Add(GotoCommand command) =>
-            new GotoTable(base.Content.Add(command));
+            new GotoTable(base.Content.Union(new[] {command}));
 
         public GotoTable TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is NonTerminal ? this.Add(GotoCommand.Of(transition, coreToIndex)) : this;

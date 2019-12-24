@@ -1,4 +1,5 @@
-﻿E -> A
-A -> n
-A -> A+n
-A -> A-n
+﻿A -> S
+A -> A+S
+A -> A-S
+S -> n
+S -> (A)

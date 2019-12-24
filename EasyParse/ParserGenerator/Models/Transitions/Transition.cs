@@ -14,5 +14,14 @@ namespace EasyParse.ParserGenerator.Models.Transitions
             this.Symbol = symbol;
             this.To = to;
         }
+
+        public override bool Equals(object obj) =>
+            obj is Transition<TState, TSymbol, TResult> other &&
+            other.From.Equals(this.From) &&
+            other.Symbol.Equals(this.Symbol) &&
+            other.To.Equals(this.To);
+
+        public override int GetHashCode() =>
+            this.From.GetHashCode() ^ this.Symbol.GetHashCode() ^ this.To.GetHashCode();
     }
 }

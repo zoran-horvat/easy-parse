@@ -9,13 +9,13 @@ namespace EasyParse.ParserGenerator.Collections
     {
         public IEnumerable<Transition<TState, TSymbol, TResult>> Items => this.Content;
 
-        protected ImmutableList<Transition<TState, TSymbol, TResult>> Content { get; }
+        protected Set<Transition<TState, TSymbol, TResult>> Content { get; }
 
-        protected TransitionTable() : this(ImmutableList<Transition<TState, TSymbol, TResult>>.Empty)
+        protected TransitionTable() : this(new Set<Transition<TState, TSymbol, TResult>>())
         {
         }
 
-        protected TransitionTable(ImmutableList<Transition<TState, TSymbol, TResult>> content)
+        protected TransitionTable(Set<Transition<TState, TSymbol, TResult>> content)
         {
             this.Content = content;
         }

@@ -12,10 +12,10 @@ namespace EasyParse.ParserGenerator.Collections
     {
         public ShiftTable() { }
 
-        private ShiftTable(ImmutableList<Transition<int, Terminal, int>> content) : base(content) { }
+        private ShiftTable(Set<Transition<int, Terminal, int>> content) : base(content) { }
 
         public ShiftTable Add(ShiftCommand command) =>
-            new ShiftTable(base.Content.Add(command));
+            new ShiftTable(base.Content.Union(new[] {command}));
 
         public ShiftTable TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is Terminal ? this.Add(ShiftCommand.Of(transition, coreToIndex)) : this;
