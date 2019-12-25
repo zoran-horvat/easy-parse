@@ -7,8 +7,8 @@
     <ProjectGuid>{69B02778-8AD9-436E-A7B0-2A3AA35FBC8F}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ParserCompiler.TextGenerationDemo</RootNamespace>
-    <AssemblyName>ParserCompiler.TextGenerationDemo</AssemblyName>
+    <RootNamespace>EasyParse.CalculatorDemo</RootNamespace>
+    <AssemblyName>EasyParse.CalculatorDemo</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -31,7 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>ParserCompiler.TextGenerationDemo.Program</StartupObject>
+    <StartupObject>EasyParse.CalculatorDemo.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />

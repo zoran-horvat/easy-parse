@@ -2,7 +2,7 @@
 using EasyParse.LexicalAnalysis;
 using EasyParse.Parsing;
 
-namespace ParserCompiler.TextGenerationDemo
+namespace EasyParse.CalculatorDemo
 {
     class ParserBuilder
     {

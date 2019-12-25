@@ -1,6 +1,6 @@
 ﻿using EasyParse.Parsing;
 
-namespace ParserCompiler.TextGenerationDemo
+namespace EasyParse.CalculatorDemo
 {
     class Calculator : ICompiler
     {

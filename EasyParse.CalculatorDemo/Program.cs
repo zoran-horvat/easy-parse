@@ -4,13 +4,13 @@ using System.Linq;
 using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing;
 
-namespace ParserCompiler.TextGenerationDemo
+namespace EasyParse.CalculatorDemo
 {
     public static class Program
     {
         public static void Main(string[] args)
         {
-            Parser parser = new ParserBuilder("ParserCompiler.TextGenerationDemo.ParserDefinition.xml").Build();
+            Parser parser = new ParserBuilder("EasyParse.CalculatorDemo.ParserDefinition.xml").Build();
 
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
