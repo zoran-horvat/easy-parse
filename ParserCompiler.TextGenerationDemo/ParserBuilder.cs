@@ -1,7 +1,4 @@
-﻿using System;
-using System.IO;
-using System.Reflection;
-using System.Xml.Linq;
+﻿using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.Parsing;
 
@@ -17,7 +14,7 @@ namespace ParserCompiler.TextGenerationDemo
         }
 
         public Parser Build() => 
-            Parser.From(this.LoadDefinition(), this.CreateLexer());
+            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), this.ResourceName, this.CreateLexer());
 
         private Lexer CreateLexer() =>
             new Lexer()
@@ -27,25 +24,5 @@ namespace ParserCompiler.TextGenerationDemo
                 .AddPattern(@"\(", "(")
                 .AddPattern(@"\)", ")")
                 .IgnorePattern(@"\s+");
-
-        private XDocument LoadDefinition() => 
-            this.LoadDefinition(Assembly.GetExecutingAssembly());
-
-        private XDocument LoadDefinition(Assembly assembly) =>
-            this.Use(() => assembly.GetManifestResourceStream(this.ResourceName), this.LoadDefinition);
-
-        private XDocument LoadDefinition(Stream stream) =>
-            stream is null ? new XDocument() : this.SafeLoadDefinition(stream);
-
-        private XDocument SafeLoadDefinition(Stream stream) =>
-            this.Use(() => new StreamReader(stream), XDocument.Load);
-
-        private TResult Use<T, TResult>(Func<T> factory, Func<T, TResult> map) where T : IDisposable
-        {
-            using (T obj = factory())
-            {
-                return map(obj);
-            }
-        }
     }
 }

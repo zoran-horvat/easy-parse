@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.Immutable;
 using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.ParserGenerator.Models.Transitions;
 

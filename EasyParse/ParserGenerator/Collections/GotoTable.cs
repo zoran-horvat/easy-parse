@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using EasyParse.ParserGenerator.Formatting;
 using EasyParse.ParserGenerator.Models.Symbols;

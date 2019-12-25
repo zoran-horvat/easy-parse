@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
@@ -27,6 +28,9 @@ namespace EasyParse.Parsing
 
         public static Parser From(XDocument definition, Lexer lexer) => 
             new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
+
+        public static Parser FromXmlResource(Assembly assembly, string resourceName, Lexer lexer) =>
+            From(new XmlResource(assembly, resourceName).Load(), lexer);
 
         public ParsingResult Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
