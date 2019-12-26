@@ -4,7 +4,7 @@ using EasyParse.Parsing;
 
 namespace EasyParse.CalculatorDemo
 {
-    class ParserBuilder
+    public class ParserBuilder
     {
         private string ResourceName { get; }
 
@@ -14,9 +14,9 @@ namespace EasyParse.CalculatorDemo
         }
 
         public Parser Build() => 
-            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), this.ResourceName, this.CreateLexer());
+            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), this.ResourceName, CreateLexer());
 
-        private Lexer CreateLexer() =>
+        public static Lexer CreateLexer() =>
             new Lexer()
                 .AddPattern(@"\d+", "n")
                 .AddPattern(@"[\+\-]", "+")

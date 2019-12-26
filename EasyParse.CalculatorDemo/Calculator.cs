@@ -2,7 +2,7 @@
 
 namespace EasyParse.CalculatorDemo
 {
-    class Calculator : ICompiler
+    public class Calculator : ICompiler
     {
         public object CompileTerminal(string label, string value) =>
             label == "n" && int.TryParse(value, out int number) ? number
