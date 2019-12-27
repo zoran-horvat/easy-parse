@@ -13,14 +13,18 @@
         <NonTerminal Name="R" />
       </Head>
       <Body>
-        <Terminal Name="x" />
+        <Terminal Name="n" />
+        <Terminal Name="a" />
+        <Terminal Name="t" />
       </Body>
     </Rule>
   </Grammar>
   <ParsingTable>
-    <Shift State="0" Terminal="x" TransitionTo="2" />
+    <Shift State="0" Terminal="n" TransitionTo="2" />
+    <Shift State="2" Terminal="a" TransitionTo="3" />
+    <Shift State="3" Terminal="t" TransitionTo="4" />
     <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
-    <Reduce State="2" EndOfInput="$" RuleOrdinal="1" />
+    <Reduce State="4" EndOfInput="$" RuleOrdinal="1" />
     <Goto State="0" NonTerminal="R" TransitionTo="1" />
   </ParsingTable>
 </ParserDefinition>

@@ -1,1 +1,6 @@
-﻿R -> x
+﻿# R - Rule
+# n - Non-terminal
+# t - Terminal
+# a - Arrow (->)
+
+R -> nat

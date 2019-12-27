@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
+using Match = System.Text.RegularExpressions.Match;
 
 namespace EasyParse.ParserGenerator
 {
@@ -25,5 +27,12 @@ namespace EasyParse.ParserGenerator
 
         private IEnumerable<Symbol> ParseBody(string body) =>
             body.ToCharArray().Select(Symbol.From);
+
+        public static Lexer CreateLexer() =>
+            new Lexer()
+                .AddPattern("[A-Z]", "n")
+                .AddPattern("[a-z]", "t")
+                .AddPattern(@"\->", "a")
+                .IgnorePattern(@"\s");
     }
 }
