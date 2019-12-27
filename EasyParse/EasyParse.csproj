@@ -136,6 +136,18 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="ParserGenerator\GrammarGrammar.txt" />
+    <Content Include="ParserGenerator\GrammarParserDefinition.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GrammarParserDefinition.xml</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="ParserGenerator\GrammarParserDefinition.xml">
+      <DependentUpon>GrammarParserDefinition.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DesignTime>True</DesignTime>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

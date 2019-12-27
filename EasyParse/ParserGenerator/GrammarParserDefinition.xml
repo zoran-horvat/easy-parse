@@ -1,0 +1,26 @@
+﻿<ParserDefinition>
+  <Grammar>
+    <Rule Ordinal="0">
+      <Head>
+        <NonTerminal Name="S'" />
+      </Head>
+      <Body>
+        <NonTerminal Name="R" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="1">
+      <Head>
+        <NonTerminal Name="R" />
+      </Head>
+      <Body>
+        <Terminal Name="x" />
+      </Body>
+    </Rule>
+  </Grammar>
+  <ParsingTable>
+    <Shift State="0" Terminal="x" TransitionTo="2" />
+    <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
+    <Reduce State="2" EndOfInput="$" RuleOrdinal="1" />
+    <Goto State="0" NonTerminal="R" TransitionTo="1" />
+  </ParsingTable>
+</ParserDefinition>
