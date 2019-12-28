@@ -18,24 +18,6 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private Parser CreateParser() =>
             Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml", CreateLexer());
 
-        private Grammar LegacyParse(IEnumerable<string> text) =>
-            new Grammar(text.SelectMany(this.Parse));
-
-        private IEnumerable<Rule> Parse(string line) =>
-            this.LineMatch(line).Select(this.Parse);
-
-        private IEnumerable<Match> LineMatch(string line) =>
-            Regex.Matches(line, "^(?<head>[A-Z])\\s->\\s(?<body>.+)$").OfType<Match>();
-
-        private Rule Parse(Match lineMatch) =>
-            this.Parse(lineMatch.Groups["head"].Value, lineMatch.Groups["body"].Value);
-
-        private Rule Parse(string head, string body) => 
-            new Rule(new NonTerminal(head), this.ParseBody(body));
-
-        private IEnumerable<Symbol> ParseBody(string body) =>
-            body.ToCharArray().Select(Symbol.From);
-
         public static Lexer CreateLexer() =>
             new Lexer()
                 .AddPattern("[A-Z]", "n")
