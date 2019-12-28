@@ -12,7 +12,7 @@ G -> L
 G -> GL
 L -> RE
 L -> E
-E -> #e
+E -> ce
 E -> e
 R -> naB
 B -> S

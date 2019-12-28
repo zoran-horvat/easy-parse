@@ -47,7 +47,7 @@
         <NonTerminal Name="E" />
       </Head>
       <Body>
-        <Terminal Name="#" />
+        <Terminal Name="c" />
         <Terminal Name="e" />
       </Body>
     </Rule>
@@ -104,18 +104,18 @@
     </Rule>
   </Grammar>
   <ParsingTable>
-    <Shift State="0" Terminal="#" TransitionTo="5" />
+    <Shift State="0" Terminal="c" TransitionTo="5" />
     <Shift State="0" Terminal="e" TransitionTo="9" />
     <Shift State="0" Terminal="n" TransitionTo="2" />
     <Shift State="0" Terminal="t" TransitionTo="3" />
-    <Shift State="1" Terminal="#" TransitionTo="5" />
+    <Shift State="1" Terminal="c" TransitionTo="5" />
     <Shift State="1" Terminal="e" TransitionTo="9" />
     <Shift State="1" Terminal="n" TransitionTo="11" />
     <Shift State="2" Terminal="a" TransitionTo="13" />
     <Shift State="5" Terminal="e" TransitionTo="14" />
     <Shift State="6" Terminal="n" TransitionTo="15" />
     <Shift State="6" Terminal="t" TransitionTo="3" />
-    <Shift State="8" Terminal="#" TransitionTo="5" />
+    <Shift State="8" Terminal="c" TransitionTo="5" />
     <Shift State="8" Terminal="e" TransitionTo="9" />
     <Shift State="11" Terminal="a" TransitionTo="13" />
     <Shift State="13" Terminal="n" TransitionTo="15" />
@@ -123,51 +123,51 @@
     <Shift State="18" Terminal="n" TransitionTo="15" />
     <Shift State="18" Terminal="t" TransitionTo="3" />
     <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
-    <Reduce State="2" Terminal="#" RuleOrdinal="11" />
+    <Reduce State="2" Terminal="c" RuleOrdinal="11" />
     <Reduce State="2" Terminal="e" RuleOrdinal="11" />
     <Reduce State="2" Terminal="n" RuleOrdinal="11" />
     <Reduce State="2" Terminal="t" RuleOrdinal="11" />
-    <Reduce State="3" Terminal="#" RuleOrdinal="10" />
+    <Reduce State="3" Terminal="c" RuleOrdinal="10" />
     <Reduce State="3" Terminal="e" RuleOrdinal="10" />
     <Reduce State="3" Terminal="n" RuleOrdinal="10" />
     <Reduce State="3" Terminal="t" RuleOrdinal="10" />
-    <Reduce State="4" Terminal="#" RuleOrdinal="8" />
+    <Reduce State="4" Terminal="c" RuleOrdinal="8" />
     <Reduce State="4" Terminal="e" RuleOrdinal="8" />
     <Reduce State="4" Terminal="n" RuleOrdinal="8" />
     <Reduce State="4" Terminal="t" RuleOrdinal="8" />
-    <Reduce State="7" Terminal="#" RuleOrdinal="4" />
     <Reduce State="7" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="7" Terminal="c" RuleOrdinal="4" />
     <Reduce State="7" Terminal="e" RuleOrdinal="4" />
     <Reduce State="7" Terminal="n" RuleOrdinal="4" />
-    <Reduce State="9" Terminal="#" RuleOrdinal="6" />
     <Reduce State="9" EndOfInput="$" RuleOrdinal="6" />
+    <Reduce State="9" Terminal="c" RuleOrdinal="6" />
     <Reduce State="9" Terminal="e" RuleOrdinal="6" />
     <Reduce State="9" Terminal="n" RuleOrdinal="6" />
-    <Reduce State="10" Terminal="#" RuleOrdinal="1" />
     <Reduce State="10" EndOfInput="$" RuleOrdinal="1" />
+    <Reduce State="10" Terminal="c" RuleOrdinal="1" />
     <Reduce State="10" Terminal="e" RuleOrdinal="1" />
     <Reduce State="10" Terminal="n" RuleOrdinal="1" />
-    <Reduce State="12" Terminal="#" RuleOrdinal="2" />
     <Reduce State="12" EndOfInput="$" RuleOrdinal="2" />
+    <Reduce State="12" Terminal="c" RuleOrdinal="2" />
     <Reduce State="12" Terminal="e" RuleOrdinal="2" />
     <Reduce State="12" Terminal="n" RuleOrdinal="2" />
-    <Reduce State="14" Terminal="#" RuleOrdinal="5" />
     <Reduce State="14" EndOfInput="$" RuleOrdinal="5" />
+    <Reduce State="14" Terminal="c" RuleOrdinal="5" />
     <Reduce State="14" Terminal="e" RuleOrdinal="5" />
     <Reduce State="14" Terminal="n" RuleOrdinal="5" />
-    <Reduce State="15" Terminal="#" RuleOrdinal="11" />
+    <Reduce State="15" Terminal="c" RuleOrdinal="11" />
     <Reduce State="15" Terminal="e" RuleOrdinal="11" />
     <Reduce State="15" Terminal="n" RuleOrdinal="11" />
     <Reduce State="15" Terminal="t" RuleOrdinal="11" />
-    <Reduce State="16" Terminal="#" RuleOrdinal="9" />
+    <Reduce State="16" Terminal="c" RuleOrdinal="9" />
     <Reduce State="16" Terminal="e" RuleOrdinal="9" />
     <Reduce State="16" Terminal="n" RuleOrdinal="9" />
     <Reduce State="16" Terminal="t" RuleOrdinal="9" />
-    <Reduce State="17" Terminal="#" RuleOrdinal="3" />
     <Reduce State="17" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="17" Terminal="c" RuleOrdinal="3" />
     <Reduce State="17" Terminal="e" RuleOrdinal="3" />
     <Reduce State="17" Terminal="n" RuleOrdinal="3" />
-    <Reduce State="18" Terminal="#" RuleOrdinal="7" />
+    <Reduce State="18" Terminal="c" RuleOrdinal="7" />
     <Reduce State="18" Terminal="e" RuleOrdinal="7" />
     <Goto State="0" NonTerminal="B" TransitionTo="6" />
     <Goto State="0" NonTerminal="E" TransitionTo="7" />

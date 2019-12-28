@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator;
+using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
@@ -30,6 +31,28 @@ namespace EasyParse.Tests
             "M -> U",
             "M -> M*U",
             "M -> M/U")]
+        [InlineData(
+            "# L - Line containing a single rule",
+            "# R - Rule",
+            "# B - Rule body",
+            "# S - symbol (terminal or non-terminal)",
+            "# E - Line ending (optional comment followed by end of line character)",
+            "# n - Non-terminal",
+            "# t - Terminal",
+            "# a - Arrow (->)",
+            "# e - End of line",
+            "",
+            "G -> L",
+            "G -> GL",
+            "L -> RE",
+            "L -> E",
+            "E -> ce",
+            "E -> e",
+            "R -> naB",
+            "B -> S",
+            "B -> BS",
+            "S -> t",
+            "S -> n")]
         public void RecognizesValidGrammar(params string[] grammar) => 
             Assert.True(base.Recognized(grammar));
 

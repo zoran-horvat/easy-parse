@@ -40,7 +40,9 @@ namespace EasyParse.Parsing
 
         private ParsingResult Parse(IEnumerable<Token> input)
         {
-            using (IEnumerator<Token> current = input.GetEnumerator())
+            List<Token> concrete = input.ToList();
+            Token[] array = concrete.ToArray();
+            using (IEnumerator<Token> current = concrete.GetEnumerator())
             {
                 return new ParsingResult(this.ParseInitial(current, new ParsingStack()));
             }

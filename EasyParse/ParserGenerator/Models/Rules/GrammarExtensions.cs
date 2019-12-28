@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.ParserGenerator.Models.Symbols;
 
 namespace EasyParse.ParserGenerator.Models.Rules

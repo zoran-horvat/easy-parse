@@ -22,7 +22,7 @@ namespace EasyParse.Parsing
 
         public object Compile(ICompiler nodeCompiler) =>
             this.Content is Node node ? this.Compile(node, nodeCompiler)
-            : throw new InvalidOperationException("Cannot compile failed parse result.");
+            : throw new InvalidOperationException(this.Content is Error error ? error.Message : "Cannot compile failed parse result.");
 
         private object Compile(Node node, ICompiler nodeCompiler) =>
             node is TerminalNode terminal ? this.Compile(terminal, nodeCompiler)

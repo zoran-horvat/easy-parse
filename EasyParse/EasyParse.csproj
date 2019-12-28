@@ -89,7 +89,7 @@
     <Compile Include="ParserGenerator\Models\Transitions\IndexTransition.cs" />
     <Compile Include="ParserGenerator\Models\Rules\Grammar.cs" />
     <Compile Include="ParserGenerator\Models\Rules\GrammarExtensions.cs" />
-    <Compile Include="ParserGenerator\GrammarParser.cs" />
+    <Compile Include="ParserGenerator\GrammarCompiler\GrammarParser.cs" />
     <Compile Include="ParserGenerator\Collections\LabeledSet.cs" />
     <Compile Include="ParserGenerator\Collections\Set.cs" />
     <Compile Include="ParserGenerator\Collections\SetExtensions.cs" />
