@@ -36,7 +36,7 @@ namespace EasyParse.Parsing.Formatting
                     
                     yield return $" {prefix}|";
 
-                    string nodeValue = node.Children[position] is TerminalNode terminal ? terminal.Value : node.Children[position].Label;
+                    string nodeValue = node.Children[position] is TerminalNode terminal ? terminal.Value.Printable() : node.Children[position].Label;
                     yield return $" {prefix}+--- {nodeValue}";
                     
                     stack.Push((node, position + 1));
@@ -45,5 +45,8 @@ namespace EasyParse.Parsing.Formatting
                 }
             }
         }
+
+        private static string Printable(this string value) =>
+            value.Replace("\n", "\\n").Replace("\r", "\\r");
     }
 }

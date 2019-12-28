@@ -1,9 +1,14 @@
-﻿# R - Rule
-# L - Line containing a single rule
+﻿# L - Line containing a single rule
+# R - Rule
+# B - Rule body
 # n - Non-terminal
 # t - Terminal
 # a - Arrow (->)
 # e - End of line
 
-L - Re
-R -> nat
+G -> L
+G -> GL
+L -> Re
+R -> naB
+B -> t
+B -> n
