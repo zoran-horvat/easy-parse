@@ -9,6 +9,7 @@
 G -> L
 G -> GL
 L -> Re
+L -> e
 R -> naB
 B -> t
 B -> n

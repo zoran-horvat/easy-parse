@@ -21,6 +21,7 @@ namespace EasyParse.Tests
         [InlineData(
             "A -> M",
             "U -> n",
+            "",
             "M -> U")]
         public void RecognizesValidGrammar(params string[] grammar) => 
             Assert.True(base.Recognized(grammar));
@@ -29,6 +30,7 @@ namespace EasyParse.Tests
         [InlineData(
             "A -> M",
             "U -> n",
+            "",
             "M -- U")]
         public void DoesNotRecognizeInvalidGrammar(params string[] grammar) =>
             Assert.False(base.Recognized(grammar));
