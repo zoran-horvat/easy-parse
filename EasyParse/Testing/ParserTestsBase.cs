@@ -16,8 +16,11 @@ namespace EasyParse.Testing
         protected bool Recognized(params string[] lines) =>
             this.CreateParser().Parse(lines).IsSuccess;
 
-        protected object Compiled(string input, ICompiler compiler) =>
+        protected object Compiled(ICompiler compiler, string input) =>
             this.CreateParser().Parse(input).Compile(compiler);
+
+        protected object Compiled(ICompiler compiler, params string[] lines) =>
+            this.CreateParser().Parse(lines).Compile(compiler);
 
         private Parser CreateParser() =>
             Parser.FromXmlResource(this.XmlDefinitionAssembly, this.XmlDefinitionResourceName, this.Lexer);

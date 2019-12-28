@@ -42,6 +42,6 @@ namespace EasyParse.CalculatorDemo.Tests
         [InlineData("3/4", 0)]
         [InlineData(" 1 +   (8 - 2*(3-4)  ) /   (5 -2)  ", 4)]
         public void ExpressionEvaluatesToResult(string expression, int result) =>
-            Assert.Equal(result, base.Compiled(expression, new Calculator()));
+            Assert.Equal(result, base.Compiled(new Calculator(), expression));
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using EasyParse.ParserGenerator.Formatting;
 using EasyParse.ParserGenerator.Models.Builders;
@@ -9,15 +10,30 @@ namespace EasyParse.ParserGenerator.Models.Rules
 {
     public class Grammar
     {
-        public IEnumerable<Rule> Rules { get; }
-     
-        public Grammar(IEnumerable<Rule> rules)
+        public IEnumerable<Rule> Rules => this.RulesRepresentation;
+
+        private ImmutableList<Rule> RulesRepresentation { get; }
+
+        public Grammar(params Rule[] rules) : this((IEnumerable<Rule>)rules)
         {
-            this.Rules = rules.SelectMany((rule, index) => index == 0
+        }
+
+        public Grammar(IEnumerable<Rule> rules) :
+            this(rules.SelectMany((rule, index) => index == 0
                     ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule}
                     : new[] {rule})
-                .ToList();
+                .ToImmutableList())
+        {
         }
+
+        private Grammar(ImmutableList<Rule> rules)
+        {
+            this.RulesRepresentation = rules;
+        }
+
+        public Grammar AddRange(IEnumerable<Rule> rules) =>
+            this.RulesRepresentation.Any() ? new Grammar(this.RulesRepresentation.AddRange(rules))
+            : new Grammar(rules);
 
         public int SortOrderFor(NonTerminal nonTerminal) =>
             Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);

@@ -1,13 +1,15 @@
 ﻿using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator;
+using EasyParse.ParserGenerator.GrammarCompiler;
+using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
 namespace EasyParse.Tests
 {
-    public class GrammarGrammarTests : ParserTestsBase
+    public class GrammarCompilerTests : ParserTestsBase
     {
         protected override Assembly XmlDefinitionAssembly => 
             typeof(GrammarParser).Assembly;
@@ -16,6 +18,7 @@ namespace EasyParse.Tests
 
         protected override Lexer Lexer =>
             GrammarParser.CreateLexer();
+
 
         [Theory]
         [InlineData(
@@ -30,17 +33,7 @@ namespace EasyParse.Tests
             "M -> U",
             "M -> M*U",
             "M -> M/U")]
-        public void RecognizesValidGrammar(params string[] grammar) => 
-            Assert.True(base.Recognized(grammar));
-
-        [Theory]
-        [InlineData(
-            "# Comment on its own line",
-            "A -> M # Comment on a line with a rule",
-            "U -> n",
-            "",
-            "M -- U")]
-        public void DoesNotRecognizeInvalidGrammar(params string[] grammar) =>
-            Assert.False(base.Recognized(grammar));
+        public void CompilesGrammar(params string[] grammar) => 
+            Assert.IsType<Grammar>(base.Compiled(new Compiler(), grammar));
     }
 }
