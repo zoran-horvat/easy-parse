@@ -33,6 +33,7 @@ namespace EasyParse.ParserGenerator
                 .AddPattern("[A-Z]", "n")
                 .AddPattern("[a-z]", "t")
                 .AddPattern(@"\->", "a")
+                .AddPattern(@"\n", "e")
                 .IgnorePattern(@"\s");
     }
 }

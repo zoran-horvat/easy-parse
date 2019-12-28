@@ -1,6 +1,9 @@
 ﻿# R - Rule
+# L - Line containing a single rule
 # n - Non-terminal
 # t - Terminal
 # a - Arrow (->)
+# e - End of line
 
+L - Re
 R -> nat

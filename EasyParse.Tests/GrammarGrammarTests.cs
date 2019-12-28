@@ -18,7 +18,7 @@ namespace EasyParse.Tests
 
         [Theory]
         [InlineData("U -> n")]
-        public void RecognizesValidGrammar(string grammar) =>
+        public void RecognizesValidGrammar(params string[] grammar) =>
             base.Recognized(grammar);
     }
 }

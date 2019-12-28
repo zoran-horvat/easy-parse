@@ -13,6 +13,9 @@ namespace EasyParse.Testing
         protected bool Recognized(string input) =>
             this.CreateParser().Parse(input).IsSuccess;
 
+        protected bool Recognized(params string[] lines) =>
+            this.CreateParser().Parse(lines).IsSuccess;
+
         protected object Compiled(string input, ICompiler compiler) =>
             this.CreateParser().Parse(input).Compile(compiler);
 

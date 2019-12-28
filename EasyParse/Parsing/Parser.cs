@@ -35,6 +35,9 @@ namespace EasyParse.Parsing
         public ParsingResult Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
 
+        public ParsingResult Parse(IEnumerable<string> lines) =>
+            this.Parse(this.Lexer.Tokenize(lines));
+
         private ParsingResult Parse(IEnumerable<Token> input)
         {
             using (IEnumerator<Token> current = input.GetEnumerator())

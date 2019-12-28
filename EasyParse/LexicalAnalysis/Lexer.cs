@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using EasyParse.LexicalAnalysis.Tokens;
 
 namespace EasyParse.LexicalAnalysis
@@ -43,6 +44,9 @@ namespace EasyParse.LexicalAnalysis
             else
                 yield return new EndOfInput(position);
         }
+
+        public IEnumerable<Token> Tokenize(IEnumerable<string> lines) =>
+            this.Tokenize(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString());
 
         private Token TokenAt(int position, string input, IEnumerable<Match> matches) =>
             matches
