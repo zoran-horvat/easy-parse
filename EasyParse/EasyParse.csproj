@@ -79,6 +79,7 @@
     <Compile Include="ParserGenerator\Collections\StateVector.cs" />
     <Compile Include="ParserGenerator\Collections\State.cs" />
     <Compile Include="ParserGenerator\Collections\TransitionTable.cs" />
+    <Compile Include="ParserGenerator\GrammarCompiler\Compiler.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FirstSetsBuilder.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FollowSetsBuilder.cs" />
     <Compile Include="ParserGenerator\Formatting\Formatter.cs" />
@@ -137,17 +138,18 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ParserGenerator\GrammarGrammar.txt" />
-    <Content Include="ParserGenerator\GrammarParserDefinition.tt">
+    <Content Include="ParserGenerator\GrammarCompiler\GrammarGrammar.txt" />
+    <Content Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GrammarParserDefinition.xml</LastGenOutput>
     </Content>
-    <EmbeddedResource Include="ParserGenerator\GrammarParserDefinition.xml">
+    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml">
       <DependentUpon>GrammarParserDefinition.tt</DependentUpon>
       <AutoGen>True</AutoGen>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DesignTime>True</DesignTime>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

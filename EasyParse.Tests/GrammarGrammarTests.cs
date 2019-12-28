@@ -12,23 +12,31 @@ namespace EasyParse.Tests
         protected override Assembly XmlDefinitionAssembly => 
             typeof(GrammarLoader).Assembly;
         protected override string XmlDefinitionResourceName => 
-            "EasyParse.ParserGenerator.GrammarParserDefinition.xml";
+            "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml";
 
-        protected override Lexer Lexer => 
+        protected override Lexer Lexer =>
             GrammarParser.CreateLexer();
 
         [Theory]
         [InlineData(
-            "A -> M",
+            "# Comment on its own line",
+            "       # Comment on a line containing blank spaces",
+            "A -> M # Comment on a line with a rule",
+            "A -> A+M",
+            "A -> A-M",
             "U -> n",
             "",
-            "M -> U")]
+            "U -> (A)",
+            "M -> U",
+            "M -> M*U",
+            "M -> M/U")]
         public void RecognizesValidGrammar(params string[] grammar) => 
             Assert.True(base.Recognized(grammar));
 
         [Theory]
         [InlineData(
-            "A -> M",
+            "# Comment on its own line",
+            "A -> M # Comment on a line with a rule",
             "U -> n",
             "",
             "M -- U")]

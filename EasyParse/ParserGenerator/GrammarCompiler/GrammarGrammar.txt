@@ -1,0 +1,21 @@
+﻿# L - Line containing a single rule
+# R - Rule
+# B - Rule body
+# S - symbol (terminal or non-terminal)
+# E - Line ending (optional comment followed by end of line character)
+# n - Non-terminal
+# t - Terminal
+# a - Arrow (->)
+# e - End of line
+
+G -> L
+G -> GL
+L -> RE
+L -> E
+E -> #e
+E -> e
+R -> naB
+B -> S
+B -> BS
+S -> t
+S -> n
