@@ -1,6 +1,6 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using EasyParse.LexicalAnalysis;
-using EasyParse.ParserGenerator.Models.Builders;
 using EasyParse.Testing;
 using Xunit;
 
@@ -10,7 +10,7 @@ namespace EasyParse.CalculatorDemo.Tests
     {
         protected override Assembly XmlDefinitionAssembly => typeof(Calculator).Assembly;
         protected override string XmlDefinitionResourceName => "EasyParse.CalculatorDemo.ParserDefinition.xml";
-        protected override Lexer Lexer => ParserBuilder.CreateLexer();
+        protected override Func<Lexer, Lexer> LexicalRules => ParserBuilder.AddLexicalRules;
 
         [Theory]
         [InlineData("1")]

@@ -1,12 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.Models.Rules;
-using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing;
-using Match = System.Text.RegularExpressions.Match;
 
 namespace EasyParse.ParserGenerator.GrammarCompiler
 {
@@ -16,10 +12,10 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             (Grammar)this.CreateParser().Parse(text).Compile(new Compiler());
 
         private Parser CreateParser() =>
-            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml", CreateLexer());
+            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml", AddLexicalRules);
 
-        public static Lexer CreateLexer() =>
-            new Lexer()
+        public static Lexer AddLexicalRules(Lexer lexer) =>
+            lexer
                 .AddPattern("[A-Z]", "n")
                 .AddPattern(@"[a-z\(\)\+\-\*\/,\.#]", "t")
                 .AddPattern(@"\->", "a")

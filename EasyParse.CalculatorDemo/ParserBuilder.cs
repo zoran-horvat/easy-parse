@@ -14,10 +14,10 @@ namespace EasyParse.CalculatorDemo
         }
 
         public Parser Build() => 
-            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), this.ResourceName, CreateLexer());
+            Parser.FromXmlResource(Assembly.GetExecutingAssembly(), this.ResourceName, AddLexicalRules);
 
-        public static Lexer CreateLexer() =>
-            new Lexer()
+        public static Lexer AddLexicalRules(Lexer lexer) =>
+            lexer
                 .AddPattern(@"\d+", "n")
                 .AddPattern(@"[\+\-]", "+")
                 .AddPattern(@"[\*\/]", "*")
