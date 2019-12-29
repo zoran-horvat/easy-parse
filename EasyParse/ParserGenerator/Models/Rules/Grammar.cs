@@ -38,8 +38,10 @@ namespace EasyParse.ParserGenerator.Models.Rules
         }
 
         public Grammar AddRange(IEnumerable<Rule> rules) =>
-            this.RulesRepresentation.Any() ? new Grammar(this.RulesRepresentation.AddRange(rules))
-            : new Grammar(rules);
+            new Grammar(this.RulesRepresentation.AddRange(rules), this.IgnoreLexemesRepresentation);
+
+        public Grammar Add(Rule rule) =>
+            new Grammar(this.RulesRepresentation.Add(rule), this.IgnoreLexemesRepresentation);
 
         public Grammar Add(IgnoreLexeme ignore) =>
             new Grammar(this.RulesRepresentation, this.IgnoreLexemesRepresentation.Add(ignore));

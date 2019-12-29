@@ -12,11 +12,8 @@
 
 rules:
 Q -> reG
-Q -> eQ
-G -> U
-G -> GU
-U -> Re
-U -> e
+G -> Re
+G -> GRe
 R -> naB
 B -> S
 B -> BS

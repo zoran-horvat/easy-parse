@@ -17,19 +17,15 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         public object CompileNonTerminal(string label, object[] children) =>
             label == "Q" ? children[children.Length - 1]
             : label == "G" ? this.CompileGrammar(children)
-            : label == "U" ? this.CompileLine(children)
             : label == "R" ? this.CompileRule(children)
             : label == "B" ? this.CompileBody(children)
             : label == "S" ? this.CompileSymbol(children)
             : this.InternalError(label, children);
 
         private object CompileGrammar(object[] children) =>
-            children[0] is IEnumerable<Rule> rules ? new Grammar(rules)
-            : children[0] is Grammar grammar && children[1] is IEnumerable<Rule> nextRules ? (object)grammar.AddRange(nextRules)
+            children[0] is Rule firstRule ? new Grammar(firstRule)
+            : children[0] is Grammar leftGrammar && children[1] is Rule lastRule ? (object)leftGrammar.Add(lastRule)
             : this.InternalError("G", children);
-
-        private object CompileLine(object[] children) =>
-            children.OfType<Rule>().ToList();
 
         private object CompileRule(object[] children) =>
             children[0] is NonTerminal nonTerminal && children[2] is ImmutableList<Symbol> symbols ? this.CompileRule(nonTerminal, symbols)
