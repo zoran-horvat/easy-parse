@@ -1,4 +1,7 @@
-﻿A -> M
+﻿lexemes:
+
+rules:
+A -> M
 A -> A+M
 A -> A-M
 U -> n
