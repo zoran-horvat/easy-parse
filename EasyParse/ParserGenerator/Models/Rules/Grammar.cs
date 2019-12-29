@@ -10,30 +10,39 @@ namespace EasyParse.ParserGenerator.Models.Rules
 {
     public class Grammar
     {
-        public IEnumerable<Rule> Rules => this.RulesRepresentation;
+        public IEnumerable<Rule> Rules => 
+            this.RulesRepresentation
+                .SelectMany((rule, index) => 
+                    index == 0 ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule}
+                    : new[] {rule});
+        
+        public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.IgnoreLexemesRepresentation;
 
         private ImmutableList<Rule> RulesRepresentation { get; }
+
+        private ImmutableList<IgnoreLexeme> IgnoreLexemesRepresentation { get; }
 
         public Grammar(params Rule[] rules) : this((IEnumerable<Rule>)rules)
         {
         }
 
         public Grammar(IEnumerable<Rule> rules) :
-            this(rules.SelectMany((rule, index) => index == 0
-                    ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule}
-                    : new[] {rule})
-                .ToImmutableList())
+            this(rules.ToImmutableList(), ImmutableList<IgnoreLexeme>.Empty)
         {
         }
 
-        private Grammar(ImmutableList<Rule> rules)
+        private Grammar(ImmutableList<Rule> rules, ImmutableList<IgnoreLexeme> ignoreLexemes)
         {
             this.RulesRepresentation = rules;
+            this.IgnoreLexemesRepresentation = ignoreLexemes;
         }
 
         public Grammar AddRange(IEnumerable<Rule> rules) =>
             this.RulesRepresentation.Any() ? new Grammar(this.RulesRepresentation.AddRange(rules))
             : new Grammar(rules);
+
+        public Grammar Add(IgnoreLexeme ignore) =>
+            new Grammar(this.RulesRepresentation, this.IgnoreLexemesRepresentation.Add(ignore));
 
         public int SortOrderFor(NonTerminal nonTerminal) =>
             Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);

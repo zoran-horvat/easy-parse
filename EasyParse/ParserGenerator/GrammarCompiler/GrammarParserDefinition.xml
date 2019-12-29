@@ -1,4 +1,5 @@
 ﻿<ParserDefinition>
+  <LexicalRules />
   <Grammar>
     <Rule Ordinal="0">
       <Head>

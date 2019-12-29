@@ -27,8 +27,18 @@ namespace EasyParse.ParserGenerator.Models
 
         public XDocument ToXml() => new XDocument(
             new XElement("ParserDefinition",
+                this.LexicalRulesToXml(),
                 this.GrammarToXml(),
                 this.ParsingTableToXml()));
+
+        private XElement LexicalRulesToXml() =>
+            new XElement("LexicalRules", 
+                this.IgnoreLexemesToXml());
+
+        private IEnumerable<XElement> IgnoreLexemesToXml() =>
+            this.Grammar.IgnoreLexemes.Select(this.IgnoreLexemeToXml);
+        private XElement IgnoreLexemeToXml(IgnoreLexeme lexeme) =>
+            new XElement("Ignore", new XAttribute("Pattern", lexeme.Pattern.ToString()));
 
         private XElement GrammarToXml() =>
             new XElement("Grammar", this.Grammar.Rules.Select(this.RuleToXml));
