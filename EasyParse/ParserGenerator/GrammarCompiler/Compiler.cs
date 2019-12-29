@@ -15,9 +15,9 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             : value;
 
         public object CompileNonTerminal(string label, object[] children) =>
-            label == "G" ? this.CompileGrammar(children)
-            : label == "L" ? this.CompileLine(children)
-            : label == "E" ? children[children.Length - 1]
+            label == "Q" ? children[children.Length - 1]
+            : label == "G" ? this.CompileGrammar(children)
+            : label == "U" ? this.CompileLine(children)
             : label == "R" ? this.CompileRule(children)
             : label == "B" ? this.CompileBody(children)
             : label == "S" ? this.CompileSymbol(children)

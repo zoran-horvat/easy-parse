@@ -21,6 +21,7 @@ namespace EasyParse.Tests
         [InlineData(
             "# Comment on its own line",
             "       # Comment on a line containing blank spaces",
+            "rules:",
             "A -> M # Comment on a line with a rule",
             "A -> A+M",
             "A -> A-M",
@@ -31,6 +32,7 @@ namespace EasyParse.Tests
             "M -> M*U",
             "M -> M/U")]
         [InlineData(
+            "rules:",
             "# L - Line containing a single rule",
             "# R - Rule",
             "# B - Rule body",
@@ -57,6 +59,7 @@ namespace EasyParse.Tests
 
         [Theory]
         [InlineData(
+            "rules:",
             "# Comment on its own line",
             "A -> M # Comment on a line with a rule",
             "U -> n",

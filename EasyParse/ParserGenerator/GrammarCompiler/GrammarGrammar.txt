@@ -1,19 +1,22 @@
-﻿# L - Line containing a single rule
+﻿# Q - Full grammar (line rules: followed by one or more lines with rules)
+# G - Grammar without heading line
 # R - Rule
+# U - Line containing a single rule
 # B - Rule body
 # S - symbol (terminal or non-terminal)
-# E - Line ending (optional comment followed by end of line character)
 # n - Non-terminal
 # t - Terminal
 # a - Arrow (->)
 # e - End of line
+# r - rules: keyword
 
-G -> L
-G -> GL
-L -> RE
-L -> E
-E -> ce
-E -> e
+rules:
+Q -> reG
+Q -> eQ
+G -> U
+G -> GU
+U -> Re
+U -> e
 R -> naB
 B -> S
 B -> BS
