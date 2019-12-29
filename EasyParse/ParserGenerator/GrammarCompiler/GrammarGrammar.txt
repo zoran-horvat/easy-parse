@@ -1,4 +1,6 @@
-﻿# Q - Full grammar (line rules: followed by one or more lines with rules)
+﻿lexemes:
+
+# Q - Full grammar (line rules: followed by one or more lines with rules)
 # G - Grammar without heading line
 # R - Rule
 # U - Line containing a single rule
@@ -11,7 +13,7 @@
 # r - rules: keyword
 
 rules:
-Q -> reG
+Q -> lereG
 G -> Re
 G -> GRe
 R -> naB

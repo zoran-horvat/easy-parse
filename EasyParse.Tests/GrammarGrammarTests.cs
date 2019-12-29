@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
+using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
@@ -19,6 +21,7 @@ namespace EasyParse.Tests
 
         [Theory]
         [InlineData(
+            "lexemes:",
             "# Comment on its own line",
             "       # Comment on a line containing blank spaces",
             "rules:",
@@ -32,6 +35,7 @@ namespace EasyParse.Tests
             "M -> M*U",
             "M -> M/U")]
         [InlineData(
+            "lexemes:",
             "rules:",
             "# L - Line containing a single rule",
             "# R - Rule",
@@ -59,6 +63,8 @@ namespace EasyParse.Tests
 
         [Theory]
         [InlineData(
+            "lexemes:",
+            "",
             "rules:",
             "# Comment on its own line",
             "A -> M # Comment on a line with a rule",
