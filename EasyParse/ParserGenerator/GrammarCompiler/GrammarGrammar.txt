@@ -14,6 +14,7 @@
 
 rules:
 Q -> lereG
+Q -> eQ
 G -> Re
 G -> GRe
 R -> naB

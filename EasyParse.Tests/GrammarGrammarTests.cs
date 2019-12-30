@@ -58,6 +58,12 @@ namespace EasyParse.Tests
             "B -> BS",
             "S -> t",
             "S -> n")]
+        [InlineData(
+            "",
+            "# Grammar beginning with a blank line and a comment",
+            "lexemes:",
+            "rules:",
+            "S -> x")]
         public void RecognizesValidGrammar(params string[] grammar) => 
             Assert.True(base.Recognized(grammar));
 
