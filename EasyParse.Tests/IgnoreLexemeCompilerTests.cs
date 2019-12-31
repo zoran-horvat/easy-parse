@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
@@ -8,7 +10,7 @@ using Xunit;
 
 namespace EasyParse.Tests
 {
-    public class GrammarCompilerTests : ParserTestsBase
+    public class IgnoreLexemeCompilerTests : ParserTestsBase
     {
         protected override Assembly XmlDefinitionAssembly => 
             typeof(GrammarParser).Assembly;
@@ -19,21 +21,17 @@ namespace EasyParse.Tests
             GrammarParser.AddLexicalRules;
 
         [Theory]
-        [InlineData(
+        [InlineData(0,
             "lexemes:",
-            "# Comment on its own line",
-            "       # Comment on a line containing blank spaces",
             "rules:",
-            "A -> M # Comment on a line with a rule",
-            "A -> A+M",
-            "A -> A-M",
-            "U -> n",
-            "",
-            "U -> (A)",
-            "M -> U",
-            "M -> M*U",
-            "M -> M/U")]
-        public void CompilesGrammar(params string[] grammar) => 
-            Assert.IsType<Grammar>(base.Compiled(new Compiler(), grammar));
+            "X -> a")]
+        public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar) => 
+            Assert.Equal(expectedCount, this.GetIgnoreLexemes(grammar).Count());
+
+        private IEnumerable<IgnoreLexeme> GetIgnoreLexemes(string[] grammar) =>
+            this.CompiledGrammar(grammar).IgnoreLexemes;
+
+        private Grammar CompiledGrammar(string[] grammar) =>
+            base.Compiled(new Compiler(), grammar) as Grammar;
     }
 }

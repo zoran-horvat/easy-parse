@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="GrammarCompilerTests.cs" />
     <Compile Include="GrammarGrammarTests.cs" />
+    <Compile Include="IgnoreLexemeCompilerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
