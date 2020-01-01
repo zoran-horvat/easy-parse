@@ -10,6 +10,7 @@
 # t - Terminal
 # a - Arrow (->)
 # e - End of line
+# q - Singly-quoted string
 # l - lexemes: keyword
 # i - ignore: keyword
 # r - rules: keyword
@@ -18,7 +19,7 @@ rules:
 Q -> LreG
 Q -> eQ
 L -> le
-L -> Lie
+L -> Liqe
 G -> Re
 G -> GRe
 R -> naB

@@ -11,6 +11,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
     {
         public object CompileTerminal(string label, string value) =>
             new[] {"t", "l", "i"}.Contains(label) ? new Terminal(value)
+            : label == "q" ? new Terminal(value.Substring(1, value.Length - 2))
             : label == "n" ? (object)new NonTerminal(value)
             : value;
 
@@ -52,7 +53,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private object CompileLexemes(object[] children)
         {
             var x = children[0] is Terminal ? ImmutableList<IgnoreLexeme>.Empty
-                : children[0] is ImmutableList<IgnoreLexeme> ignores && children[1] is Terminal ignore ? (object) ignores.Add(new IgnoreLexeme(ignore.Value))
+                : children[0] is ImmutableList<IgnoreLexeme> ignores && children[2] is Terminal expression ? (object) ignores.Add(new IgnoreLexeme(expression.Value))
                 : this.InternalError("L", children);
             return x;
         }

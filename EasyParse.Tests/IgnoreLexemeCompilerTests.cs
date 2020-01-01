@@ -37,12 +37,22 @@ namespace EasyParse.Tests
             "ignore: ''",
             "rules:",
             "X -> a")]
-        public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar)
-        {
-            var x = Parser.FromXmlResource(this.XmlDefinitionAssembly, this.XmlDefinitionResourceName, this.LexicalRules).Lexer.Tokenize(grammar);
-            Grammar g = this.CompiledGrammar(grammar);
+        public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar) => 
             Assert.Equal(expectedCount, this.GetIgnoreLexemes(grammar).Count());
-        }
+
+        [Theory]
+        [InlineData("something",
+            "lexemes:",
+            "ignore: 'something'",
+            "rules:",
+            "X -> a")]
+        [InlineData("again, and again",
+            "lexemes:",
+            "ignore: 'again, and again'",
+            "rules:",
+            "X -> a")]
+        public void CompilesGrammarWithIgnoreLexeme_GrammarContainsIgnorePattern(string ignore, params string[] grammar) => 
+            Assert.Equal(ignore, this.CompiledGrammar(grammar).IgnoreLexemes.First().Pattern.ToString());
 
         private IEnumerable<IgnoreLexeme> GetIgnoreLexemes(string[] grammar) =>
             this.CompiledGrammar(grammar).IgnoreLexemes;
