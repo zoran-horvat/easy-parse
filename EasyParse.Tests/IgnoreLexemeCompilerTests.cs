@@ -28,13 +28,13 @@ namespace EasyParse.Tests
             "X -> a")]
         [InlineData(1,
             "lexemes:",
-            "ignore: ''",
+            "ignore ''",
             "rules:",
             "X -> a")]
         [InlineData(2,
             "lexemes:",
-            "ignore: ''",
-            "ignore: ''",
+            "ignore ''",
+            "ignore ''",
             "rules:",
             "X -> a")]
         public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar) => 
@@ -43,12 +43,12 @@ namespace EasyParse.Tests
         [Theory]
         [InlineData("something",
             "lexemes:",
-            "ignore: 'something'",
+            "ignore 'something'",
             "rules:",
             "X -> a")]
         [InlineData("again, and again",
             "lexemes:",
-            "ignore: 'again, and again'",
+            "ignore 'again, and again'",
             "rules:",
             "X -> a")]
         public void CompilesGrammarWithIgnoreLexeme_GrammarContainsIgnorePattern(string ignore, params string[] grammar) => 
