@@ -10,11 +10,15 @@
 # t - Terminal
 # a - Arrow (->)
 # e - End of line
+# l - lexemes: keyword
+# i - ignore: keyword
 # r - rules: keyword
 
 rules:
-Q -> lereG
+Q -> LreG
 Q -> eQ
+L -> le
+L -> Lie
 G -> Re
 G -> GRe
 R -> naB

@@ -10,17 +10,23 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
     public class Compiler : ICompiler
     {
         public object CompileTerminal(string label, string value) =>
-            label == "t" ? new Terminal(value)
+            new[] {"t", "l", "i"}.Contains(label) ? new Terminal(value)
             : label == "n" ? (object)new NonTerminal(value)
             : value;
 
         public object CompileNonTerminal(string label, object[] children) =>
-            label == "Q" ? children[children.Length - 1]
+            label == "Q" ? this.CompileFullGrammar(children)
             : label == "G" ? this.CompileGrammar(children)
             : label == "R" ? this.CompileRule(children)
             : label == "B" ? this.CompileBody(children)
             : label == "S" ? this.CompileSymbol(children)
+            : label == "L" ? this.CompileLexemes(children)
             : this.InternalError(label, children);
+
+        private object CompileFullGrammar(object[] children) =>
+            children[0] is ImmutableList<IgnoreLexeme> ignores && children[3] is Grammar grammar ? grammar.AddRange(ignores)
+            : children[1] is Grammar fullGrammar ? (object)fullGrammar
+            : this.InternalError("Q", children);
 
         private object CompileGrammar(object[] children) =>
             children[0] is Rule firstRule ? new Grammar(firstRule)
@@ -42,6 +48,14 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private object CompileSymbol(object[] children) =>
             children[0] is Symbol symbol ? (object)symbol
             : this.InternalError("S", children);
+
+        private object CompileLexemes(object[] children)
+        {
+            var x = children[0] is Terminal ? ImmutableList<IgnoreLexeme>.Empty
+                : children[0] is ImmutableList<IgnoreLexeme> ignores && children[1] is Terminal ignore ? (object) ignores.Add(new IgnoreLexeme(ignore.Value))
+                : this.InternalError("L", children);
+            return x;
+        }
 
         private string InternalError(string label, object[] children) =>
             $"Internal error compiling {label} -> {this.ToString(children)}";

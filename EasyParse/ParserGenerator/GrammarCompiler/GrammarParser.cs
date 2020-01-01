@@ -20,8 +20,9 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
                 .AddPattern(@"[a-z\(\)\+\-\*\/,\.#]", "t")
                 .AddPattern(@"\->", "a")
                 .AddPattern(@"\n([ \t]*(#[^\n]*)?\n)*", "e")
-                .AddPattern(@"rules:", "r")
                 .AddPattern(@"lexemes:", "l")
+                .AddPattern(@"ignore: ''", "i")
+                .AddPattern(@"rules:", "r")
                 .IgnorePattern(@"[ \t]+")
                 .IgnorePattern(@"#[^\n]*");
     }

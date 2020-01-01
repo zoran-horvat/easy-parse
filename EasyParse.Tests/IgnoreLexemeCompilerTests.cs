@@ -5,6 +5,7 @@ using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.ParserGenerator.Models.Rules;
+using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
@@ -25,13 +26,31 @@ namespace EasyParse.Tests
             "lexemes:",
             "rules:",
             "X -> a")]
-        public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar) => 
+        [InlineData(1,
+            "lexemes:",
+            "ignore: ''",
+            "rules:",
+            "X -> a")]
+        [InlineData(2,
+            "lexemes:",
+            "ignore: ''",
+            "ignore: ''",
+            "rules:",
+            "X -> a")]
+        public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar)
+        {
+            var x = Parser.FromXmlResource(this.XmlDefinitionAssembly, this.XmlDefinitionResourceName, this.LexicalRules).Lexer.Tokenize(grammar);
+            Grammar g = this.CompiledGrammar(grammar);
             Assert.Equal(expectedCount, this.GetIgnoreLexemes(grammar).Count());
+        }
 
         private IEnumerable<IgnoreLexeme> GetIgnoreLexemes(string[] grammar) =>
             this.CompiledGrammar(grammar).IgnoreLexemes;
 
         private Grammar CompiledGrammar(string[] grammar) =>
-            base.Compiled(new Compiler(), grammar) as Grammar;
+            base.Compiled<Grammar>(new Compiler(), this.OnCompileError, grammar);
+
+        private void OnCompileError(object result) =>
+            Assert.True(false, $"{result}");
     }
 }
