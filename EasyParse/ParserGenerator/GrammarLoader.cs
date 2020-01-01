@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
+using EasyParse.ParserGenerator.GrammarCompiler;
+using EasyParse.ParserGenerator.Models.Rules;
 
 namespace EasyParse.ParserGenerator
 {
     public class GrammarLoader
     {
-        public IEnumerable<string> From(string filePath) =>
-            File.ReadAllLines(filePath)
-                .Where(line => !string.IsNullOrWhiteSpace(line))
-                .Select(line => line.Trim())
-                .Where(line => !line.StartsWith("#"));
+        public Grammar From(string filePath) =>
+            new GrammarParser().Parse(File.ReadAllLines(filePath));
     }
 }

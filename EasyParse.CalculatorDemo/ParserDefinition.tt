@@ -14,6 +14,6 @@
 	var visualStudio = (this.Host as IServiceProvider).GetService(typeof(EnvDTE.DTE)) as EnvDTE.DTE;
 	string filePath = visualStudio.Solution.FindProjectItem("Grammar.txt").FileNames[0];
 
-	var doc = new GrammarLoader().From(filePath).ToGrammar().BuildParser().ToXml();
+	var doc = new GrammarLoader().From(filePath).BuildParser().ToXml();
 	WriteLine(doc.ToString());
 #>

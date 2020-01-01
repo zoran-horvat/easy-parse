@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
-using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
