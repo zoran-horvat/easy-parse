@@ -1,4 +1,6 @@
 ﻿lexemes:
+ignore '[ \t]+'
+ignore '#[^\n]*'
 
 # Q - Full grammar (line rules: followed by one or more lines with rules)
 # G - Grammar without heading line

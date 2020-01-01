@@ -37,14 +37,14 @@ namespace EasyParse.ParserGenerator.Models.Rules
             this.IgnoreLexemesRepresentation = ignoreLexemes;
         }
 
-        public Grammar AddRange(IEnumerable<Rule> rules) =>
-            new Grammar(this.RulesRepresentation.AddRange(rules), this.IgnoreLexemesRepresentation);
-
         public Grammar Add(Rule rule) =>
             new Grammar(this.RulesRepresentation.Add(rule), this.IgnoreLexemesRepresentation);
 
         public Grammar AddRange(IEnumerable<IgnoreLexeme> ignores) =>
-            new Grammar(this.RulesRepresentation, this.IgnoreLexemesRepresentation.AddRange(ignores));
+            new Grammar(this.RulesRepresentation, this.IgnoreLexemesRepresentation.AddRange(this.PurgeDuplicates(ignores)));
+
+        private IEnumerable<IgnoreLexeme> PurgeDuplicates(IEnumerable<IgnoreLexeme> ignores) =>
+            ignores.Distinct().Where(ignore => this.IgnoreLexemesRepresentation.All(existing => !existing.Pattern.Equals(ignore.Pattern)));
 
         public int SortOrderFor(NonTerminal nonTerminal) =>
             Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);

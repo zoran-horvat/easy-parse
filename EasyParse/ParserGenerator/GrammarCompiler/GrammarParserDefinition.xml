@@ -1,5 +1,8 @@
 ﻿<ParserDefinition>
-  <LexicalRules />
+  <LexicalRules>
+    <Ignore Pattern="[ \t]+" />
+    <Ignore Pattern="#[^\n]*" />
+  </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">
       <Head>
