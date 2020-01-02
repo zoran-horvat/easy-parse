@@ -14,7 +14,7 @@ ignore '#[^\n]*'
 # a - Arrow (->)
 # e - End of line
 # q - Singly-quoted string
-# s - Equals (=)
+# s - "is" keyword, as in 'n' is '[A-Z]'
 # l - lexemes: keyword
 # i - ignore: keyword
 # r - rules: keyword

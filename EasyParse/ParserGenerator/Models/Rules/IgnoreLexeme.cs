@@ -1,14 +1,9 @@
-﻿using System.Text.RegularExpressions;
-
-namespace EasyParse.ParserGenerator.Models.Rules
+﻿namespace EasyParse.ParserGenerator.Models.Rules
 {
     public class IgnoreLexeme : Lexeme
     {
-        public Regex Pattern { get; }
-
-        public IgnoreLexeme(string pattern)
+        public IgnoreLexeme(string pattern) : base(pattern)
         {
-            this.Pattern = new Regex(pattern);
         }
 
         public override string ToString() => 
