@@ -22,6 +22,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
                 .AddPattern(@"\n([ \t]*(#[^\n]*)?\n)*", "e")
                 .AddPattern(@"lexemes:", "l")
                 .AddPattern(@"ignore", "i")
+                .AddPattern(@"=", "s")
                 .AddPattern(@"'[^']*'", "q")
                 .AddPattern(@"rules:", "r");
     }

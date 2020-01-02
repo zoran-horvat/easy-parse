@@ -8,11 +8,13 @@ ignore '#[^\n]*'
 # U - Line containing a single rule
 # B - Rule body
 # S - symbol (terminal or non-terminal)
+# P - Lexeme pattern
 # n - Non-terminal
 # t - Terminal
 # a - Arrow (->)
 # e - End of line
 # q - Singly-quoted string
+# s - Equals (=)
 # l - lexemes: keyword
 # i - ignore: keyword
 # r - rules: keyword
@@ -21,7 +23,9 @@ rules:
 Q -> LreG
 Q -> eQ
 L -> le
-L -> Liqe
+L -> LPe
+P -> qsq
+P -> iq
 G -> Re
 G -> GRe
 R -> naB

@@ -9,11 +9,14 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 {
     public class Compiler : ICompiler
     {
-        public object CompileTerminal(string label, string value) =>
-            new[] {"t", "l", "i"}.Contains(label) ? new Terminal(value)
-            : label == "q" ? new Terminal(value.Substring(1, value.Length - 2))
-            : label == "n" ? (object)new NonTerminal(value)
-            : value;
+        public object CompileTerminal(string label, string value)
+        {
+            var x = new[] {"t", "l", "i", "s"}.Contains(label) ? new Terminal(value)
+                : label == "q" ? new Terminal(value.Substring(1, value.Length - 2))
+                : label == "n" ? (object) new NonTerminal(value)
+                : value;
+            return x;
+        }
 
         public object CompileNonTerminal(string label, object[] children) =>
             label == "Q" ? this.CompileFullGrammar(children)
@@ -22,10 +25,11 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             : label == "B" ? this.CompileBody(children)
             : label == "S" ? this.CompileSymbol(children)
             : label == "L" ? this.CompileLexemes(children)
+            : label == "P" ? this.CompileLexemePattern(children)
             : this.InternalError(label, children);
 
         private object CompileFullGrammar(object[] children) =>
-            children[0] is ImmutableList<IgnoreLexeme> ignores && children[3] is Grammar grammar ? grammar.AddRange(ignores)
+            children[0] is ImmutableList<Lexeme> lexemes && children[3] is Grammar grammar ? grammar.AddRange(lexemes)
             : children[1] is Grammar fullGrammar ? (object)fullGrammar
             : this.InternalError("Q", children);
 
@@ -52,11 +56,16 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private object CompileLexemes(object[] children)
         {
-            var x = children[0] is Terminal ? ImmutableList<IgnoreLexeme>.Empty
-                : children[0] is ImmutableList<IgnoreLexeme> ignores && children[2] is Terminal expression ? (object) ignores.Add(new IgnoreLexeme(expression.Value))
-                : this.InternalError("L", children);
+            var x = 
+                children.Length == 3 && children[0] is ImmutableList<Lexeme> lexemes && children[1] is Lexeme next ? lexemes.Add(next)
+                : ImmutableList<Lexeme>.Empty;
             return x;
         }
+
+        private object CompileLexemePattern(object[] children) =>
+            children.Length == 3 && children[0] is Terminal name && children[2] is Terminal pattern ? new LexemePattern(name.Value, pattern.Value)
+            : children.Length == 2 && children[1] is Terminal ignore ? (object)new IgnoreLexeme(ignore.Value)
+            : this.InternalError("L", children);
 
         private string InternalError(string label, object[] children) =>
             $"Internal error compiling {label} -> {this.ToString(children)}";

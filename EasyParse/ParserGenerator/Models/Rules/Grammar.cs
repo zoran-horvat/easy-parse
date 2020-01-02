@@ -15,36 +15,34 @@ namespace EasyParse.ParserGenerator.Models.Rules
                 .SelectMany((rule, index) => 
                     index == 0 ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule}
                     : new[] {rule});
-        
-        public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.IgnoreLexemesRepresentation;
+
+        public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.LexemesRepresentation.OfType<IgnoreLexeme>();
+        public IEnumerable<LexemePattern> LexemePatterns => this.LexemesRepresentation.OfType<LexemePattern>();
 
         private ImmutableList<Rule> RulesRepresentation { get; }
 
-        private ImmutableList<IgnoreLexeme> IgnoreLexemesRepresentation { get; }
+        private ImmutableList<Lexeme> LexemesRepresentation { get; }
 
         public Grammar(params Rule[] rules) : this((IEnumerable<Rule>)rules)
         {
         }
 
         public Grammar(IEnumerable<Rule> rules) :
-            this(rules.ToImmutableList(), ImmutableList<IgnoreLexeme>.Empty)
+            this(rules.ToImmutableList(), ImmutableList<Lexeme>.Empty)
         {
         }
 
-        private Grammar(ImmutableList<Rule> rules, ImmutableList<IgnoreLexeme> ignoreLexemes)
+        private Grammar(ImmutableList<Rule> rules, ImmutableList<Lexeme> lexemes)
         {
             this.RulesRepresentation = rules;
-            this.IgnoreLexemesRepresentation = ignoreLexemes;
+            this.LexemesRepresentation = lexemes;
         }
 
         public Grammar Add(Rule rule) =>
-            new Grammar(this.RulesRepresentation.Add(rule), this.IgnoreLexemesRepresentation);
+            new Grammar(this.RulesRepresentation.Add(rule), this.LexemesRepresentation);
 
-        public Grammar AddRange(IEnumerable<IgnoreLexeme> ignores) =>
-            new Grammar(this.RulesRepresentation, this.IgnoreLexemesRepresentation.AddRange(this.PurgeDuplicates(ignores)));
-
-        private IEnumerable<IgnoreLexeme> PurgeDuplicates(IEnumerable<IgnoreLexeme> ignores) =>
-            ignores.Distinct().Where(ignore => this.IgnoreLexemesRepresentation.All(existing => !existing.Pattern.Equals(ignore.Pattern)));
+        public Grammar AddRange(IEnumerable<Lexeme> lexemes) =>
+            new Grammar(this.RulesRepresentation, this.LexemesRepresentation.AddRange(lexemes));
 
         public int SortOrderFor(NonTerminal nonTerminal) =>
             Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);

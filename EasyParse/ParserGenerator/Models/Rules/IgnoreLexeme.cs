@@ -2,7 +2,7 @@
 
 namespace EasyParse.ParserGenerator.Models.Rules
 {
-    public class IgnoreLexeme
+    public class IgnoreLexeme : Lexeme
     {
         public Regex Pattern { get; }
 
