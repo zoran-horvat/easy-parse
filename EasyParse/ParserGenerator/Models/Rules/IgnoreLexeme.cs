@@ -10,5 +10,8 @@ namespace EasyParse.ParserGenerator.Models.Rules
         {
             this.Pattern = new Regex(pattern);
         }
+
+        public override string ToString() => 
+            $"Ignore \"{this.Pattern}\"";
     }
 }

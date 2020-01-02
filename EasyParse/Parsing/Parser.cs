@@ -26,12 +26,24 @@ namespace EasyParse.Parsing
             this.Goto = @goto;
         }
 
-        private static Parser From(XDocument definition, Lexer lexer) => 
-            new Parser(lexer, new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
-
         public static Parser FromXmlResource(Assembly assembly, string resourceName, Func<Lexer, Lexer> lexicalRules) =>
-            From(new XmlResource(assembly, resourceName).Load(), lexicalRules(new Lexer()));
+            From(new XmlResource(assembly, resourceName).Load(), lexicalRules);
 
+        private static Parser From(XDocument definition, Func<Lexer, Lexer> lexicalRules) => 
+            new Parser(lexicalRules(LoadLexer(definition)), new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
+
+        private static Lexer LoadLexer(XDocument definition) =>
+            LoadIgnorePatterns(definition)
+                .Aggregate(new Lexer(), (lexer, ignore) => lexer.IgnorePattern(ignore));
+
+        private static IEnumerable<string> LoadIgnorePatterns(XDocument definition) =>
+            definition.Root
+                ?.Element("LexicalRules")
+                ?.Elements("Ignore")
+                .Select(ignore => ignore.Attribute("Pattern")?.Value ?? string.Empty)
+                .Where(pattern => !string.IsNullOrEmpty(pattern))
+            ?? Enumerable.Empty<string>();
+                
         public ParsingResult Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
 

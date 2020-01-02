@@ -22,7 +22,6 @@ namespace EasyParse.CalculatorDemo
                 .AddPattern(@"[\+\-]", "+")
                 .AddPattern(@"[\*\/]", "*")
                 .AddPattern(@"\(", "(")
-                .AddPattern(@"\)", ")")
-                .IgnorePattern(@"\s+");
+                .AddPattern(@"\)", ")");
     }
 }

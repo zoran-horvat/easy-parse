@@ -28,5 +28,11 @@ namespace EasyParse.LexicalAnalysis
             this.LexemeLabel.Select<string, Token>(label => new Lexeme(label, position, value))
                 .DefaultIfEmpty(new Ignored(value, position))
                 .First();
+
+        public override string ToString() =>
+            this.LexemeLabel
+                .Select(label => $"{label} = \"{this.Expression}\"")
+                .DefaultIfEmpty($"Ignore \"{this.Expression}\"")
+                .First();
     }
 }
