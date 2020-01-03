@@ -17,6 +17,7 @@ ignore '#[^\n]*'
 # B - Rule body
 # S - symbol (terminal or non-terminal)
 # P - Lexeme pattern
+# Q - Singly quoted string
 # n - Non-terminal
 # t - Terminal
 # a - Arrow (->)
@@ -32,8 +33,9 @@ F -> LreG
 F -> eF
 L -> le
 L -> LPe
-P -> qsq
-P -> iq
+P -> QsQ
+P -> iQ
+Q -> q
 G -> Re
 G -> GRe
 R -> naB
