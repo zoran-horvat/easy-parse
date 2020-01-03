@@ -64,8 +64,8 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         }
 
         private object CompileLexemePattern(object[] children) =>
-            children.Length == 3 && children[0] is string name && children[2] is string pattern ? new LexemePattern(name, pattern)
-            : children.Length == 2 && children[1] is string ignore ? (object)new IgnoreLexeme(ignore)
+            children.Length == 3 && children[0] is Terminal name && children[2] is Terminal pattern ? new LexemePattern(name.Value, pattern.Value)
+            : children.Length == 2 && children[1] is Terminal ignore ? (object) new IgnoreLexeme(ignore.Value)
             : this.InternalError("L", children);
 
         private object CompileString(object[] children) =>
