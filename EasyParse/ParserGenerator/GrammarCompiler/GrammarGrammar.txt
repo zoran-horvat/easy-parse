@@ -1,6 +1,14 @@
 ﻿lexemes:
 ignore '[ \t]+'
 ignore '#[^\n]*'
+'n' is '[A-Z]'
+'t' is '[a-z\(\)\+\-\*\/,\.#]'
+'a' is '\->'
+'e' is '\n([ \t]*(#[^\n]*)?\n)*'
+'l' is 'lexemes:'
+'i' is 'ignore'
+'s' is 'is'
+'r' is 'rules:'
 
 # Q - Full grammar (line rules: followed by one or more lines with rules)
 # G - Grammar without heading line

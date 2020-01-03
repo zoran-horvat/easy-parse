@@ -16,14 +16,6 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         public static Lexer AddLexicalRules(Lexer lexer) =>
             lexer
-                .AddPattern("[A-Z]", "n")
-                .AddPattern(@"[a-z\(\)\+\-\*\/,\.#]", "t")
-                .AddPattern(@"\->", "a")
-                .AddPattern(@"\n([ \t]*(#[^\n]*)?\n)*", "e")
-                .AddPattern(@"lexemes:", "l")
-                .AddPattern(@"ignore", "i")
-                .AddPattern(@"is", "s")
-                .AddPattern(@"'[^']*'", "q")
-                .AddPattern(@"rules:", "r");
+                .AddPattern(@"'[^']*'", "q");
     }
 }

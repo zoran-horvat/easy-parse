@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
@@ -33,8 +34,15 @@ namespace EasyParse.Parsing
             new Parser(lexicalRules(LoadLexer(definition)), new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
 
         private static Lexer LoadLexer(XDocument definition) =>
+            LexerWithPatterns(LexerWithIgnores(definition), definition);
+
+        private static Lexer LexerWithIgnores(XDocument definition) =>
             LoadIgnorePatterns(definition)
                 .Aggregate(new Lexer(), (lexer, ignore) => lexer.IgnorePattern(ignore));
+
+        private static Lexer LexerWithPatterns(Lexer initial, XDocument definition) =>
+            LoadLexicalPatterns(definition)
+                .Aggregate(initial, (lexer, pattern) => lexer.AddPattern(pattern.pattern, pattern.name));
 
         private static IEnumerable<string> LoadIgnorePatterns(XDocument definition) =>
             definition.Root
@@ -43,6 +51,14 @@ namespace EasyParse.Parsing
                 .Select(ignore => ignore.Attribute("Pattern")?.Value ?? string.Empty)
                 .Where(pattern => !string.IsNullOrEmpty(pattern))
             ?? Enumerable.Empty<string>();
+
+        private static IEnumerable<(string pattern, string name)> LoadLexicalPatterns(XDocument definition) =>
+            definition.Root
+                ?.Element("LexicalRules")
+                ?.Elements("Lexeme")
+                .Select(lexeme => (pattern: lexeme.Attribute("Pattern")?.Value ?? string.Empty, name: lexeme.Attribute("Name")?.Value ?? string.Empty))
+                .Where(tuple => !string.IsNullOrEmpty(tuple.pattern) && !string.IsNullOrEmpty(tuple.name))
+            ?? Enumerable.Empty<(string, string)>();
                 
         public ParsingResult Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));

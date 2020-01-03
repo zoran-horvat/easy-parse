@@ -2,6 +2,14 @@
   <LexicalRules>
     <Ignore Pattern="[ \t]+" />
     <Ignore Pattern="#[^\n]*" />
+    <Lexeme Pattern="[A-Z]" Name="n" />
+    <Lexeme Pattern="[a-z\(\)\+\-\*\/,\.#]" Name="t" />
+    <Lexeme Pattern="\-&gt;" Name="a" />
+    <Lexeme Pattern="\n([ \t]*(#[^\n]*)?\n)*" Name="e" />
+    <Lexeme Pattern="lexemes:" Name="l" />
+    <Lexeme Pattern="ignore" Name="i" />
+    <Lexeme Pattern="is" Name="s" />
+    <Lexeme Pattern="rules:" Name="r" />
   </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">
