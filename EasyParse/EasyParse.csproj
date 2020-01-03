@@ -80,6 +80,7 @@
     <Compile Include="ParserGenerator\Collections\State.cs" />
     <Compile Include="ParserGenerator\Collections\TransitionTable.cs" />
     <Compile Include="ParserGenerator\GrammarCompiler\Compiler.cs" />
+    <Compile Include="ParserGenerator\GrammarCompiler\StringCompiler.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FirstSetsBuilder.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FollowSetsBuilder.cs" />
     <Compile Include="ParserGenerator\Formatting\Formatter.cs" />
@@ -142,10 +143,21 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ParserGenerator\GrammarCompiler\GrammarGrammar.txt" />
+    <Content Include="ParserGenerator\GrammarCompiler\StringParserDefinition.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>StringParserDefinition.xml</LastGenOutput>
+    </Content>
+    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\StringParserDefinition.xml">
+      <DependentUpon>StringParserDefinition.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DesignTime>True</DesignTime>
+    </EmbeddedResource>
     <Content Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>GrammarParserDefinition.xml</LastGenOutput>
     </Content>
+    <Content Include="ParserGenerator\GrammarCompiler\StringGrammar.txt" />
     <EmbeddedResource Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml">
       <DependentUpon>GrammarParserDefinition.tt</DependentUpon>
       <AutoGen>True</AutoGen>

@@ -1,0 +1,9 @@
+﻿lexemes:
+# C - string content
+# q - single quote
+# p - plain text segment
+
+rules:
+S -> qq
+S -> qCq
+C -> p

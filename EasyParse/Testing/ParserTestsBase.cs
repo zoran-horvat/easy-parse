@@ -23,17 +23,24 @@ namespace EasyParse.Testing
         protected object Compiled(ICompiler compiler, params string[] lines) =>
             this.CreateParser().Parse(lines).Compile(compiler);
 
+        protected object CompiledLine(ICompiler compiler, string input) =>
+            this.CreateParser().Parse(input).Compile(compiler);
+
         protected T Compiled<T>(ICompiler compiler, params string[] lines) where T : class =>
             (T) this.Compiled(compiler, lines);
 
-        protected T Compiled<T>(ICompiler compiler, Action<object> orElse, params string[] lines) where T : class
+        protected T Compiled<T>(ICompiler compiler, Action<object> orElse, params string[] lines) where T : class => 
+            this.Compiled<T>(this.Compiled(compiler, lines), orElse);
+
+        protected T CompiledLine<T>(ICompiler compiler, Action<object> orElse, string input) where T : class =>
+            this.Compiled<T>(this.Compiled(compiler, input), orElse);
+
+        private T Compiled<T>(object result, Action<object> orElse) where T : class
         {
-            object result = this.Compiled(compiler, lines);
             if (result is T success) return success;
             orElse(result);
             throw new InvalidOperationException($"Could not compile {result?.GetType().Name ?? "<null>"} into {typeof(T).Name}.");
         }
-            
 
         private Parser CreateParser() =>
             Parser.FromXmlResource(this.XmlDefinitionAssembly, this.XmlDefinitionResourceName, this.LexicalRules);

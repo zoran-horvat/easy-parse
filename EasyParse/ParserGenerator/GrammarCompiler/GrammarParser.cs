@@ -14,8 +14,11 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private Parser CreateParser() =>
             Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml", AddLexicalRules);
 
-        public static Lexer AddLexicalRules(Lexer lexer) =>
-            lexer
-                .AddPattern(@"'[^']*'", "q");
+        public static Lexer AddLexicalRules(Lexer lexer) => lexer
+            .AddPattern(@"'[^']*'", "q");
+
+        public static Lexer AddStringLexicalRules(Lexer lexer) => lexer
+            .AddPattern(@"'", "q")
+            .AddPattern(@"[^']+", "p");
     }
 }
