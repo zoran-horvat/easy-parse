@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Reflection;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing;
@@ -9,14 +10,24 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 {
     public class Compiler : ICompiler
     {
+        private Parser StringParser { get; } = Parser.FromXmlResource(
+            Assembly.GetExecutingAssembly(), 
+            "EasyParse.ParserGenerator.GrammarCompiler.StringParserDefinition.xml", 
+            GrammarParser.AddStringLexicalRules);
+
+        private StringCompiler StringCompiler { get; } = new StringCompiler();
+
         public object CompileTerminal(string label, string value)
         {
             var x = new[] {"t", "l", "i", "s"}.Contains(label) ? new Terminal(value)
-                : label == "q" ? new Terminal(value.Substring(1, value.Length - 2))
+                : label == "q" ? new Terminal(this.CompileStringLiteral(value))
                 : label == "n" ? (object) new NonTerminal(value)
                 : value;
             return x;
         }
+
+        private string CompileStringLiteral(string value) => 
+            (string)this.StringParser.Parse(value).Compile(this.StringCompiler);
 
         public object CompileNonTerminal(string label, object[] children) =>
             label == "F" ? this.CompileFullGrammar(children)
