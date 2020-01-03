@@ -10,7 +10,7 @@ ignore '#[^\n]*'
 's' is 'is'
 'r' is 'rules:'
 
-# Q - Full grammar (line rules: followed by one or more lines with rules)
+# F - Full grammar (line rules: followed by one or more lines with rules)
 # G - Grammar without heading line
 # R - Rule
 # U - Line containing a single rule
@@ -28,8 +28,8 @@ ignore '#[^\n]*'
 # r - rules: keyword
 
 rules:
-Q -> LreG
-Q -> eQ
+F -> LreG
+F -> eF
 L -> le
 L -> LPe
 P -> qsq
