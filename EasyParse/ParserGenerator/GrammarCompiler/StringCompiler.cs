@@ -7,8 +7,8 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 {
     public class StringCompiler : MethodMapCompiler
     {
-        protected override IEnumerable<(string terminal, string methodName)> TerminalMap =>
-            Enumerable.Empty<(string, string)>();
+        protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap =>
+            Enumerable.Empty<(string, Func<string, object>)>();
 
         private string S(string quote1, string quote2) => string.Empty;
         private string S(string quote1, string content, string quote2) => content;

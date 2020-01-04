@@ -7,11 +7,14 @@ namespace EasyParse.Parsing
 {
     public abstract class MethodMapCompiler : ICompiler
     {
-        protected abstract IEnumerable<(string terminal, string methodName)> TerminalMap { get; }
+        protected abstract IEnumerable<(string terminal, Func<string, object> map)> TerminalMap { get; }
 
         public object CompileTerminal(string label, string value) =>
-            this.MethodNameFor(label).FirstOrDefault() is string methodName ? this.Compile(methodName, value)
-            : value;
+            this.TerminalMap
+                .Where(tuple => tuple.terminal == label)
+                .Select(tuple => tuple.map(value))
+                .DefaultIfEmpty(value)
+                .First();
 
         public object CompileNonTerminal(string label, object[] children) =>
             this.Compile(label, children);
@@ -28,11 +31,6 @@ namespace EasyParse.Parsing
                 .Where(method => !method.ContainsGenericParameters)
                 .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
                 .Where(method => this.CanBind(method, arguments));
-
-        private IEnumerable<string> MethodNameFor(string label) =>
-            this.TerminalMap
-                .Where(map => map.terminal.Equals(label))
-                .Select(map => map.methodName);
 
         private bool CanBind(MethodInfo method, object[] arguments) =>
             this.CanBind(method.GetParameters(), arguments);

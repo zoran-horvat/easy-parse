@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Reflection;
 using EasyParse.ParserGenerator.Models.Rules;
@@ -16,14 +17,12 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private StringCompiler StringCompiler { get; } = new StringCompiler();
 
-        protected override IEnumerable<(string terminal, string methodName)> TerminalMap => new[]
+        protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
         {
-            ("q", nameof(QuotedString)),
-            ("n", nameof(NonTerminal))
+            ("q", raw => this.StringParser.Parse(raw).Compile(this.StringCompiler)),
+            ("n", value => new NonTerminal(value))
         };
 
-        private string QuotedString(string raw) => this.CompileStringLiteral(raw);
-        private NonTerminal NonTerminal(string value) => new NonTerminal(value);
         private Grammar F(ImmutableList<Lexeme> lexemes, string rulesKeyword, string endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
         private Grammar F(string endOfLine, Grammar grammar) => grammar;
         private ImmutableList<Lexeme> L(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
@@ -37,8 +36,5 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private ImmutableList<Symbol> B(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
         private Symbol S(string terminal) => new Terminal(terminal);
         private Symbol S(NonTerminal nonTerminal) => nonTerminal;
-
-        private string CompileStringLiteral(string value) => 
-            (string)this.StringParser.Parse(value).Compile(this.StringCompiler);
     }
 }
