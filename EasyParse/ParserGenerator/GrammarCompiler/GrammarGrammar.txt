@@ -1,10 +1,10 @@
 ﻿lexemes:
-ignore '[ \t]+'
-ignore '#[^\n]*'
+ignore @'[ \t]+'
+ignore @'#[^\n]*'
 'n' is '[A-Z]'
-'t' is '[a-z\(\)\+\-\*\/,\.#]'
+'t' is @'[a-z\(\)\+\-\*\/,\.#]'
 'a' is '\->'
-'e' is '\n([ \t]*(#[^\n]*)?\n)*'
+'e' is @'\n([ \t]*(#[^\n]*)?\n)*'
 'l' is 'lexemes:'
 'i' is 'ignore'
 's' is 'is'
@@ -35,7 +35,7 @@ F -> eF
 L -> le
 L -> LPe
 P -> qsT
-P -> iq
+P -> iT
 G -> Re
 G -> GRe
 R -> naB
