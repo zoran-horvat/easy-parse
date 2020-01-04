@@ -26,6 +26,7 @@ namespace EasyParse.Parsing
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
                 .Where(method => string.Equals(name, method.Name, StringComparison.InvariantCultureIgnoreCase))
                 .Where(method => !method.ContainsGenericParameters)
+                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
                 .Where(method => this.CanBind(method, arguments));
 
         private IEnumerable<string> MethodNameFor(string label) =>
