@@ -16,42 +16,27 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private StringCompiler StringCompiler { get; } = new StringCompiler();
 
-        protected override IEnumerable<(string label, string methodName)> Map => new[]
+        protected override IEnumerable<(string terminal, string methodName)> TerminalMap => new[]
         {
-            ("r", nameof(Terminal)),
-            ("t", nameof(Terminal)),
-            ("l", nameof(Terminal)),
-            ("i", nameof(Terminal)),
-            ("s", nameof(Terminal)),
-            ("a", nameof(Terminal)),
-            ("e", nameof(Terminal)),
             ("q", nameof(QuotedString)),
-            ("n", nameof(NonTerminal)),
-            ("F", nameof(FullGrammar)),
-            ("L", nameof(Lexemes)),
-            ("P", nameof(LexemePattern)),
-            ("G", nameof(Grammar)),
-            ("R", nameof(Rule)),
-            ("B", nameof(RuleBody)),
-            ("S", nameof(Symbol))
+            ("n", nameof(NonTerminal))
         };
 
-        private Terminal Terminal(string value) => new Terminal(value);
-        private Terminal QuotedString(string raw) => new Terminal(this.CompileStringLiteral(raw));
+        private string QuotedString(string raw) => this.CompileStringLiteral(raw);
         private NonTerminal NonTerminal(string value) => new NonTerminal(value);
-        private Grammar FullGrammar(ImmutableList<Lexeme> lexemes, Terminal rulesKeyword, Terminal endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
-        private Grammar FullGrammar(Terminal endOfLine, Grammar grammar) => grammar;
-        private ImmutableList<Lexeme> Lexemes(Terminal lexemesKeyword, Terminal endOfLine) => ImmutableList<Lexeme>.Empty;
-        private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next, Terminal endOfLine) => lexemes.Add(next);
-        private Lexeme LexemePattern(Terminal name, Terminal @is, Terminal pattern) => new LexemePattern(name.Value, pattern.Value);
-        private Lexeme LexemePattern(Terminal ignore, Terminal pattern) => new IgnoreLexeme(pattern.Value);
-        private Grammar Grammar(Rule rule, Terminal endOfLine) => new Grammar(rule);
-        private Grammar Grammar(Grammar rules, Rule next, Terminal endOfLine) => rules.Add(next);
-        private Rule Rule(NonTerminal nonTerminal, Terminal arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
-        private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
-        private ImmutableList<Symbol> RuleBody(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
-        private Symbol Symbol(Terminal terminal) => terminal;
-        private Symbol Symbol(NonTerminal nonTerminal) => nonTerminal;
+        private Grammar F(ImmutableList<Lexeme> lexemes, string rulesKeyword, string endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
+        private Grammar F(string endOfLine, Grammar grammar) => grammar;
+        private ImmutableList<Lexeme> L(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
+        private ImmutableList<Lexeme> L(ImmutableList<Lexeme> lexemes, Lexeme next, string endOfLine) => lexemes.Add(next);
+        private Lexeme P(string name, string @is, string pattern) => new LexemePattern(name, pattern);
+        private Lexeme P(string ignoreKeyword, string pattern) => new IgnoreLexeme(pattern);
+        private Grammar G(Rule rule, string endOfLine) => new Grammar(rule);
+        private Grammar G(Grammar rules, Rule next, string endOfLine) => rules.Add(next);
+        private Rule R(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
+        private ImmutableList<Symbol> B(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
+        private ImmutableList<Symbol> B(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
+        private Symbol S(string terminal) => new Terminal(terminal);
+        private Symbol S(NonTerminal nonTerminal) => nonTerminal;
 
         private string CompileStringLiteral(string value) => 
             (string)this.StringParser.Parse(value).Compile(this.StringCompiler);

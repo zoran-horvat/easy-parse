@@ -5,7 +5,6 @@ using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.ParserGenerator.Models.Rules;
-using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
@@ -79,7 +78,7 @@ namespace EasyParse.Tests
             "'n' is '[A-Z]'",
             "rules:",
             "X -> a")]
-        public void CompilesGrammarWithLexemePatterns_GrammarContainsSpecifiedNumberOfPatterns(int expectedCount, params string[] grammar) =>
+        public void CompilesGrammarWithLexemePatterns_GrammarContainsSpecifiedNumberOfPatterns(int expectedCount, params string[] grammar) => 
             Assert.Equal(expectedCount, this.GetLexemePatterns(grammar).Count());
 
         private IEnumerable<IgnoreLexeme> GetIgnoreLexemes(string[] grammar) =>

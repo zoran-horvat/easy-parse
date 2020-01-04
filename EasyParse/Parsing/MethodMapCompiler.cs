@@ -7,30 +7,30 @@ namespace EasyParse.Parsing
 {
     public abstract class MethodMapCompiler : ICompiler
     {
-        protected abstract IEnumerable<(string label, string methodName)> Map { get; }
+        protected abstract IEnumerable<(string terminal, string methodName)> TerminalMap { get; }
 
         public object CompileTerminal(string label, string value) =>
-            this.Compile(label, value);
+            this.MethodNameFor(label).FirstOrDefault() is string methodName ? this.Compile(methodName, value)
+            : value;
 
         public object CompileNonTerminal(string label, object[] children) =>
             this.Compile(label, children);
 
-        private object Compile(string label, params object[] children) =>
+        private object Compile(string methodName, params object[] children) =>
             children.OfType<Exception>().FirstOrDefault() is Exception exc ? exc
-            : this.MethodsFor(label, children).FirstOrDefault() is MethodInfo method ? method.Invoke(this, children)
-            : this.Fail(label, children);
+            : this.FindMethods(methodName, children).FirstOrDefault() is MethodInfo method ? method.Invoke(this, children)
+            : this.Fail(methodName, children);
 
-        private IEnumerable<MethodInfo> MethodsFor(string label, object[] arguments) =>
-            this.MethodNameFor(label)
-                .SelectMany(methodName => this.GetType()
-                    .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                    .Where(method => method.Name.Equals(methodName)))
+        private IEnumerable<MethodInfo> FindMethods(string name, object[] arguments) =>
+            this.GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(method => string.Equals(name, method.Name, StringComparison.InvariantCultureIgnoreCase))
                 .Where(method => !method.ContainsGenericParameters)
                 .Where(method => this.CanBind(method, arguments));
 
         private IEnumerable<string> MethodNameFor(string label) =>
-            this.Map
-                .Where(map => map.label.Equals(label))
+            this.TerminalMap
+                .Where(map => map.terminal.Equals(label))
                 .Select(map => map.methodName);
 
         private bool CanBind(MethodInfo method, object[] arguments) =>
