@@ -8,7 +8,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 {
     public class GrammarParser
     {
-        public Grammar Parse(IEnumerable<string> text) =>
+        public Grammar Parse(IEnumerable<string> text) => 
             (Grammar)this.CreateParser().Parse(text).Compile(new Compiler());
 
         private Parser CreateParser() =>
@@ -19,6 +19,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             .AddPattern(@"@'[^']*'", "v");
 
         public static Lexer AddStringLexicalRules(Lexer lexer) => lexer
-            .AddPattern(".+", "p");
+            .AddPattern(@"[^\\]+", "p")
+            .AddPattern(@"\\.", "e");
     }
 }

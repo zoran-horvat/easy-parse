@@ -28,6 +28,11 @@ namespace EasyParse.Tests
         public void CompilesString_ReturnsExpectedValue(string input, string expected) =>
             Assert.Equal(expected, this.Compile(input));
 
+        [Theory]
+        [InlineData(@"some\\thing", @"some\thing")]
+        public void CompilesEscapedString_ReturnsExpectedValue(string input, string expected) =>
+            Assert.Equal(expected, this.Compile(input));
+
         private string Compile(string input) =>
             base.CompiledLine<string>(new StringCompiler(), this.Fail, input);
 

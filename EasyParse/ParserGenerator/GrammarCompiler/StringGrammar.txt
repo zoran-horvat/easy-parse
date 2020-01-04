@@ -1,7 +1,12 @@
 ﻿lexemes:
 
-# C - string content
+# S - string content
+# T - string segment 
 # p - plain text segment
+# e - escaping sequence (\ followed by a character)
 
 rules:
-S -> p
+S -> T
+S -> ST
+T -> p
+T -> e
