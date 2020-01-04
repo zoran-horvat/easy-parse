@@ -3,17 +3,18 @@
 
 # C - string content
 # q - single quote
+# d - two consecutive single quotes
 # p - plain text segment
 # a - verbatim string indicator
 
 rules:
 S -> P
 S -> V
-P -> qq
+P -> d
 P -> qCq
 G -> a
 G -> p
-V -> aqq
+V -> ad
 V -> aqCq
 C -> G
 C -> CG
