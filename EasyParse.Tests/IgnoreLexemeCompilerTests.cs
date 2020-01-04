@@ -5,6 +5,7 @@ using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.ParserGenerator.Models.Rules;
+using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
@@ -65,10 +66,11 @@ namespace EasyParse.Tests
             "ignore 'something'",
             "rules:",
             "X -> a")]
-        [InlineData(1, 
+        [InlineData(2, 
             "lexemes:",
             "ignore 'something'",
             "'n' is '[A-Z]'",
+            "'g' is '@'",
             "rules:",
             "X -> a")]
         [InlineData(1, 
@@ -78,6 +80,22 @@ namespace EasyParse.Tests
             "'n' is '[A-Z]'",
             "rules:",
             "X -> a")]
+        [InlineData(1,
+            "lexemes:",
+            "'a' is '@'",
+            "",
+            "# C - string content",
+            "# q - single quote",
+            "# p - plain text segment",
+            "# a - verbatim string indicator",
+            "",
+            "rules:",
+            "S -> qq",
+            "S -> qCq",
+            "S -> V",
+            "C -> p",
+            "V -> aqq"
+            )]
         public void CompilesGrammarWithLexemePatterns_GrammarContainsSpecifiedNumberOfPatterns(int expectedCount, params string[] grammar) => 
             Assert.Equal(expectedCount, this.GetLexemePatterns(grammar).Count());
 

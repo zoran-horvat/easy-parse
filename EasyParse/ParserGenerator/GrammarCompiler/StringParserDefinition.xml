@@ -14,8 +14,7 @@
         <NonTerminal Name="S" />
       </Head>
       <Body>
-        <Terminal Name="q" />
-        <Terminal Name="q" />
+        <NonTerminal Name="P" />
       </Body>
     </Rule>
     <Rule Ordinal="2">
@@ -23,31 +22,115 @@
         <NonTerminal Name="S" />
       </Head>
       <Body>
+        <NonTerminal Name="V" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="3">
+      <Head>
+        <NonTerminal Name="P" />
+      </Head>
+      <Body>
+        <Terminal Name="q" />
+        <Terminal Name="q" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="4">
+      <Head>
+        <NonTerminal Name="P" />
+      </Head>
+      <Body>
         <Terminal Name="q" />
         <NonTerminal Name="C" />
         <Terminal Name="q" />
       </Body>
     </Rule>
-    <Rule Ordinal="3">
+    <Rule Ordinal="5">
       <Head>
         <NonTerminal Name="C" />
+      </Head>
+      <Body>
+        <NonTerminal Name="G" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="6">
+      <Head>
+        <NonTerminal Name="C" />
+      </Head>
+      <Body>
+        <NonTerminal Name="C" />
+        <NonTerminal Name="G" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="7">
+      <Head>
+        <NonTerminal Name="G" />
+      </Head>
+      <Body>
+        <Terminal Name="a" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="8">
+      <Head>
+        <NonTerminal Name="G" />
       </Head>
       <Body>
         <Terminal Name="p" />
       </Body>
     </Rule>
+    <Rule Ordinal="9">
+      <Head>
+        <NonTerminal Name="V" />
+      </Head>
+      <Body>
+        <Terminal Name="a" />
+        <Terminal Name="q" />
+        <Terminal Name="q" />
+      </Body>
+    </Rule>
   </Grammar>
   <ParsingTable>
-    <Shift State="0" Terminal="p" TransitionTo="3" />
-    <Shift State="0" Terminal="q" TransitionTo="2" />
-    <Shift State="2" Terminal="p" TransitionTo="3" />
-    <Shift State="2" Terminal="q" TransitionTo="4" />
-    <Shift State="5" Terminal="q" TransitionTo="6" />
+    <Shift State="0" Terminal="a" TransitionTo="3" />
+    <Shift State="0" Terminal="p" TransitionTo="2" />
+    <Shift State="0" Terminal="q" TransitionTo="4" />
+    <Shift State="3" Terminal="q" TransitionTo="9" />
+    <Shift State="4" Terminal="a" TransitionTo="10" />
+    <Shift State="4" Terminal="p" TransitionTo="2" />
+    <Shift State="4" Terminal="q" TransitionTo="11" />
+    <Shift State="8" Terminal="a" TransitionTo="10" />
+    <Shift State="8" Terminal="p" TransitionTo="2" />
+    <Shift State="9" Terminal="q" TransitionTo="14" />
+    <Shift State="12" Terminal="a" TransitionTo="10" />
+    <Shift State="12" Terminal="p" TransitionTo="2" />
+    <Shift State="12" Terminal="q" TransitionTo="15" />
     <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
-    <Reduce State="3" Terminal="q" RuleOrdinal="3" />
-    <Reduce State="4" EndOfInput="$" RuleOrdinal="1" />
+    <Reduce State="2" Terminal="a" RuleOrdinal="8" />
+    <Reduce State="2" Terminal="p" RuleOrdinal="8" />
+    <Reduce State="2" Terminal="q" RuleOrdinal="8" />
+    <Reduce State="3" Terminal="a" RuleOrdinal="7" />
+    <Reduce State="3" Terminal="p" RuleOrdinal="7" />
+    <Reduce State="3" Terminal="q" RuleOrdinal="7" />
+    <Reduce State="5" EndOfInput="$" RuleOrdinal="1" />
     <Reduce State="6" EndOfInput="$" RuleOrdinal="2" />
+    <Reduce State="7" Terminal="a" RuleOrdinal="5" />
+    <Reduce State="7" Terminal="p" RuleOrdinal="5" />
+    <Reduce State="7" Terminal="q" RuleOrdinal="5" />
+    <Reduce State="10" Terminal="a" RuleOrdinal="7" />
+    <Reduce State="10" Terminal="p" RuleOrdinal="7" />
+    <Reduce State="10" Terminal="q" RuleOrdinal="7" />
+    <Reduce State="11" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="13" Terminal="a" RuleOrdinal="6" />
+    <Reduce State="13" Terminal="p" RuleOrdinal="6" />
+    <Reduce State="13" Terminal="q" RuleOrdinal="6" />
+    <Reduce State="14" EndOfInput="$" RuleOrdinal="9" />
+    <Reduce State="15" EndOfInput="$" RuleOrdinal="4" />
+    <Goto State="0" NonTerminal="C" TransitionTo="8" />
+    <Goto State="0" NonTerminal="G" TransitionTo="7" />
+    <Goto State="0" NonTerminal="P" TransitionTo="5" />
     <Goto State="0" NonTerminal="S" TransitionTo="1" />
-    <Goto State="2" NonTerminal="C" TransitionTo="5" />
+    <Goto State="0" NonTerminal="V" TransitionTo="6" />
+    <Goto State="4" NonTerminal="C" TransitionTo="12" />
+    <Goto State="4" NonTerminal="G" TransitionTo="7" />
+    <Goto State="8" NonTerminal="G" TransitionTo="13" />
+    <Goto State="12" NonTerminal="G" TransitionTo="13" />
   </ParsingTable>
 </ParserDefinition>

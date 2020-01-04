@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
+using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
@@ -20,14 +22,24 @@ namespace EasyParse.Tests
 
         [Fact]
         public void CompilesEmptyString() => 
-            Assert.Equal(string.Empty, base.CompiledLine<string>(new StringCompiler(), this.Fail, "''"));
+            Assert.Equal(string.Empty, this.Compile("''"));
 
         [Theory]
         [InlineData("'something'", "something")]
         [InlineData("'something, again'", "something, again")]
         [InlineData("'     ***   2394&^Q*&^#$*^'", "     ***   2394&^Q*&^#$*^")]
+        [InlineData("'@'", "@")]
         public void CompilesString_ReturnsExpectedValue(string input, string expected) =>
-            Assert.Equal(expected, base.CompiledLine<string>(new StringCompiler(), this.Fail, input));
+            Assert.Equal(expected, this.Compile(input));
+
+        [Theory]
+        [InlineData("@''", "")]
+        //[InlineData(@"@'something\again'", @"something\again")]
+        public void CompilesLiteralString_ReturnsExpectedValue(string input, string expected) => 
+            Assert.Equal(expected, this.Compile(input));
+
+        private string Compile(string input) =>
+            base.CompiledLine<string>(new StringCompiler(), this.Fail, input);
 
         private void Fail(object result) =>
             Assert.True(false, $"{result}");

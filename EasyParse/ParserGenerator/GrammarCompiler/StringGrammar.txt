@@ -1,9 +1,17 @@
 ﻿lexemes:
+
 # C - string content
 # q - single quote
 # p - plain text segment
+# a - verbatim string indicator
 
 rules:
-S -> qq
-S -> qCq
-C -> p
+S -> P
+S -> V
+P -> qq
+P -> qCq
+C -> G
+C -> CG
+G -> a
+G -> p
+V -> aqq

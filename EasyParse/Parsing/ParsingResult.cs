@@ -22,12 +22,18 @@ namespace EasyParse.Parsing
 
         public object Compile(ICompiler nodeCompiler) =>
             this.Content is Node node ? this.Compile(node, nodeCompiler)
-            : throw new InvalidOperationException(this.Content is Error error ? error.Message : "Cannot compile failed parse result.");
+            : this.Throw(this.Content);
+
+        private object Throw(object result) =>
+            throw new InvalidOperationException(result is Error error ? error.Message : "Cannot compile failed parse result.");
 
         private object Compile(Node node, ICompiler nodeCompiler) =>
             node is TerminalNode terminal ? this.Compile(terminal, nodeCompiler)
             : node is NonTerminalNode nonTerminal ? this.Compile(nonTerminal, nodeCompiler)
-            : throw new InvalidOperationException($"Internal error compiling {node}");
+            : this.ThrowInternalError(node);
+
+        private object ThrowInternalError(Node node) =>
+            throw new InvalidOperationException($"Internal error compiling {node}");
 
         private object Compile(TerminalNode terminal, ICompiler nodeCompiler) =>
             nodeCompiler.CompileTerminal(terminal.Label, terminal.Value);
