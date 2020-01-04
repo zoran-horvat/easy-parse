@@ -19,9 +19,13 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
         {
-            ("q", raw => this.StringParser.Parse(raw).Compile(this.StringCompiler)),
-            ("n", value => new NonTerminal(value))
+            ("q", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
+            ("n", value => new NonTerminal(value)),
         };
+
+        private object CompileString(string content) =>
+            string.IsNullOrEmpty(content) ? string.Empty
+            : this.StringParser.Parse(content).Compile(this.StringCompiler);
 
         private Grammar F(ImmutableList<Lexeme> lexemes, string rulesKeyword, string endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
         private Grammar F(string endOfLine, Grammar grammar) => grammar;

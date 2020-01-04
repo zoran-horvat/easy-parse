@@ -18,8 +18,6 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             .AddPattern(@"'[^']*'", "q");
 
         public static Lexer AddStringLexicalRules(Lexer lexer) => lexer
-            .AddPattern(@"'", "q")
-            .AddPattern(@"''", "d")
-            .AddPattern(@"[^'@]+", "p");
+            .AddPattern(".+", "p");
     }
 }

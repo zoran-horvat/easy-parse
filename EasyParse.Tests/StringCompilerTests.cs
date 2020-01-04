@@ -20,22 +20,12 @@ namespace EasyParse.Tests
         protected override Func<Lexer, Lexer> LexicalRules =>
             GrammarParser.AddStringLexicalRules;
 
-        [Fact]
-        public void CompilesEmptyString() => 
-            Assert.Equal(string.Empty, this.Compile("''"));
-
         [Theory]
-        [InlineData("'something'", "something")]
-        [InlineData("'something, again'", "something, again")]
-        [InlineData("'     ***   2394&^Q*&^#$*^'", "     ***   2394&^Q*&^#$*^")]
-        [InlineData("'@'", "@")]
+        [InlineData("something", "something")]
+        [InlineData("something, again", "something, again")]
+        [InlineData("     ***   2394&^Q*&^#$*^", "     ***   2394&^Q*&^#$*^")]
+        [InlineData("@", "@")]
         public void CompilesString_ReturnsExpectedValue(string input, string expected) =>
-            Assert.Equal(expected, this.Compile(input));
-
-        [Theory]
-        [InlineData("@''", "")]
-        [InlineData(@"@'something\again'", @"something\again")]
-        public void CompilesLiteralString_ReturnsExpectedValue(string input, string expected) => 
             Assert.Equal(expected, this.Compile(input));
 
         private string Compile(string input) =>
