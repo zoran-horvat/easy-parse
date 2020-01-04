@@ -20,6 +20,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
         {
             ("q", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
+            ("v", raw => raw.Substring(2, raw.Length - 3)),
             ("n", value => new NonTerminal(value)),
         };
 
@@ -40,5 +41,6 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private ImmutableList<Symbol> B(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
         private Symbol S(string terminal) => new Terminal(terminal);
         private Symbol S(NonTerminal nonTerminal) => nonTerminal;
+        private string T(string value) => value;
     }
 }
