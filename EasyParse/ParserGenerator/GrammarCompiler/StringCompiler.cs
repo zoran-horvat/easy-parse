@@ -16,6 +16,8 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private string P(string quote1, string content, string quote2) => content;
         private string C(string value) => value;
         private string C(string left, string more) => left + more;
+        private string D(string value) => value;
+        private string D(string left, string more) => left + more;
         private string G(string value) => value;
         private string V(string at, string quote1, string quote2) => string.Empty;
         private string V(string at, string quote1, string content, string quote2) => content;

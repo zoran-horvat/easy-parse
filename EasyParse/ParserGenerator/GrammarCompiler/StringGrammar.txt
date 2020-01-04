@@ -1,4 +1,5 @@
 ﻿lexemes:
+'a' is '@'
 
 # C - string content
 # q - single quote
@@ -10,9 +11,9 @@ S -> P
 S -> V
 P -> qq
 P -> qCq
-C -> G
-C -> CG
 G -> a
 G -> p
 V -> aqq
 V -> aqCq
+C -> G
+C -> CG
