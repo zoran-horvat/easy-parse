@@ -1,4 +1,6 @@
 ﻿lexemes:
+'p' is @'[^\\]+'
+'e' is @'\\.'
 
 # S - string content
 # T - string segment 

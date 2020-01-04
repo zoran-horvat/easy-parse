@@ -10,6 +10,8 @@
     <Lexeme Pattern="ignore" Name="i" />
     <Lexeme Pattern="is" Name="s" />
     <Lexeme Pattern="rules:" Name="r" />
+    <Lexeme Pattern="'((\\[\\'nrt])|[^\\'])*'" Name="q" />
+    <Lexeme Pattern="@'[^']*'" Name="v" />
   </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">

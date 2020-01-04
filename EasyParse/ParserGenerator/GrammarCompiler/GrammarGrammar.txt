@@ -9,6 +9,8 @@ ignore @'#[^\n]*'
 'i' is 'ignore'
 's' is 'is'
 'r' is 'rules:'
+'q' is '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\''
+'v' is '@\'[^\']*\''
 
 # F - Full grammar (line rules: followed by one or more lines with rules)
 # L - List of lexeme patterns (ignore or proper lexemes)

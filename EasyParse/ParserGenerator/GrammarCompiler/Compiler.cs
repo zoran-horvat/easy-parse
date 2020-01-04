@@ -11,9 +11,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
     public class Compiler : MethodMapCompiler
     {
         private Parser StringParser { get; } = Parser.FromXmlResource(
-            Assembly.GetExecutingAssembly(), 
-            "EasyParse.ParserGenerator.GrammarCompiler.StringParserDefinition.xml", 
-            GrammarParser.AddStringLexicalRules);
+            Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.StringParserDefinition.xml");
 
         private StringCompiler StringCompiler { get; } = new StringCompiler();
 

@@ -1,5 +1,8 @@
 ﻿<ParserDefinition>
-  <LexicalRules />
+  <LexicalRules>
+    <Lexeme Pattern="[^\\]+" Name="p" />
+    <Lexeme Pattern="\\." Name="e" />
+  </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">
       <Head>

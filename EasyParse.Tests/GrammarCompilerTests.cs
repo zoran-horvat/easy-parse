@@ -17,8 +17,7 @@ namespace EasyParse.Tests
         protected override string XmlDefinitionResourceName => 
             "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml";
 
-        protected override Func<Lexer, Lexer> LexicalRules =>
-            GrammarParser.AddLexicalRules;
+        protected override Func<Lexer, Lexer> LexicalRules => lexer => lexer;
 
         [Theory]
         [InlineData(
