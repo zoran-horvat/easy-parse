@@ -12,7 +12,10 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         };
 
         private object Unescape(string value) => 
-            value.Length != 2 ? (object)new InvalidOperationException($"Internal error parsing '{value}'")
+            value.Length != 2 ? new InvalidOperationException($"Internal error parsing '{value}'")
+            : value[1] == 'n' ? "\n"
+            : value[1] == 'r' ? "\r"
+            : value[1] == 't' ? (object)"\t"
             : new string(value[1], 1); 
 
         private string S(string value) => value;

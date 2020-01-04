@@ -30,6 +30,10 @@ namespace EasyParse.Tests
 
         [Theory]
         [InlineData(@"some\\thing", @"some\thing")]
+        [InlineData(@"some\'thing", "some'thing")]
+        [InlineData(@"some\nthing", "some\nthing")]
+        [InlineData(@"some\rthing", "some\rthing")]
+        [InlineData(@"some\tthing", "some\tthing")]
         public void CompilesEscapedString_ReturnsExpectedValue(string input, string expected) =>
             Assert.Equal(expected, this.Compile(input));
 
