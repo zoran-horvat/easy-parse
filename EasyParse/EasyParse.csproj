@@ -79,7 +79,6 @@
     <Compile Include="ParserGenerator\Collections\StateVector.cs" />
     <Compile Include="ParserGenerator\Collections\State.cs" />
     <Compile Include="ParserGenerator\Collections\TransitionTable.cs" />
-    <Compile Include="ParserGenerator\GrammarCompiler\LegacyCompiler.cs" />
     <Compile Include="ParserGenerator\GrammarCompiler\Compiler.cs" />
     <Compile Include="ParserGenerator\GrammarCompiler\StringCompiler.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FirstSetsBuilder.cs" />
