@@ -79,6 +79,7 @@
     <Compile Include="ParserGenerator\Collections\StateVector.cs" />
     <Compile Include="ParserGenerator\Collections\State.cs" />
     <Compile Include="ParserGenerator\Collections\TransitionTable.cs" />
+    <Compile Include="ParserGenerator\GrammarCompiler\LegacyCompiler.cs" />
     <Compile Include="ParserGenerator\GrammarCompiler\Compiler.cs" />
     <Compile Include="ParserGenerator\GrammarCompiler\StringCompiler.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FirstSetsBuilder.cs" />
@@ -114,6 +115,7 @@
     <Compile Include="Parsing\Collections\ShiftTable.cs" />
     <Compile Include="Parsing\Formatting\Formatter.cs" />
     <Compile Include="Parsing\ICompiler.cs" />
+    <Compile Include="Parsing\MethodMapCompiler.cs" />
     <Compile Include="Parsing\Nodes\Error.cs" />
     <Compile Include="Parsing\Nodes\TreeElement.cs" />
     <Compile Include="Parsing\Nodes\NonTerminalNode.cs" />

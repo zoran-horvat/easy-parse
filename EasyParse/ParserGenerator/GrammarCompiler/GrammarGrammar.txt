@@ -11,6 +11,7 @@ ignore '#[^\n]*'
 'r' is 'rules:'
 
 # F - Full grammar (line rules: followed by one or more lines with rules)
+# L - List of lexeme patterns (ignore or proper lexemes)
 # G - Grammar without heading line
 # R - Rule
 # U - Line containing a single rule
