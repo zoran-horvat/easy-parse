@@ -10,7 +10,7 @@ namespace EasyParse.CalculatorDemo.Tests
     {
         protected override Assembly XmlDefinitionAssembly => typeof(Calculator).Assembly;
         protected override string XmlDefinitionResourceName => "EasyParse.CalculatorDemo.ParserDefinition.xml";
-        protected override Func<Lexer, Lexer> LexicalRules => ParserBuilder.AddLexicalRules;
+        protected override Func<Lexer, Lexer> LexicalRules => (lexer => lexer);
 
         [Theory]
         [InlineData("1")]

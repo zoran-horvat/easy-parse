@@ -29,6 +29,8 @@ namespace EasyParse.Parsing
         public static Parser FromXmlResource(Assembly assembly, string resourceName, Func<Lexer, Lexer> lexicalRules) =>
             From(new XmlResource(assembly, resourceName).Load(), lexicalRules);
 
+        public static Parser FromXmlResource(Assembly assembly, string resourceName) =>
+            FromXmlResource(assembly, resourceName, lexer => lexer);
         private static Parser From(XDocument definition, Func<Lexer, Lexer> lexicalRules) => 
             new Parser(lexicalRules(LoadLexer(definition)), new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
 

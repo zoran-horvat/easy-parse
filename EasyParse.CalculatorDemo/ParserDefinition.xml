@@ -1,6 +1,11 @@
 ﻿<ParserDefinition>
   <LexicalRules>
     <Ignore Pattern="\s+" />
+    <Lexeme Pattern="\d+" Name="n" />
+    <Lexeme Pattern="[\+\-]" Name="+" />
+    <Lexeme Pattern="[\*\/]" Name="*" />
+    <Lexeme Pattern="\(" Name="(" />
+    <Lexeme Pattern="\)" Name=")" />
   </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">

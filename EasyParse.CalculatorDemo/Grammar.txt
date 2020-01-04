@@ -1,5 +1,10 @@
 ﻿lexemes:
 ignore '\s+'
+'n' is '\d+'
+'+' is '[\+\-]'
+'*' is '[\*\/]'
+'(' is '\('
+')' is '\)'
 
 rules:
 A -> M

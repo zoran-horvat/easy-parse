@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing;
 
@@ -10,7 +11,7 @@ namespace EasyParse.CalculatorDemo
     {
         public static void Main(string[] args)
         {
-            Parser parser = new ParserBuilder("EasyParse.CalculatorDemo.ParserDefinition.xml").Build();
+            Parser parser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.ParserDefinition.xml");
 
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
