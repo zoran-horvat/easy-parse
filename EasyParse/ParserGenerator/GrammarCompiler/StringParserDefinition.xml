@@ -87,6 +87,17 @@
         <Terminal Name="q" />
       </Body>
     </Rule>
+    <Rule Ordinal="10">
+      <Head>
+        <NonTerminal Name="V" />
+      </Head>
+      <Body>
+        <Terminal Name="a" />
+        <Terminal Name="q" />
+        <NonTerminal Name="C" />
+        <Terminal Name="q" />
+      </Body>
+    </Rule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="a" TransitionTo="3" />
@@ -98,10 +109,15 @@
     <Shift State="4" Terminal="q" TransitionTo="11" />
     <Shift State="8" Terminal="a" TransitionTo="10" />
     <Shift State="8" Terminal="p" TransitionTo="2" />
-    <Shift State="9" Terminal="q" TransitionTo="14" />
+    <Shift State="9" Terminal="a" TransitionTo="10" />
+    <Shift State="9" Terminal="p" TransitionTo="2" />
+    <Shift State="9" Terminal="q" TransitionTo="15" />
     <Shift State="12" Terminal="a" TransitionTo="10" />
     <Shift State="12" Terminal="p" TransitionTo="2" />
-    <Shift State="12" Terminal="q" TransitionTo="15" />
+    <Shift State="12" Terminal="q" TransitionTo="16" />
+    <Shift State="14" Terminal="a" TransitionTo="10" />
+    <Shift State="14" Terminal="p" TransitionTo="2" />
+    <Shift State="14" Terminal="q" TransitionTo="17" />
     <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
     <Reduce State="2" Terminal="a" RuleOrdinal="8" />
     <Reduce State="2" Terminal="p" RuleOrdinal="8" />
@@ -121,8 +137,9 @@
     <Reduce State="13" Terminal="a" RuleOrdinal="6" />
     <Reduce State="13" Terminal="p" RuleOrdinal="6" />
     <Reduce State="13" Terminal="q" RuleOrdinal="6" />
-    <Reduce State="14" EndOfInput="$" RuleOrdinal="9" />
-    <Reduce State="15" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="15" EndOfInput="$" RuleOrdinal="9" />
+    <Reduce State="16" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="17" EndOfInput="$" RuleOrdinal="10" />
     <Goto State="0" NonTerminal="C" TransitionTo="8" />
     <Goto State="0" NonTerminal="G" TransitionTo="7" />
     <Goto State="0" NonTerminal="P" TransitionTo="5" />
@@ -131,6 +148,9 @@
     <Goto State="4" NonTerminal="C" TransitionTo="12" />
     <Goto State="4" NonTerminal="G" TransitionTo="7" />
     <Goto State="8" NonTerminal="G" TransitionTo="13" />
+    <Goto State="9" NonTerminal="C" TransitionTo="14" />
+    <Goto State="9" NonTerminal="G" TransitionTo="7" />
     <Goto State="12" NonTerminal="G" TransitionTo="13" />
+    <Goto State="14" NonTerminal="G" TransitionTo="13" />
   </ParsingTable>
 </ParserDefinition>

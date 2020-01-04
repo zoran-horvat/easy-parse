@@ -34,7 +34,7 @@ namespace EasyParse.Tests
 
         [Theory]
         [InlineData("@''", "")]
-        //[InlineData(@"@'something\again'", @"something\again")]
+        [InlineData(@"@'something\again'", @"something\again")]
         public void CompilesLiteralString_ReturnsExpectedValue(string input, string expected) => 
             Assert.Equal(expected, this.Compile(input));
 

@@ -15,3 +15,4 @@ C -> CG
 G -> a
 G -> p
 V -> aqq
+V -> aqCq
