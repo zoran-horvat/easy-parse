@@ -26,19 +26,19 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             string.IsNullOrEmpty(content) ? string.Empty
             : this.StringParser.Parse(content).Compile(this.StringCompiler);
 
-        private Grammar F(ImmutableList<Lexeme> lexemes, string rulesKeyword, string endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
-        private Grammar F(string endOfLine, Grammar grammar) => grammar;
-        private ImmutableList<Lexeme> L(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
-        private ImmutableList<Lexeme> L(ImmutableList<Lexeme> lexemes, Lexeme next, string endOfLine) => lexemes.Add(next);
-        private Lexeme P(string name, string @is, string pattern) => new LexemePattern(name, pattern);
-        private Lexeme P(string ignoreKeyword, string pattern) => new IgnoreLexeme(pattern);
-        private Grammar G(Rule rule, string endOfLine) => new Grammar(rule);
-        private Grammar G(Grammar rules, Rule next, string endOfLine) => rules.Add(next);
-        private Rule R(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
-        private ImmutableList<Symbol> B(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
-        private ImmutableList<Symbol> B(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
-        private Symbol S(string terminal) => new Terminal(terminal);
-        private Symbol S(NonTerminal nonTerminal) => nonTerminal;
-        private string T(string value) => value;
+        private Grammar FullGrammar(ImmutableList<Lexeme> lexemes, string rulesKeyword, string endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
+        private Grammar FullGrammar(string endOfLine, Grammar grammar) => grammar;
+        private ImmutableList<Lexeme> Lexemes(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
+        private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next, string endOfLine) => lexemes.Add(next);
+        private Lexeme LexemePattern(string name, string @is, string pattern) => new LexemePattern(name, pattern);
+        private Lexeme LexemePattern(string ignoreKeyword, string pattern) => new IgnoreLexeme(pattern);
+        private Grammar Grammar(Rule rule, string endOfLine) => new Grammar(rule);
+        private Grammar Grammar(Grammar rules, Rule next, string endOfLine) => rules.Add(next);
+        private Rule Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
+        private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
+        private ImmutableList<Symbol> RuleBody(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
+        private Symbol Symbol(string terminal) => new Terminal(terminal);
+        private Symbol Symbol(NonTerminal nonTerminal) => nonTerminal;
+        private string String(string value) => value;
     }
 }

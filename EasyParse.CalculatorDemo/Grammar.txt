@@ -1,17 +1,17 @@
 ﻿lexemes:
 ignore @'\s+'
-'n' is @'\d+'
-'+' is @'[\+\-]'
-'*' is @'[\*\/]'
-'(' is @'\('
-')' is @'\)'
+'n' is @'\d+'        # number
+'+' is @'[\+\-]'     # additive operator
+'*' is @'[\*\/]'     # multiplicative operator
+'(' is @'\('         # open parenthesis
+')' is @'\)'         # closed parenthesis
 
 rules:
-A -> M
-A -> A+M
-A -> A-M
-U -> n
-U -> (A)
-M -> U
-M -> M*U
-M -> M/U
+Additive -> Multiplicative
+Additive -> Additive + Multiplicative
+Additive -> Additive - Multiplicative
+Unit -> n
+Unit -> ( Additive )
+Multiplicative -> Unit
+Multiplicative -> Multiplicative * Unit
+Multiplicative -> Multiplicative / Unit

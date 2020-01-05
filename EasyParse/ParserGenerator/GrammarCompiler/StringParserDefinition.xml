@@ -9,29 +9,29 @@
         <NonTerminal Name="S'" />
       </Head>
       <Body>
-        <NonTerminal Name="S" />
+        <NonTerminal Name="String" />
       </Body>
     </Rule>
     <Rule Ordinal="1">
       <Head>
-        <NonTerminal Name="S" />
+        <NonTerminal Name="String" />
       </Head>
       <Body>
-        <NonTerminal Name="T" />
+        <NonTerminal Name="Segment" />
       </Body>
     </Rule>
     <Rule Ordinal="2">
       <Head>
-        <NonTerminal Name="S" />
+        <NonTerminal Name="String" />
       </Head>
       <Body>
-        <NonTerminal Name="S" />
-        <NonTerminal Name="T" />
+        <NonTerminal Name="String" />
+        <NonTerminal Name="Segment" />
       </Body>
     </Rule>
     <Rule Ordinal="3">
       <Head>
-        <NonTerminal Name="T" />
+        <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="p" />
@@ -39,7 +39,7 @@
     </Rule>
     <Rule Ordinal="4">
       <Head>
-        <NonTerminal Name="T" />
+        <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="e" />
@@ -47,25 +47,25 @@
     </Rule>
   </Grammar>
   <ParsingTable>
-    <Shift State="0" Terminal="e" TransitionTo="2" />
-    <Shift State="0" Terminal="p" TransitionTo="3" />
-    <Shift State="1" Terminal="e" TransitionTo="2" />
-    <Shift State="1" Terminal="p" TransitionTo="3" />
-    <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
-    <Reduce State="2" EndOfInput="$" RuleOrdinal="4" />
-    <Reduce State="2" Terminal="e" RuleOrdinal="4" />
-    <Reduce State="2" Terminal="p" RuleOrdinal="4" />
-    <Reduce State="3" EndOfInput="$" RuleOrdinal="3" />
-    <Reduce State="3" Terminal="e" RuleOrdinal="3" />
-    <Reduce State="3" Terminal="p" RuleOrdinal="3" />
-    <Reduce State="4" EndOfInput="$" RuleOrdinal="1" />
-    <Reduce State="4" Terminal="e" RuleOrdinal="1" />
-    <Reduce State="4" Terminal="p" RuleOrdinal="1" />
+    <Shift State="0" Terminal="e" TransitionTo="1" />
+    <Shift State="0" Terminal="p" TransitionTo="2" />
+    <Shift State="4" Terminal="e" TransitionTo="1" />
+    <Shift State="4" Terminal="p" TransitionTo="2" />
+    <Reduce State="1" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="1" Terminal="e" RuleOrdinal="4" />
+    <Reduce State="1" Terminal="p" RuleOrdinal="4" />
+    <Reduce State="2" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="2" Terminal="e" RuleOrdinal="3" />
+    <Reduce State="2" Terminal="p" RuleOrdinal="3" />
+    <Reduce State="3" EndOfInput="$" RuleOrdinal="1" />
+    <Reduce State="3" Terminal="e" RuleOrdinal="1" />
+    <Reduce State="3" Terminal="p" RuleOrdinal="1" />
+    <Reduce State="4" EndOfInput="$" RuleOrdinal="0" />
     <Reduce State="5" EndOfInput="$" RuleOrdinal="2" />
     <Reduce State="5" Terminal="e" RuleOrdinal="2" />
     <Reduce State="5" Terminal="p" RuleOrdinal="2" />
-    <Goto State="0" NonTerminal="S" TransitionTo="1" />
-    <Goto State="0" NonTerminal="T" TransitionTo="4" />
-    <Goto State="1" NonTerminal="T" TransitionTo="5" />
+    <Goto State="0" NonTerminal="Segment" TransitionTo="3" />
+    <Goto State="0" NonTerminal="String" TransitionTo="4" />
+    <Goto State="4" NonTerminal="Segment" TransitionTo="5" />
   </ParsingTable>
 </ParserDefinition>

@@ -1,49 +1,30 @@
 ﻿lexemes:
 ignore @'[ \t]+'
 ignore @'#[^\n]*'
-'n' is '[A-Z]'
-'t' is @'[a-z\(\)\+\-\*\/,\.#]'
-'a' is @'\->'
-'e' is @'\n([ \t]*(#[^\n]*)?\n)*'
-'l' is 'lexemes:'
-'i' is 'ignore'
-'s' is 'is'
-'r' is 'rules:'
-'q' is '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\''
-'v' is '@\'[^\']*\''
-
-# F - Full grammar (line rules: followed by one or more lines with rules)
-# L - List of lexeme patterns (ignore or proper lexemes)
-# G - Grammar without heading line
-# R - Rule
-# U - Line containing a single rule
-# B - Rule body
-# S - symbol (terminal or non-terminal)
-# P - Lexeme pattern
-# T - String (common escaped or verbatim)
-# n - Non-terminal
-# t - Terminal
-# a - Arrow (->)
-# e - End of line
-# q - Singly-quoted string
-# s - "is" keyword, as in 'n' is '[A-Z]'
-# l - lexemes: keyword
-# i - ignore: keyword
-# r - rules: keyword
+'n' is '[A-Z][a-zA-Z0-9_]*'                     # non-terminal
+'t' is @'[a-z\(\)\+\-\*\/,\.#]'                 # terminal
+'a' is @'\->'                                   # arrow
+'e' is @'\n([ \t]*(#[^\n]*)?\n)*'               # end of line
+'l' is 'lexemes:'                               # lexemes keyword
+'i' is 'ignore'                                 # ignore keyword
+'s' is 'is'                                     # is keyword
+'r' is 'rules:'                                 # rules keyword
+'q' is '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\''     # quoted string with escaping
+'v' is '@\'[^\']*\''                            # verbatim quoted string
 
 rules:
-F -> LreG
-F -> eF
-L -> le
-L -> LPe
-P -> qsT
-P -> iT
-G -> Re
-G -> GRe
-R -> naB
-B -> S
-B -> BS
-S -> t
-S -> n
-T -> q
-T -> v
+FullGrammar -> Lexemes r e Grammar
+FullGrammar -> e FullGrammar
+Lexemes -> l e
+Lexemes -> Lexemes LexemePattern e
+LexemePattern -> q s String
+LexemePattern -> i String
+Grammar -> Rule e
+Grammar -> Grammar Rule e
+Rule -> n a RuleBody
+RuleBody -> Symbol
+RuleBody -> RuleBody Symbol
+Symbol -> t
+Symbol -> n
+String -> q
+String -> v

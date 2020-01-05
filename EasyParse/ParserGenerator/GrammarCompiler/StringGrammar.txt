@@ -2,13 +2,11 @@
 'p' is @'[^\\]+'
 'e' is @'\\.'
 
-# S - string content
-# T - string segment 
 # p - plain text segment
 # e - escaping sequence (\ followed by a character)
 
 rules:
-S -> T
-S -> ST
-T -> p
-T -> e
+String -> Segment
+String -> String Segment
+Segment -> p
+Segment -> e

@@ -18,8 +18,8 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             : value[1] == 't' ? (object)"\t"
             : new string(value[1], 1); 
 
-        private string S(string value) => value;
-        private string S(string left, string next) => left + next;
-        private string T(string value) => value;
+        private string String(string value) => value;
+        private string String(string left, string next) => left + next;
+        private string Segment(string value) => value;
     }
 }
