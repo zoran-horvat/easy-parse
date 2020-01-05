@@ -84,9 +84,11 @@
     <Compile Include="ParserGenerator\Models\Builders\FirstSetsBuilder.cs" />
     <Compile Include="ParserGenerator\Models\Builders\FollowSetsBuilder.cs" />
     <Compile Include="ParserGenerator\Formatting\Formatter.cs" />
+    <Compile Include="ParserGenerator\Models\Rules\ConstantLexeme.cs" />
     <Compile Include="ParserGenerator\Models\Rules\IgnoreLexeme.cs" />
     <Compile Include="ParserGenerator\Models\Rules\Lexeme.cs" />
     <Compile Include="ParserGenerator\Models\Rules\LexemePattern.cs" />
+    <Compile Include="ParserGenerator\Models\Symbols\Constant.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\CoreReduction.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\CoreTransition.cs" />
     <Compile Include="ParserGenerator\Models\Transitions\GotoCommand.cs" />

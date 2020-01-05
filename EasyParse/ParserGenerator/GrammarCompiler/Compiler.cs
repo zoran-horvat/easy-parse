@@ -19,6 +19,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         {
             ("quotedString", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
             ("verbatimString", raw => raw.Substring(2, raw.Length - 3)),
+            ("terminal", name => new Terminal(name)),
             ("nonTerminal", value => new NonTerminal(value)),
         };
 
@@ -30,7 +31,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private Grammar FullGrammar(string endOfLine, Grammar grammar) => grammar;
         private ImmutableList<Lexeme> Lexemes(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
         private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next, string endOfLine) => lexemes.Add(next);
-        private Lexeme LexemePattern(string name, string @is, string pattern) => new LexemePattern(name, pattern);
+        private Lexeme LexemePattern(Terminal terminal, string keywordMatches, string pattern) => new LexemePattern(terminal.Value, pattern);
 
         private Lexeme LexemePattern(string ignoreKeyword, string pattern) => new IgnoreLexeme(pattern);
 
@@ -39,8 +40,9 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private Rule Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
         private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
         private ImmutableList<Symbol> RuleBody(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
-        private Symbol Symbol(string terminal) => new Terminal(terminal);
+        private Symbol Symbol(Terminal terminal) => terminal;
         private Symbol Symbol(NonTerminal nonTerminal) => nonTerminal;
+        private Symbol Symbol(string constant) => new Constant(constant);
         private string String(string value) => value;
     }
 }

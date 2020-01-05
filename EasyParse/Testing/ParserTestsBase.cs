@@ -9,7 +9,7 @@ namespace EasyParse.Testing
     {
         protected abstract Assembly XmlDefinitionAssembly { get; }
         protected abstract string XmlDefinitionResourceName { get; }
-        protected abstract Func<Lexer, Lexer> LexicalRules { get; }
+        protected virtual Func<Lexer, Lexer> LexicalRules { get; } = lexer => lexer;
 
         protected bool Recognized(string input) =>
             this.CreateParser().Parse(input).IsSuccess;

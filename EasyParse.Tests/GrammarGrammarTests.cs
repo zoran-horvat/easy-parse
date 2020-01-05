@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reflection;
-using EasyParse.LexicalAnalysis;
+﻿using System.Reflection;
 using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.Testing;
 using Xunit;
@@ -13,8 +11,6 @@ namespace EasyParse.Tests
             typeof(GrammarParser).Assembly;
         protected override string XmlDefinitionResourceName => 
             "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml";
-
-        protected override Func<Lexer, Lexer> LexicalRules => lexer => lexer;
 
         [Theory]
         [InlineData(

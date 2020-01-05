@@ -26,5 +26,6 @@ RuleBody -> Symbol
 RuleBody -> RuleBody Symbol
 Symbol -> terminal
 Symbol -> nonTerminal
+Symbol -> String
 String -> quotedString
 String -> verbatimString

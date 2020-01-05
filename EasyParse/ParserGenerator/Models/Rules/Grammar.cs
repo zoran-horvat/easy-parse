@@ -11,13 +11,12 @@ namespace EasyParse.ParserGenerator.Models.Rules
     public class Grammar
     {
         public IEnumerable<Rule> Rules => 
-            this.RulesRepresentation
-                .SelectMany((rule, index) => 
-                    index == 0 ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule}
-                    : new[] {rule});
+            this.RulesRepresentation.SelectMany(
+                (rule, index) => index == 0 ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule} : new[] {rule});
 
         public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.LexemesRepresentation.OfType<IgnoreLexeme>();
         public IEnumerable<LexemePattern> LexemePatterns => this.LexemesRepresentation.OfType<LexemePattern>();
+        public IEnumerable<ConstantLexeme> ConstantLexemes => this.Rules.SelectMany(rule => rule.ConstantLexemes);
 
         private ImmutableList<Rule> RulesRepresentation { get; }
 

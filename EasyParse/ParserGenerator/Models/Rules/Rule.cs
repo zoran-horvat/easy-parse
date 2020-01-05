@@ -10,6 +10,9 @@ namespace EasyParse.ParserGenerator.Models.Rules
     {
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
+
+        public IEnumerable<ConstantLexeme> ConstantLexemes =>
+            this.Body.OfType<Constant>().Select(constant => new ConstantLexeme(constant.Value));
      
         public Rule(NonTerminal head, IEnumerable<Symbol> body)
         {
