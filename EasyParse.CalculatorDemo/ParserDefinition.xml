@@ -2,6 +2,9 @@
   <LexicalRules>
     <Ignore Pattern="\s+" />
     <Constant Value="+" />
+    <Constant Value="-" />
+    <Constant Value="*" />
+    <Constant Value="/" />
     <Constant Value="(" />
     <Constant Value=")" />
     <Lexeme Pattern="\d+" Name="number" />
@@ -12,73 +15,172 @@
         <NonTerminal Name="S'" />
       </Head>
       <Body>
-        <NonTerminal Name="A" />
+        <NonTerminal Name="Expression" />
       </Body>
     </Rule>
     <Rule Ordinal="1">
       <Head>
-        <NonTerminal Name="A" />
+        <NonTerminal Name="Expression" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Additive" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="2">
+      <Head>
+        <NonTerminal Name="Additive" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Multiplicative" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="3">
+      <Head>
+        <NonTerminal Name="Additive" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Additive" />
+        <Constant Value="+" />
+        <NonTerminal Name="Multiplicative" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="4">
+      <Head>
+        <NonTerminal Name="Additive" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Additive" />
+        <Constant Value="-" />
+        <NonTerminal Name="Multiplicative" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="5">
+      <Head>
+        <NonTerminal Name="Multiplicative" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Unit" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="6">
+      <Head>
+        <NonTerminal Name="Multiplicative" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Multiplicative" />
+        <Constant Value="*" />
+        <NonTerminal Name="Unit" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="7">
+      <Head>
+        <NonTerminal Name="Multiplicative" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Multiplicative" />
+        <Constant Value="/" />
+        <NonTerminal Name="Unit" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="8">
+      <Head>
+        <NonTerminal Name="Unit" />
       </Head>
       <Body>
         <Terminal Name="number" />
       </Body>
     </Rule>
-    <Rule Ordinal="2">
+    <Rule Ordinal="9">
       <Head>
-        <NonTerminal Name="B" />
-      </Head>
-      <Body>
-        <NonTerminal Name="A" />
-      </Body>
-    </Rule>
-    <Rule Ordinal="3">
-      <Head>
-        <NonTerminal Name="B" />
-      </Head>
-      <Body>
-        <NonTerminal Name="B" />
-        <Constant Value="+" />
-        <NonTerminal Name="A" />
-      </Body>
-    </Rule>
-    <Rule Ordinal="4">
-      <Head>
-        <NonTerminal Name="A" />
+        <NonTerminal Name="Unit" />
       </Head>
       <Body>
         <Constant Value="(" />
-        <NonTerminal Name="B" />
+        <NonTerminal Name="Additive" />
         <Constant Value=")" />
       </Body>
     </Rule>
   </Grammar>
   <ParsingTable>
-    <Shift State="0" Terminal="(" TransitionTo="4" />
-    <Shift State="0" Terminal="number" TransitionTo="3" />
-    <Shift State="2" Terminal="+" TransitionTo="5" />
-    <Shift State="4" Terminal="(" TransitionTo="4" />
-    <Shift State="4" Terminal="number" TransitionTo="3" />
-    <Shift State="5" Terminal="(" TransitionTo="4" />
-    <Shift State="5" Terminal="number" TransitionTo="3" />
-    <Shift State="7" Terminal=")" TransitionTo="9" />
-    <Shift State="7" Terminal="+" TransitionTo="5" />
-    <Reduce State="1" EndOfInput="$" RuleOrdinal="0" />
-    <Reduce State="1" Terminal=")" RuleOrdinal="2" />
-    <Reduce State="1" Terminal="+" RuleOrdinal="2" />
+    <Shift State="0" Terminal="(" TransitionTo="1" />
+    <Shift State="0" Terminal="number" TransitionTo="5" />
+    <Shift State="1" Terminal="(" TransitionTo="1" />
+    <Shift State="1" Terminal="number" TransitionTo="5" />
+    <Shift State="2" Terminal="*" TransitionTo="9" />
+    <Shift State="2" Terminal="/" TransitionTo="8" />
+    <Shift State="3" Terminal="-" TransitionTo="11" />
+    <Shift State="3" Terminal="+" TransitionTo="10" />
+    <Shift State="7" Terminal="-" TransitionTo="11" />
+    <Shift State="7" Terminal=")" TransitionTo="12" />
+    <Shift State="7" Terminal="+" TransitionTo="10" />
+    <Shift State="8" Terminal="(" TransitionTo="1" />
+    <Shift State="8" Terminal="number" TransitionTo="5" />
+    <Shift State="9" Terminal="(" TransitionTo="1" />
+    <Shift State="9" Terminal="number" TransitionTo="5" />
+    <Shift State="10" Terminal="(" TransitionTo="1" />
+    <Shift State="10" Terminal="number" TransitionTo="5" />
+    <Shift State="11" Terminal="(" TransitionTo="1" />
+    <Shift State="11" Terminal="number" TransitionTo="5" />
+    <Shift State="15" Terminal="*" TransitionTo="9" />
+    <Shift State="15" Terminal="/" TransitionTo="8" />
+    <Shift State="16" Terminal="*" TransitionTo="9" />
+    <Shift State="16" Terminal="/" TransitionTo="8" />
+    <Reduce State="2" Terminal="-" RuleOrdinal="2" />
+    <Reduce State="2" EndOfInput="$" RuleOrdinal="2" />
+    <Reduce State="2" Terminal=")" RuleOrdinal="2" />
+    <Reduce State="2" Terminal="+" RuleOrdinal="2" />
     <Reduce State="3" EndOfInput="$" RuleOrdinal="1" />
-    <Reduce State="3" Terminal=")" RuleOrdinal="1" />
-    <Reduce State="3" Terminal="+" RuleOrdinal="1" />
-    <Reduce State="6" Terminal=")" RuleOrdinal="2" />
-    <Reduce State="6" Terminal="+" RuleOrdinal="2" />
-    <Reduce State="8" Terminal=")" RuleOrdinal="3" />
-    <Reduce State="8" Terminal="+" RuleOrdinal="3" />
-    <Reduce State="9" EndOfInput="$" RuleOrdinal="4" />
-    <Reduce State="9" Terminal=")" RuleOrdinal="4" />
-    <Reduce State="9" Terminal="+" RuleOrdinal="4" />
-    <Goto State="0" NonTerminal="A" TransitionTo="1" />
-    <Goto State="0" NonTerminal="B" TransitionTo="2" />
-    <Goto State="4" NonTerminal="A" TransitionTo="6" />
-    <Goto State="4" NonTerminal="B" TransitionTo="7" />
-    <Goto State="5" NonTerminal="A" TransitionTo="8" />
+    <Reduce State="4" Terminal="-" RuleOrdinal="5" />
+    <Reduce State="4" EndOfInput="$" RuleOrdinal="5" />
+    <Reduce State="4" Terminal=")" RuleOrdinal="5" />
+    <Reduce State="4" Terminal="*" RuleOrdinal="5" />
+    <Reduce State="4" Terminal="/" RuleOrdinal="5" />
+    <Reduce State="4" Terminal="+" RuleOrdinal="5" />
+    <Reduce State="5" Terminal="-" RuleOrdinal="8" />
+    <Reduce State="5" EndOfInput="$" RuleOrdinal="8" />
+    <Reduce State="5" Terminal=")" RuleOrdinal="8" />
+    <Reduce State="5" Terminal="*" RuleOrdinal="8" />
+    <Reduce State="5" Terminal="/" RuleOrdinal="8" />
+    <Reduce State="5" Terminal="+" RuleOrdinal="8" />
+    <Reduce State="6" EndOfInput="$" RuleOrdinal="0" />
+    <Reduce State="12" Terminal="-" RuleOrdinal="9" />
+    <Reduce State="12" EndOfInput="$" RuleOrdinal="9" />
+    <Reduce State="12" Terminal=")" RuleOrdinal="9" />
+    <Reduce State="12" Terminal="*" RuleOrdinal="9" />
+    <Reduce State="12" Terminal="/" RuleOrdinal="9" />
+    <Reduce State="12" Terminal="+" RuleOrdinal="9" />
+    <Reduce State="13" Terminal="-" RuleOrdinal="7" />
+    <Reduce State="13" EndOfInput="$" RuleOrdinal="7" />
+    <Reduce State="13" Terminal=")" RuleOrdinal="7" />
+    <Reduce State="13" Terminal="*" RuleOrdinal="7" />
+    <Reduce State="13" Terminal="/" RuleOrdinal="7" />
+    <Reduce State="13" Terminal="+" RuleOrdinal="7" />
+    <Reduce State="14" Terminal="-" RuleOrdinal="6" />
+    <Reduce State="14" EndOfInput="$" RuleOrdinal="6" />
+    <Reduce State="14" Terminal=")" RuleOrdinal="6" />
+    <Reduce State="14" Terminal="*" RuleOrdinal="6" />
+    <Reduce State="14" Terminal="/" RuleOrdinal="6" />
+    <Reduce State="14" Terminal="+" RuleOrdinal="6" />
+    <Reduce State="15" Terminal="-" RuleOrdinal="3" />
+    <Reduce State="15" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="15" Terminal=")" RuleOrdinal="3" />
+    <Reduce State="15" Terminal="+" RuleOrdinal="3" />
+    <Reduce State="16" Terminal="-" RuleOrdinal="4" />
+    <Reduce State="16" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="16" Terminal=")" RuleOrdinal="4" />
+    <Reduce State="16" Terminal="+" RuleOrdinal="4" />
+    <Goto State="0" NonTerminal="Additive" TransitionTo="3" />
+    <Goto State="0" NonTerminal="Expression" TransitionTo="6" />
+    <Goto State="0" NonTerminal="Multiplicative" TransitionTo="2" />
+    <Goto State="0" NonTerminal="Unit" TransitionTo="4" />
+    <Goto State="1" NonTerminal="Additive" TransitionTo="7" />
+    <Goto State="1" NonTerminal="Multiplicative" TransitionTo="2" />
+    <Goto State="1" NonTerminal="Unit" TransitionTo="4" />
+    <Goto State="8" NonTerminal="Unit" TransitionTo="13" />
+    <Goto State="9" NonTerminal="Unit" TransitionTo="14" />
+    <Goto State="10" NonTerminal="Multiplicative" TransitionTo="15" />
+    <Goto State="10" NonTerminal="Unit" TransitionTo="4" />
+    <Goto State="11" NonTerminal="Multiplicative" TransitionTo="16" />
+    <Goto State="11" NonTerminal="Unit" TransitionTo="4" />
   </ParsingTable>
 </ParserDefinition>

@@ -1,87 +1,182 @@
-﻿Generated on 05-Jan-2020 18:57:08 UTC
+﻿Generated on 05-Jan-2020 20:02:14 UTC
 
-  0. S' -> A
-  1. A -> number
-  2. B -> A
-  3. B -> B+A
-  4. A -> (B)
+  0. S' -> Expression
+  1. Expression -> Additive
+  2. Additive -> Multiplicative
+  3. Additive -> Additive+Multiplicative
+  4. Additive -> Additive-Multiplicative
+  5. Multiplicative -> Unit
+  6. Multiplicative -> Multiplicative*Unit
+  7. Multiplicative -> Multiplicative/Unit
+  8. Unit -> number
+  9. Unit -> (Additive)
 
-+-----+------------------------------+-----------------+
-|     |         SHIFT/REDUCE         |      GOTO       |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|     |  (  |  )  |  +  |number|  $  | S'  |  A  |  B  |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  0  | S4  |     |     |  S3  |     | ACC |  1  |  2  |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  1  |     | R2  | R2  |      | R0  |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  2  |     |     | S5  |      |     |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  3  |     | R1  | R1  |      | R1  |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  4  | S4  |     |     |  S3  |     |     |  6  |  7  |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  5  | S4  |     |     |  S3  |     |     |  8  |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  6  |     | R2  | R2  |      |     |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  7  |     | S9  | S5  |      |     |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  8  |     | R3  | R3  |      |     |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
-|  9  |     | R4  | R4  |      | R4  |     |     |     |
-+-----+-----+-----+-----+------+-----+-----+-----+-----+
++-----+------------------------------------------------+----------------------------------------------+
+|     |                  SHIFT/REDUCE                  |                     GOTO                     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|     |  (  |  )  |  *  |  +  |  -  |  /  |number|  $  | S'  |Expression|Additive|Multiplicative|Unit |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  0  | S1  |     |     |     |     |     |  S5  |     | ACC |    6     |   3    |      2       |  4  |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  1  | S1  |     |     |     |     |     |  S5  |     |     |          |   7    |      2       |  4  |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  2  |     | R2  | S9  | R2  | R2  | S8  |      | R2  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  3  |     |     |     | S10 | S11 |     |      | R1  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  4  |     | R5  | R5  | R5  | R5  | R5  |      | R5  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  5  |     | R8  | R8  | R8  | R8  | R8  |      | R8  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  6  |     |     |     |     |     |     |      | R0  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  7  |     | S12 |     | S10 | S11 |     |      |     |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  8  | S1  |     |     |     |     |     |  S5  |     |     |          |        |              | 13  |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+|  9  | S1  |     |     |     |     |     |  S5  |     |     |          |        |              | 14  |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 10  | S1  |     |     |     |     |     |  S5  |     |     |          |        |      15      |  4  |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 11  | S1  |     |     |     |     |     |  S5  |     |     |          |        |      16      |  4  |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 12  |     | R9  | R9  | R9  | R9  | R9  |      | R9  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 13  |     | R7  | R7  | R7  | R7  | R7  |      | R7  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 14  |     | R6  | R6  | R6  | R6  | R6  |      | R6  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 15  |     | R3  | S9  | R3  | R3  | S8  |      | R3  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
+| 16  |     | R4  | S9  | R4  | R4  | S8  |      | R4  |     |          |        |              |     |
++-----+-----+-----+-----+-----+-----+-----+------+-----+-----+----------+--------+--------------+-----+
 
 FIRST(S') = {(number}
-FIRST(A) = {(number}
-FIRST(B) = {(number}
+FIRST(Expression) = {(number}
+FIRST(Additive) = {(number}
+FIRST(Multiplicative) = {(number}
+FIRST(Unit) = {(number}
 
 FOLLOW(S') = {$}
-FOLLOW(A) = {$+)}
-FOLLOW(B) = {+)}
+FOLLOW(Expression) = {$}
+FOLLOW(Additive) = {$-+)}
+FOLLOW(Multiplicative) = {$/-+*)}
+FOLLOW(Unit) = {$/-+*)}
 
 S0
-S' -> ∘A     {$}
-B -> ∘A      {)+}
-B -> ∘B+A    {)+}
-A -> ∘number {)+$}
-A -> ∘(B)    {)+$}
+Unit -> ∘(Additive)                    {)*+-/$}
+Multiplicative -> ∘Multiplicative/Unit {)*+-/$}
+Multiplicative -> ∘Multiplicative*Unit {)*+-/$}
+Expression -> ∘Additive                {$}
+Additive -> ∘Additive+Multiplicative   {)+-$}
+Additive -> ∘Additive-Multiplicative   {)+-$}
+Additive -> ∘Multiplicative            {)+-$}
+Multiplicative -> ∘Unit                {)*+-/$}
+Unit -> ∘number                        {)*+-/$}
+S' -> ∘Expression                      {$}
 
 S1
-S' -> A∘     {$}
-B -> A∘      {)+}
+Unit -> (∘Additive)                    {)*+-/$}
+Additive -> ∘Multiplicative            {)+-}
+Multiplicative -> ∘Unit                {)*+-/}
+Unit -> ∘number                        {)*+-/}
+Additive -> ∘Additive+Multiplicative   {)+-}
+Additive -> ∘Additive-Multiplicative   {)+-}
+Unit -> ∘(Additive)                    {)*+-/}
+Unit -> (∘Additive)                    {)*+-/}
+Multiplicative -> ∘Multiplicative/Unit {)*+-/}
+Multiplicative -> ∘Multiplicative*Unit {)*+-/}
 
 S2
-B -> B∘+A    {)+}
+Multiplicative -> Multiplicative∘/Unit {)*+-/$}
+Multiplicative -> Multiplicative∘*Unit {)*+-/$}
+Additive -> Multiplicative∘            {)+-}
+Additive -> Multiplicative∘            {)+-$}
+Multiplicative -> Multiplicative∘/Unit {)*+-/}
+Multiplicative -> Multiplicative∘*Unit {)*+-/}
 
 S3
-A -> number∘ {)+}
-A -> number∘ {)+$}
+Expression -> Additive∘                {$}
+Additive -> Additive∘+Multiplicative   {)+-$}
+Additive -> Additive∘-Multiplicative   {)+-$}
 
 S4
-A -> ∘number {)+}
-A -> ∘(B)    {)+}
-A -> (∘B)    {)+}
-B -> ∘A      {)+}
-B -> ∘B+A    {)+}
-A -> (∘B)    {)+$}
+Multiplicative -> Unit∘                {)*+-/}
+Multiplicative -> Unit∘                {)*+-/$}
 
 S5
-A -> ∘number {)+}
-A -> ∘(B)    {)+}
-B -> B+∘A    {)+}
+Unit -> number∘                        {)*+-/}
+Unit -> number∘                        {)*+-/$}
 
 S6
-B -> A∘      {)+}
+S' -> Expression∘                      {$}
 
 S7
-A -> (B∘)    {)+}
-B -> B∘+A    {)+}
-A -> (B∘)    {)+$}
+Unit -> (Additive∘)                    {)*+-/$}
+Additive -> Additive∘+Multiplicative   {)+-}
+Additive -> Additive∘-Multiplicative   {)+-}
+Unit -> (Additive∘)                    {)*+-/}
 
 S8
-B -> B+A∘    {)+}
+Unit -> ∘(Additive)                    {)*+-/$}
+Multiplicative -> Multiplicative/∘Unit {)*+-/$}
+Unit -> ∘number                        {)*+-/$}
 
 S9
-A -> (B)∘    {)+}
-A -> (B)∘    {)+$}
+Unit -> ∘(Additive)                    {)*+-/$}
+Multiplicative -> Multiplicative*∘Unit {)*+-/$}
+Unit -> ∘number                        {)*+-/$}
+
+S10
+Unit -> ∘(Additive)                    {)*+-/$}
+Multiplicative -> ∘Multiplicative/Unit {)*+-/$}
+Multiplicative -> ∘Multiplicative*Unit {)*+-/$}
+Multiplicative -> ∘Unit                {)*+-/}
+Additive -> Additive+∘Multiplicative   {)+-$}
+Unit -> ∘number                        {)*+-/}
+Multiplicative -> ∘Unit                {)*+-/$}
+Additive -> Additive+∘Multiplicative   {)+-}
+Unit -> ∘number                        {)*+-/$}
+Unit -> ∘(Additive)                    {)*+-/}
+Multiplicative -> ∘Multiplicative/Unit {)*+-/}
+Multiplicative -> ∘Multiplicative*Unit {)*+-/}
+
+S11
+Unit -> ∘(Additive)                    {)*+-/$}
+Multiplicative -> ∘Multiplicative/Unit {)*+-/$}
+Multiplicative -> ∘Multiplicative*Unit {)*+-/$}
+Multiplicative -> ∘Unit                {)*+-/}
+Additive -> Additive-∘Multiplicative   {)+-$}
+Unit -> ∘number                        {)*+-/}
+Multiplicative -> ∘Unit                {)*+-/$}
+Additive -> Additive-∘Multiplicative   {)+-}
+Unit -> ∘number                        {)*+-/$}
+Unit -> ∘(Additive)                    {)*+-/}
+Multiplicative -> ∘Multiplicative/Unit {)*+-/}
+Multiplicative -> ∘Multiplicative*Unit {)*+-/}
+
+S12
+Unit -> (Additive)∘                    {)*+-/$}
+Unit -> (Additive)∘                    {)*+-/}
+
+S13
+Multiplicative -> Multiplicative/Unit∘ {)*+-/$}
+
+S14
+Multiplicative -> Multiplicative*Unit∘ {)*+-/$}
+
+S15
+Multiplicative -> Multiplicative∘/Unit {)*+-/$}
+Multiplicative -> Multiplicative∘*Unit {)*+-/$}
+Additive -> Additive+Multiplicative∘   {)+-$}
+Additive -> Additive+Multiplicative∘   {)+-}
+Multiplicative -> Multiplicative∘/Unit {)*+-/}
+Multiplicative -> Multiplicative∘*Unit {)*+-/}
+
+S16
+Multiplicative -> Multiplicative∘/Unit {)*+-/$}
+Multiplicative -> Multiplicative∘*Unit {)*+-/$}
+Additive -> Additive-Multiplicative∘   {)+-$}
+Additive -> Additive-Multiplicative∘   {)+-}
+Multiplicative -> Multiplicative∘/Unit {)*+-/}
+Multiplicative -> Multiplicative∘*Unit {)*+-/}

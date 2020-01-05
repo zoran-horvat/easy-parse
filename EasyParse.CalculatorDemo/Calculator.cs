@@ -11,10 +11,7 @@ namespace EasyParse.CalculatorDemo
             ("number", value => int.TryParse(value, out int result) ? (object)result : new OverflowException()),
         };
 
-        private object A(string openParen, int value, string closedParen) => value;
-        private object A(int value) => value;
-        private object B(int value) => value;
-        private object B(int a, string op, int b) => a + b;
+        private object Expression(object result) => result;
         private object Multiplicative(int value) => value;
 
         private object Multiplicative(int left, string mulOrDiv, int right) =>
