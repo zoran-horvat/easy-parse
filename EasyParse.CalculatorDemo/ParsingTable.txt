@@ -1,173 +1,121 @@
-﻿Generated on 05-Jan-2020 10:54:36 UTC
+﻿Generated on 05-Jan-2020 12:51:43 UTC
 
   0. S' -> Additive
   1. Additive -> Multiplicative
-  2. Additive -> Additive+Multiplicative
-  3. Additive -> Additive-Multiplicative
-  4. Unit -> n
-  5. Unit -> (Additive)
-  6. Multiplicative -> Unit
-  7. Multiplicative -> Multiplicative*Unit
-  8. Multiplicative -> Multiplicative/Unit
+  2. Additive -> AdditiveadOpMultiplicative
+  3. Unit -> number
+  4. Unit -> openParenAdditiveclosedParen
+  5. Multiplicative -> Unit
+  6. Multiplicative -> MultiplicativemulOpUnit
 
-+-----+-----------------------------------------------+-----------------------------------+
-|     |                 SHIFT/REDUCE                  |               GOTO                |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|     |  (  |  )  |  *  |  +  |  -  |  /  |  n  |  $  | S'  |Additive|Unit |Multiplicative|
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  0  | S1  |     |     |     |     |     | S4  |     | ACC |   3    |  5  |      2       |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  1  | S1  |     |     |     |     |     | S4  |     |     |   6    |  5  |      2       |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  2  |     | R1  | S8  | R1  | R1  | S7  |     | R1  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  3  |     |     |     | S9  | S10 |     |     | R0  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  4  |     | R4  | R4  | R4  | R4  | R4  |     | R4  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  5  |     | R6  | R6  | R6  | R6  | R6  |     | R6  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  6  |     | S11 |     | S9  | S10 |     |     |     |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  7  | S1  |     |     |     |     |     | S4  |     |     |        | 12  |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  8  | S1  |     |     |     |     |     | S4  |     |     |        | 13  |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-|  9  | S1  |     |     |     |     |     | S4  |     |     |        |  5  |      14      |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-| 10  | S1  |     |     |     |     |     | S4  |     |     |        |  5  |      15      |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-| 11  |     | R5  | R5  | R5  | R5  | R5  |     | R5  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-| 12  |     | R8  | R8  | R8  | R8  | R8  |     | R8  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-| 13  |     | R7  | R7  | R7  | R7  | R7  |     | R7  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-| 14  |     | R2  | S8  | R2  | R2  | S7  |     | R2  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
-| 15  |     | R3  | S8  | R3  | R3  | S7  |     | R3  |     |        |     |              |
-+-----+-----+-----+-----+-----+-----+-----+-----+-----+-----+--------+-----+--------------+
++-----+----------------------------------------------+-----------------------------------+
+|     |                 SHIFT/REDUCE                 |               GOTO                |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|     |adOp |closedParen|mulOp|number|openParen|  $  | S'  |Additive|Unit |Multiplicative|
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  0  |     |           |     |  S4  |   S2    |     | ACC |   5    |  3  |      1       |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  1  | R1  |    R1     | S6  |      |         | R1  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  2  |     |           |     |  S4  |   S2    |     |     |   7    |  3  |      1       |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  3  | R5  |    R5     | R5  |      |         | R5  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  4  | R3  |    R3     | R3  |      |         | R3  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  5  | S8  |           |     |      |         | R0  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  6  |     |           |     |  S4  |   S2    |     |     |        |  9  |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  7  | S8  |    S10    |     |      |         |     |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  8  |     |           |     |  S4  |   S2    |     |     |        |  3  |      11      |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+|  9  | R6  |    R6     | R6  |      |         | R6  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+| 10  | R4  |    R4     | R4  |      |         | R4  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
+| 11  | R2  |    R2     | S6  |      |         | R2  |     |        |     |              |
++-----+-----+-----------+-----+------+---------+-----+-----+--------+-----+--------------+
 
-FIRST(S') = {(n}
-FIRST(Additive) = {(n}
-FIRST(Unit) = {(n}
-FIRST(Multiplicative) = {(n}
+FIRST(S') = {openParennumber}
+FIRST(Additive) = {openParennumber}
+FIRST(Unit) = {openParennumber}
+FIRST(Multiplicative) = {openParennumber}
 
 FOLLOW(S') = {$}
-FOLLOW(Additive) = {$-+)}
-FOLLOW(Unit) = {$/-+*)}
-FOLLOW(Multiplicative) = {$/-+*)}
+FOLLOW(Additive) = {closedParen$adOp}
+FOLLOW(Unit) = {closedParenmulOp$adOp}
+FOLLOW(Multiplicative) = {closedParenmulOp$adOp}
 
 S0
-Unit -> ∘(Additive)                    {)*+-/$}
-Multiplicative -> ∘Multiplicative/Unit {)*+-/$}
-Multiplicative -> ∘Multiplicative*Unit {)*+-/$}
-Additive -> ∘Additive+Multiplicative   {)+-$}
-Additive -> ∘Additive-Multiplicative   {)+-$}
-Unit -> ∘n                             {)*+-/$}
-Additive -> ∘Multiplicative            {)+-$}
-Multiplicative -> ∘Unit                {)*+-/$}
-S' -> ∘Additive                        {$}
+Multiplicative -> ∘MultiplicativemulOpUnit {adOpclosedParenmulOp$}
+Unit -> ∘openParenAdditiveclosedParen      {adOpclosedParenmulOp$}
+Multiplicative -> ∘Unit                    {adOpclosedParenmulOp$}
+Unit -> ∘number                            {adOpclosedParenmulOp$}
+Additive -> ∘AdditiveadOpMultiplicative    {adOpclosedParen$}
+Additive -> ∘Multiplicative                {adOpclosedParen$}
+S' -> ∘Additive                            {$}
 
 S1
-Unit -> (∘Additive)                    {)*+-/$}
-Additive -> ∘Multiplicative            {)+-}
-Unit -> ∘n                             {)*+-/}
-Multiplicative -> ∘Unit                {)*+-/}
-Additive -> ∘Additive+Multiplicative   {)+-}
-Additive -> ∘Additive-Multiplicative   {)+-}
-Unit -> ∘(Additive)                    {)*+-/}
-Unit -> (∘Additive)                    {)*+-/}
-Multiplicative -> ∘Multiplicative/Unit {)*+-/}
-Multiplicative -> ∘Multiplicative*Unit {)*+-/}
+Multiplicative -> Multiplicative∘mulOpUnit {adOpclosedParenmulOp$}
+Additive -> Multiplicative∘                {adOpclosedParen}
+Additive -> Multiplicative∘                {adOpclosedParen$}
+Multiplicative -> Multiplicative∘mulOpUnit {adOpclosedParenmulOp}
 
 S2
-Multiplicative -> Multiplicative∘/Unit {)*+-/$}
-Multiplicative -> Multiplicative∘*Unit {)*+-/$}
-Additive -> Multiplicative∘            {)+-}
-Additive -> Multiplicative∘            {)+-$}
-Multiplicative -> Multiplicative∘/Unit {)*+-/}
-Multiplicative -> Multiplicative∘*Unit {)*+-/}
+Unit -> openParen∘AdditiveclosedParen      {adOpclosedParenmulOp$}
+Additive -> ∘Multiplicative                {adOpclosedParen}
+Additive -> ∘AdditiveadOpMultiplicative    {adOpclosedParen}
+Multiplicative -> ∘Unit                    {adOpclosedParenmulOp}
+Unit -> ∘number                            {adOpclosedParenmulOp}
+Multiplicative -> ∘MultiplicativemulOpUnit {adOpclosedParenmulOp}
+Unit -> ∘openParenAdditiveclosedParen      {adOpclosedParenmulOp}
+Unit -> openParen∘AdditiveclosedParen      {adOpclosedParenmulOp}
 
 S3
-Additive -> Additive∘+Multiplicative   {)+-$}
-Additive -> Additive∘-Multiplicative   {)+-$}
-S' -> Additive∘                        {$}
+Multiplicative -> Unit∘                    {adOpclosedParenmulOp$}
+Multiplicative -> Unit∘                    {adOpclosedParenmulOp}
 
 S4
-Unit -> n∘                             {)*+-/}
-Unit -> n∘                             {)*+-/$}
+Unit -> number∘                            {adOpclosedParenmulOp$}
+Unit -> number∘                            {adOpclosedParenmulOp}
 
 S5
-Multiplicative -> Unit∘                {)*+-/}
-Multiplicative -> Unit∘                {)*+-/$}
+Additive -> Additive∘adOpMultiplicative    {adOpclosedParen$}
+S' -> Additive∘                            {$}
 
 S6
-Unit -> (Additive∘)                    {)*+-/$}
-Additive -> Additive∘+Multiplicative   {)+-}
-Additive -> Additive∘-Multiplicative   {)+-}
-Unit -> (Additive∘)                    {)*+-/}
+Multiplicative -> MultiplicativemulOp∘Unit {adOpclosedParenmulOp$}
+Unit -> ∘openParenAdditiveclosedParen      {adOpclosedParenmulOp$}
+Unit -> ∘number                            {adOpclosedParenmulOp$}
 
 S7
-Unit -> ∘(Additive)                    {)*+-/$}
-Multiplicative -> Multiplicative/∘Unit {)*+-/$}
-Unit -> ∘n                             {)*+-/$}
+Unit -> openParenAdditive∘closedParen      {adOpclosedParenmulOp$}
+Additive -> Additive∘adOpMultiplicative    {adOpclosedParen}
+Unit -> openParenAdditive∘closedParen      {adOpclosedParenmulOp}
 
 S8
-Unit -> ∘(Additive)                    {)*+-/$}
-Multiplicative -> Multiplicative*∘Unit {)*+-/$}
-Unit -> ∘n                             {)*+-/$}
+Multiplicative -> ∘MultiplicativemulOpUnit {adOpclosedParenmulOp$}
+Unit -> ∘openParenAdditiveclosedParen      {adOpclosedParenmulOp$}
+Additive -> AdditiveadOp∘Multiplicative    {adOpclosedParen}
+Multiplicative -> ∘Unit                    {adOpclosedParenmulOp$}
+Unit -> ∘number                            {adOpclosedParenmulOp$}
+Additive -> AdditiveadOp∘Multiplicative    {adOpclosedParen$}
+Multiplicative -> ∘Unit                    {adOpclosedParenmulOp}
+Unit -> ∘number                            {adOpclosedParenmulOp}
+Multiplicative -> ∘MultiplicativemulOpUnit {adOpclosedParenmulOp}
+Unit -> ∘openParenAdditiveclosedParen      {adOpclosedParenmulOp}
 
 S9
-Unit -> ∘(Additive)                    {)*+-/$}
-Multiplicative -> ∘Multiplicative/Unit {)*+-/$}
-Multiplicative -> ∘Multiplicative*Unit {)*+-/$}
-Unit -> ∘n                             {)*+-/}
-Multiplicative -> ∘Unit                {)*+-/}
-Additive -> Additive+∘Multiplicative   {)+-$}
-Unit -> ∘n                             {)*+-/$}
-Multiplicative -> ∘Unit                {)*+-/$}
-Additive -> Additive+∘Multiplicative   {)+-}
-Unit -> ∘(Additive)                    {)*+-/}
-Multiplicative -> ∘Multiplicative/Unit {)*+-/}
-Multiplicative -> ∘Multiplicative*Unit {)*+-/}
+Multiplicative -> MultiplicativemulOpUnit∘ {adOpclosedParenmulOp$}
 
 S10
-Unit -> ∘(Additive)                    {)*+-/$}
-Multiplicative -> ∘Multiplicative/Unit {)*+-/$}
-Multiplicative -> ∘Multiplicative*Unit {)*+-/$}
-Unit -> ∘n                             {)*+-/}
-Multiplicative -> ∘Unit                {)*+-/}
-Additive -> Additive-∘Multiplicative   {)+-$}
-Unit -> ∘n                             {)*+-/$}
-Multiplicative -> ∘Unit                {)*+-/$}
-Additive -> Additive-∘Multiplicative   {)+-}
-Unit -> ∘(Additive)                    {)*+-/}
-Multiplicative -> ∘Multiplicative/Unit {)*+-/}
-Multiplicative -> ∘Multiplicative*Unit {)*+-/}
+Unit -> openParenAdditiveclosedParen∘      {adOpclosedParenmulOp$}
+Unit -> openParenAdditiveclosedParen∘      {adOpclosedParenmulOp}
 
 S11
-Unit -> (Additive)∘                    {)*+-/$}
-Unit -> (Additive)∘                    {)*+-/}
-
-S12
-Multiplicative -> Multiplicative/Unit∘ {)*+-/$}
-
-S13
-Multiplicative -> Multiplicative*Unit∘ {)*+-/$}
-
-S14
-Multiplicative -> Multiplicative∘/Unit {)*+-/$}
-Multiplicative -> Multiplicative∘*Unit {)*+-/$}
-Additive -> Additive+Multiplicative∘   {)+-$}
-Additive -> Additive+Multiplicative∘   {)+-}
-Multiplicative -> Multiplicative∘/Unit {)*+-/}
-Multiplicative -> Multiplicative∘*Unit {)*+-/}
-
-S15
-Multiplicative -> Multiplicative∘/Unit {)*+-/$}
-Multiplicative -> Multiplicative∘*Unit {)*+-/$}
-Additive -> Additive-Multiplicative∘   {)+-$}
-Additive -> Additive-Multiplicative∘   {)+-}
-Multiplicative -> Multiplicative∘/Unit {)*+-/}
-Multiplicative -> Multiplicative∘*Unit {)*+-/}
+Multiplicative -> Multiplicative∘mulOpUnit {adOpclosedParenmulOp$}
+Additive -> AdditiveadOpMultiplicative∘    {adOpclosedParen}
+Additive -> AdditiveadOpMultiplicative∘    {adOpclosedParen$}
+Multiplicative -> Multiplicative∘mulOpUnit {adOpclosedParenmulOp}

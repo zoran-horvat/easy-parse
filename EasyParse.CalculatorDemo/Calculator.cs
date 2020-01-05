@@ -8,7 +8,7 @@ namespace EasyParse.CalculatorDemo
     {
         protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
         {
-            ("n", value => int.TryParse(value, out int result) ? (object)result : new OverflowException()),
+            ("number", value => int.TryParse(value, out int result) ? (object)result : new OverflowException()),
         };
 
         private object Multiplicative(int value) => value;
