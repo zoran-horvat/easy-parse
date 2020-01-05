@@ -5,27 +5,26 @@ a is @'\->'                                   # arrow
 l is 'lexemes:'                               # lexemes keyword
 i is 'ignore'                                 # ignore keyword
 s is 'is'                                     # is keyword
-r is 'rules:'                                 # rules keyword
-n is '[A-Z][a-zA-Z0-9_]*'                     # non-terminal
-t is @'[a-z_][a-zA-Z0-9_]*'                   # terminal
-e is @'\n([ \t]*(#[^\n]*)?\n)*'               # end of line
+rules is 'rules:'                                 # rules keyword
+nonTerminal is '[A-Z][a-zA-Z0-9_]*'                     # non-terminal
+terminal is @'[a-z_][a-zA-Z0-9_]*'                   # terminal
+eoln is @'\n([ \t]*(#[^\n]*)?\n)*'
 quotedString is '\'((\\[\\\'nrt])|[^\\\'])*\''
 verbatimString is '@\'[^\']*\''
 
 rules:
-FullGrammar -> Lexemes r e Grammar
-FullGrammar -> e FullGrammar
-Lexemes -> l e
-Lexemes -> Lexemes LexemePattern e
-LexemePattern -> t s String
-LexemePattern -> t String		# ignore pattern (t must read "ignore")
+FullGrammar -> Lexemes rules eoln Grammar
+FullGrammar -> eoln FullGrammar
+Lexemes -> l eoln
+Lexemes -> Lexemes LexemePattern eoln
+LexemePattern -> terminal s String
 LexemePattern -> i String
-Grammar -> Rule e
-Grammar -> Grammar Rule e
-Rule -> n a RuleBody
+Grammar -> Rule eoln
+Grammar -> Grammar Rule eoln
+Rule -> nonTerminal a RuleBody
 RuleBody -> Symbol
 RuleBody -> RuleBody Symbol
-Symbol -> t
-Symbol -> n
+Symbol -> terminal
+Symbol -> nonTerminal
 String -> quotedString
 String -> verbatimString
