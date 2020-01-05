@@ -10,7 +10,7 @@
     <Lexeme Pattern="[A-Z][a-zA-Z0-9_]*" Name="n" />
     <Lexeme Pattern="[a-z_][a-zA-Z0-9_]*" Name="t" />
     <Lexeme Pattern="\n([ \t]*(#[^\n]*)?\n)*" Name="e" />
-    <Lexeme Pattern="'((\\\\[\\\\'nrt])|[^\\\\'])*'" Name="quotedString" />
+    <Lexeme Pattern="'((\\[\\'nrt])|[^\\'])*'" Name="quotedString" />
     <Lexeme Pattern="@'[^']*'" Name="verbatimString" />
   </LexicalRules>
   <Grammar>
