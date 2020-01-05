@@ -3,12 +3,12 @@ ignore @'\s+'
 number matches @'\d+'
 
 rules:
-Expression -> Additive
-Additive -> Multiplicative
-Additive -> Additive '+' Multiplicative
-Additive -> Additive '-' Multiplicative
-Multiplicative -> Unit
-Multiplicative -> Multiplicative '*' Unit
-Multiplicative -> Multiplicative '/' Unit
+Expression -> Add
+Add -> Mul
+Add -> Add '+' Mul
+Add -> Add '-' Mul
+Mul -> Unit
+Mul -> Mul '*' Unit
+Mul -> Mul '/' Unit
 Unit -> number
-Unit -> '(' Additive ')'
+Unit -> '(' Add ')'

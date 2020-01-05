@@ -12,16 +12,16 @@ namespace EasyParse.CalculatorDemo
         };
 
         private object Expression(object result) => result;
-        private object Multiplicative(int value) => value;
+        private object Mul(int value) => value;
 
-        private object Multiplicative(int left, string mulOrDiv, int right) =>
+        private object Mul(int left, string mulOrDiv, int right) =>
             mulOrDiv == "*" && left == int.MinValue && right == int.MinValue ? new OverflowException()
             : mulOrDiv == "/" && right == 0 ? new DivideByZeroException()
             : this.ResultOf(mulOrDiv == "*" ? left * right : left / right);
 
-        private object Additive(int value) => value;
+        private object Add(int value) => value;
 
-        private object Additive(int left, string plusOrMinus, int right) =>
+        private object Add(int left, string plusOrMinus, int right) =>
             this.ResultOf(plusOrMinus == "+" ? left + right : left - right);
 
         private int Unit(int value) => value;
