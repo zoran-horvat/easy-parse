@@ -1,10 +1,10 @@
 ﻿lexemes:
 ignore @'\s+'
-number is @'\d+'
-adOp is @'[\+\-]'
-mulOp is @'[\*\/]'
-openParen is @'\('
-closedParen is @'\)'
+number matches @'\d+'
+adOp matches @'[\+\-]'
+mulOp matches @'[\*\/]'
+openParen matches @'\('
+closedParen matches @'\)'
 
 rules:
 Additive -> Multiplicative

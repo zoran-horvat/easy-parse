@@ -1,23 +1,23 @@
 ﻿lexemes:
 ignore @'[ \t]+'
 ignore @'#[^\n]*'
-arrow is @'\->'
-lexemes is 'lexemes:'
-keywordIgnore is 'ignore'
-keywordIs is 'is'
-rules is 'rules:'
-nonTerminal is '[A-Z][a-zA-Z0-9_]*'
-terminal is @'[a-z_][a-zA-Z0-9_]*'
-eoln is @'\n([ \t]*(#[^\n]*)?\n)*'
-quotedString is '\'((\\[\\\'nrt])|[^\\\'])*\''
-verbatimString is '@\'[^\']*\''
+arrow matches @'\->'
+lexemes matches 'lexemes:'
+keywordIgnore matches 'ignore'
+keywordMatches matches 'matches'
+rules matches 'rules:'
+nonTerminal matches '[A-Z][a-zA-Z0-9_]*'
+terminal matches @'[a-z_][a-zA-Z0-9_]*'
+eoln matches @'\n([ \t]*(#[^\n]*)?\n)*'
+quotedString matches '\'((\\[\\\'nrt])|[^\\\'])*\''
+verbatimString matches '@\'[^\']*\''
 
 rules:
 FullGrammar -> Lexemes rules eoln Grammar
 FullGrammar -> eoln FullGrammar
 Lexemes -> lexemes eoln
 Lexemes -> Lexemes LexemePattern eoln
-LexemePattern -> terminal keywordIs String
+LexemePattern -> terminal keywordMatches String
 LexemePattern -> keywordIgnore String
 Grammar -> Rule eoln
 Grammar -> Grammar Rule eoln

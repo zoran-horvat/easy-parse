@@ -1,10 +1,10 @@
 ﻿lexemes:
-plaintext is @'[^\\]+'
-newLine is @'\n'
-carriageReturn is @'\r'
-tab is @'\t'
-backslash is @'\\'
-quote is '\\\''
+plaintext matches @'[^\\]+'
+newLine matches @'\n'
+carriageReturn matches @'\r'
+tab matches @'\t'
+backslash matches @'\\'
+quote matches '\\\''
 
 rules:
 String -> Segment

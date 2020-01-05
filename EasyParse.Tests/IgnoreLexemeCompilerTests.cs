@@ -5,7 +5,6 @@ using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.ParserGenerator.Models.Rules;
-using EasyParse.Parsing;
 using EasyParse.Testing;
 using Xunit;
 
