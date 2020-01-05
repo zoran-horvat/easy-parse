@@ -18,15 +18,15 @@ namespace EasyParse.Tests
             "# Comment on its own line",
             "       # Comment on a line containing blank spaces",
             "rules:",
-            "A -> M # Comment on a line with a rule",
-            "A -> A+M",
-            "A -> A-M",
-            "U -> n",
+            "A -> M; # Comment on a line with a rule",
+            "A -> A '+' M;",
+            "A -> A '-' M;",
+            "U -> n;",
             "",
-            "U -> (A)",
-            "M -> U",
-            "M -> M*U",
-            "M -> M/U")]
+            "U -> '(' A ')';",
+            "M -> U;",
+            "M -> M '*' U;",
+            "M -> M '/' U;")]
         [InlineData(
             "lexemes:",
             "rules:",
@@ -40,23 +40,23 @@ namespace EasyParse.Tests
             "# a - Arrow (->)",
             "# e - End of line",
             "",
-            "G -> L",
-            "G -> GL",
-            "L -> RE",
-            "L -> E",
-            "E -> ce",
-            "E -> e",
-            "R -> naB",
-            "B -> S",
-            "B -> BS",
-            "S -> t",
-            "S -> n")]
+            "G -> L;",
+            "G -> GL;",
+            "L -> RE;",
+            "L -> E;",
+            "E -> ce;",
+            "E -> e;",
+            "R -> naB;",
+            "B -> S;",
+            "B -> BS;",
+            "S -> t;",
+            "S -> n;")]
         [InlineData(
             "",
             "# Grammar beginning with a blank line and a comment",
             "lexemes:",
             "rules:",
-            "S -> x")]
+            "S -> x;")]
         public void RecognizesValidGrammar(params string[] grammar) => 
             Assert.True(base.Recognized(grammar));
 

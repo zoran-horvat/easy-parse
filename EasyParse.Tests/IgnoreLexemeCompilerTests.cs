@@ -19,65 +19,65 @@ namespace EasyParse.Tests
         [InlineData(0,
             "lexemes:",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData(1,
             "lexemes:",
-            "ignore ''",
+            "ignore '';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData(1,
             "lexemes:",
-            "ignore 'something'",
-            "ignore 'something'",
+            "ignore 'something';",
+            "ignore 'something';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData(2,
             "lexemes:",
-            "ignore 'something'",
-            "ignore 'again'",
+            "ignore 'something';",
+            "ignore 'again';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar) => 
             Assert.Equal(expectedCount, this.GetIgnoreLexemes(grammar).Count());
 
         [Theory]
         [InlineData("something",
             "lexemes:",
-            "ignore 'something'",
+            "ignore 'something';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData("again, and again",
             "lexemes:",
-            "ignore 'again, and again'",
+            "ignore 'again, and again';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         public void CompilesGrammarWithIgnoreLexeme_GrammarContainsIgnorePattern(string ignore, params string[] grammar) => 
             Assert.Equal(ignore, this.CompiledGrammar(grammar).IgnoreLexemes.First().Pattern.ToString());
 
         [Theory]
         [InlineData(0,
             "lexemes:",
-            "ignore 'something'",
+            "ignore 'something';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData(2, 
             "lexemes:",
-            "ignore 'something'",
-            "'n' is '[A-Z]'",
-            "'g' is '@'",
+            "ignore 'something';",
+            "n matches '[A-Z]';",
+            "g matches '@';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData(1, 
             "lexemes:",
-            "ignore 'something'",
-            "'n' is @'[A-Z]'",
-            "'n' is @'[A-Z]'",
+            "ignore 'something';",
+            "n matches @'[A-Z]';",
+            "n matches @'[A-Z]';",
             "rules:",
-            "X -> a")]
+            "X -> a;")]
         [InlineData(2,
             "lexemes:",
-            "'a' is '@'",
-            "'x' is @'[a-z]'",
+            "a matches '@';",
+            "x matches @'[a-z]';",
             "",
             "# C - string content",
             "# q - single quote",
@@ -85,12 +85,11 @@ namespace EasyParse.Tests
             "# a - verbatim string indicator",
             "",
             "rules:",
-            "S -> qq",
-            "S -> qCq",
-            "S -> V",
-            "C -> p",
-            "V -> aqq"
-            )]
+            "S -> q q;",
+            "S -> q C q;",
+            "S -> V;",
+            "C -> p;",
+            "V -> a q q;")]
         public void CompilesGrammarWithLexemePatterns_GrammarContainsSpecifiedNumberOfPatterns(int expectedCount, params string[] grammar) => 
             Assert.Equal(expectedCount, this.GetLexemePatterns(grammar).Count());
 

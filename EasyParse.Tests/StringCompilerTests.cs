@@ -22,6 +22,7 @@ namespace EasyParse.Tests
             Assert.Equal(expected, this.Compile(input));
 
         [Theory]
+        [InlineData(@"\\\\\'", @"\\'")]
         [InlineData(@"some\\thing", @"some\thing")]
         [InlineData(@"some\'thing", "some'thing")]
         [InlineData(@"some\nthing", "some\nthing")]

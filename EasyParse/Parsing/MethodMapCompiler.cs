@@ -9,21 +9,15 @@ namespace EasyParse.Parsing
     {
         protected abstract IEnumerable<(string terminal, Func<string, object> map)> TerminalMap { get; }
 
-        public object CompileTerminal(string label, string value)
-        {
-            var x = this.TerminalMap
+        public object CompileTerminal(string label, string value) =>
+            this.TerminalMap
                 .Where(tuple => tuple.terminal == label)
                 .Select(tuple => tuple.map(value))
                 .DefaultIfEmpty(value)
                 .First();
-            return x;
-        }
 
-        public object CompileNonTerminal(string label, object[] children)
-        {
-            var x = this.Compile(label, children);
-            return x;
-        }
+        public object CompileNonTerminal(string label, object[] children) => 
+            this.Compile(label, children);
 
         private object Compile(string methodName, params object[] children) =>
             children.OfType<Exception>().FirstOrDefault() is Exception exc ? exc

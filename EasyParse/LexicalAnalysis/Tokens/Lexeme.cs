@@ -1,4 +1,4 @@
-﻿namespace EasyParse.LexicalAnalysis.Tokens
+﻿    namespace EasyParse.LexicalAnalysis.Tokens
 {
     public class Lexeme : Token
     {

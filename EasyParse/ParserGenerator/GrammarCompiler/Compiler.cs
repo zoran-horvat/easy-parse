@@ -27,21 +27,19 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             string.IsNullOrEmpty(content) ? string.Empty
             : this.StringParser.Parse(content).Compile(this.StringCompiler);
 
-        private Grammar FullGrammar(ImmutableList<Lexeme> lexemes, string rulesKeyword, string endOfLine, Grammar grammar) => grammar.AddRange(lexemes);
-        private Grammar FullGrammar(string endOfLine, Grammar grammar) => grammar;
-        private ImmutableList<Lexeme> Lexemes(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
-        private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next, string endOfLine) => lexemes.Add(next);
-        private Lexeme LexemePattern(Terminal terminal, string keywordMatches, string pattern) => new LexemePattern(terminal.Value, pattern);
+        private Grammar Grammar(ImmutableList<Lexeme> lexemes, ImmutableList<Rule> rules) => new Grammar(rules).AddRange(lexemes);
 
-        private Lexeme LexemePattern(string ignoreKeyword, string pattern) => new IgnoreLexeme(pattern);
+        private ImmutableList<Lexeme> Lexemes(string lexemesKeyword) => ImmutableList<Lexeme>.Empty;
+        private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next) => lexemes.Add(next);
+        private Lexeme Lexeme(string ignoreKeyword, string pattern, string semicolon) => new IgnoreLexeme(pattern);
+        private Lexeme Lexeme(Terminal terminal, string matchesKeyword, string pattern, string semicolon) => new LexemePattern(terminal.Value, pattern);
 
-        private Grammar Grammar(Rule rule, string endOfLine) => new Grammar(rule);
-        private Grammar Grammar(Grammar rules, Rule next, string endOfLine) => rules.Add(next);
-        private Rule Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
+        private ImmutableList<Rule> Rules(string rulesKeyword) => ImmutableList<Rule>.Empty;
+        private ImmutableList<Rule> Rules(ImmutableList<Rule> rules, Rule next) => rules.Add(next);
+        private Rule Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body, string semicolon) => new Rule(nonTerminal, body);
         private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
-        private ImmutableList<Symbol> RuleBody(ImmutableList<Symbol> list, Symbol next) => list.Add(next);
-        private Symbol Symbol(Terminal terminal) => terminal;
-        private Symbol Symbol(NonTerminal nonTerminal) => nonTerminal;
+        private ImmutableList<Symbol> RuleBody(ImmutableList<Symbol> symbols, Symbol next) => symbols.Add(next);
+        private Symbol Symbol(Symbol symbol) => symbol;
         private Symbol Symbol(string constant) => new Constant(constant);
         private string String(string value) => value;
     }

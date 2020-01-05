@@ -1,17 +1,17 @@
 ﻿lexemes:
-plaintext matches @'[^\\]+'
-newLine matches @'\n'
-carriageReturn matches @'\r'
-tab matches @'\t'
-backslash matches @'\\'
-quote matches '\\\''
+plaintext matches @'[^\\]+';
+newLine matches @'\\n';
+carriageReturn matches @'\\r';
+tab matches @'\\t';
+backslash matches @'\\\\';
+quote matches '\\\\\'';
 
 rules:
-String -> Segment
-String -> String Segment
-Segment -> plaintext
-Segment -> newLine
-Segment -> carriageReturn
-Segment -> tab
-Segment -> backslash
-Segment -> quote
+String -> Segment;
+String -> String Segment;
+Segment -> plaintext;
+Segment -> newLine;
+Segment -> carriageReturn;
+Segment -> tab;
+Segment -> backslash;
+Segment -> quote;

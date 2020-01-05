@@ -21,19 +21,34 @@ namespace EasyParse.Tests
             "# Comment on its own line",
             "       # Comment on a line containing blank spaces",
             "rules:",
-            "A -> M # Comment on a line with a rule",
-            "A -> A+M",
-            "A -> A-M",
-            "U -> n",
+            "A -> M; # Comment on a line with a rule",
+            "A -> A '+' M;",
+            "A -> A '-' M;",
+            "U -> n;",
             "",
-            "U -> (A)",
-            "M -> U",
-            "M -> M*U",
-            "M -> M/U")]
-        public void CompilesGrammar(params string[] grammar)
-        {
-            var x = Parser.FromXmlResource(this.XmlDefinitionAssembly, this.XmlDefinitionResourceName, this.LexicalRules).Lexer.Tokenize(grammar).ToArray();
+            "U -> '(' A ')';",
+            "M -> U;",
+            "M -> M '*' U;",
+            "M -> M '/' U;")]
+        [InlineData(
+            @"lexemes:",
+            @"plaintext matches @'[^\\]+';",
+            @"newLine matches @'\\n';",
+            @"carriageReturn matches @'\\r';",
+            @"tab matches @'\\t';",
+            @"backslash matches @'\\\\';",
+            @"quote matches '\\\\\'';",
+            @"",
+            @"rules:",
+            @"String -> Segment;",
+            @"String -> String Segment;",
+            @"Segment -> plaintext;",
+            @"Segment -> newLine;",
+            @"Segment -> carriageReturn;",
+            @"Segment -> tab;",
+            @"Segment -> backslash;",
+            @"Segment -> quote;")]
+        public void CompilesGrammar(params string[] grammar) => 
             Assert.IsType<Grammar>(base.Compiled(new Compiler(), grammar));
-        }
     }
 }

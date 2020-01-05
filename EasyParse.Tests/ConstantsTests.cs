@@ -20,17 +20,17 @@ namespace EasyParse.Tests
         [InlineData(0,
             "lexemes:",
             "rules:",
-            "A -> x")]
+            "A -> x;")]
         [InlineData(1,
             "lexemes:",
             "rules:",
-            "A -> 'const'")]
+            "A -> 'const';")]
         [InlineData(3,
             "lexemes:",
             "rules:",
-            "A -> 'something'",
-            "B -> 'again'",
-            "C -> 'and again'")]
+            "A -> 'something';",
+            "B -> 'again';",
+            "C -> 'and again';")]
         public void GrammarContainsConstantLexemes_ReturnsExpectedNumberOfConstantLexemes(int expectedCount, params string[] grammar) =>
             Assert.Equal(expectedCount, this.GetConstantLexemes(grammar).Count());
 
@@ -38,11 +38,11 @@ namespace EasyParse.Tests
         [InlineData("const",
             "lexemes:",
             "rules:",
-            "A -> 'const'")]
+            "A -> 'const';")]
         [InlineData("something, again",
             "lexemes:",
             "rules:",
-            "A -> 'something, again'")]
+            "A -> 'something, again';")]
         public void GrammarContainsOneConstantLexeme_ReturnsThatConstantLexeme(string expectedValue, params string[] grammar) =>
             Assert.Equal(expectedValue, this.GetFirstConstantLexeme(grammar).ConstantValue);
 

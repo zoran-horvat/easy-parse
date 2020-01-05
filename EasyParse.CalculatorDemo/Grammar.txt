@@ -1,14 +1,14 @@
 ﻿lexemes:
-ignore @'\s+'
-number matches @'\d+'
+ignore @'\s+';
+number matches @'\d+';
 
 rules:
-Expression -> Add
-Add -> Mul
-Add -> Add '+' Mul
-Add -> Add '-' Mul
-Mul -> Unit
-Mul -> Mul '*' Unit
-Mul -> Mul '/' Unit
-Unit -> number
-Unit -> '(' Add ')'
+Expression -> Add;
+Add -> Mul;
+Add -> Add '+' Mul;
+Add -> Add '-' Mul;
+Mul -> Unit;
+Mul -> Mul '*' Unit;
+Mul -> Mul '/' Unit;
+Unit -> number;
+Unit -> '(' Add ')';

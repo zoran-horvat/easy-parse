@@ -1,26 +1,26 @@
 ﻿lexemes:
-ignore @'[ \t]+'
-ignore @'#[^\n]*'
-nonTerminal matches '[A-Z][a-zA-Z0-9_]*'
-terminal matches @'[a-z_][a-zA-Z0-9_]*'
-eoln matches @'\n([ \t]*(#[^\n]*)?\n)*'
-quotedString matches '\'((\\[\\\'nrt])|[^\\\'])*\''
-verbatimString matches '@\'[^\']*\''
+ignore @'\s+';
+ignore @'#[^\n]*';
+nonTerminal matches '[A-Z][a-zA-Z0-9_]*';
+terminal matches @'[a-z_][a-zA-Z0-9_]*';
+quotedString matches '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\'';
+verbatimString matches '@\'[^\']*\'';
 
 rules:
-FullGrammar -> Lexemes 'rules:' eoln Grammar
-FullGrammar -> eoln FullGrammar
-Lexemes -> 'lexemes:' eoln
-Lexemes -> Lexemes LexemePattern eoln
-LexemePattern -> terminal 'matches' String
-LexemePattern -> 'ignore' String
-Grammar -> Rule eoln
-Grammar -> Grammar Rule eoln
-Rule -> nonTerminal '->' RuleBody
-RuleBody -> Symbol
-RuleBody -> RuleBody Symbol
-Symbol -> terminal
-Symbol -> nonTerminal
-Symbol -> String
-String -> quotedString
-String -> verbatimString
+Grammar -> Lexemes Rules;
+
+Lexemes -> 'lexemes:';
+Lexemes -> Lexemes Lexeme;
+Lexeme -> 'ignore' String ';';
+Lexeme -> terminal 'matches' String ';';
+
+Rules -> 'rules:';
+Rules -> Rules Rule;
+Rule -> nonTerminal '->' RuleBody ';';
+RuleBody -> Symbol;
+RuleBody -> RuleBody Symbol;
+Symbol -> terminal;
+Symbol -> nonTerminal;
+Symbol -> String;
+String -> quotedString;
+String -> verbatimString;

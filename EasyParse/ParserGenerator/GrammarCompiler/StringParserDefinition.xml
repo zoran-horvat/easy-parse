@@ -1,10 +1,10 @@
 ﻿<ParserDefinition>
   <LexicalRules>
     <Lexeme Pattern="[^\\]+" Name="plaintext" />
-    <Lexeme Pattern="\n" Name="newLine" />
-    <Lexeme Pattern="\r" Name="carriageReturn" />
-    <Lexeme Pattern="\t" Name="tab" />
-    <Lexeme Pattern="\\" Name="backslash" />
+    <Lexeme Pattern="\\n" Name="newLine" />
+    <Lexeme Pattern="\\r" Name="carriageReturn" />
+    <Lexeme Pattern="\\t" Name="tab" />
+    <Lexeme Pattern="\\\\" Name="backslash" />
     <Lexeme Pattern="\\'" Name="quote" />
   </LexicalRules>
   <Grammar>
