@@ -9,8 +9,8 @@ r is 'rules:'                                 # rules keyword
 n is '[A-Z][a-zA-Z0-9_]*'                     # non-terminal
 t is @'[a-z_][a-zA-Z0-9_]*'                   # terminal
 e is @'\n([ \t]*(#[^\n]*)?\n)*'               # end of line
-q is '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\''     # quoted string with escaping
-v is '@\'[^\']*\''
+quotedString is '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\''
+verbatimString is '@\'[^\']*\''
 
 rules:
 FullGrammar -> Lexemes r e Grammar
@@ -27,5 +27,5 @@ RuleBody -> Symbol
 RuleBody -> RuleBody Symbol
 Symbol -> t
 Symbol -> n
-String -> q
-String -> v
+String -> quotedString
+String -> verbatimString

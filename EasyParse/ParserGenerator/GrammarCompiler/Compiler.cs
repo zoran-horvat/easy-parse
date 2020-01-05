@@ -17,8 +17,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
         {
-            ("q", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
-            ("v", raw => raw.Substring(2, raw.Length - 3)),
+            ("quotedString", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
             ("verbatimString", raw => raw.Substring(2, raw.Length - 3)),
             ("n", value => new NonTerminal(value)),
         };

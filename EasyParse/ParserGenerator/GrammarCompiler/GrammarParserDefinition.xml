@@ -10,8 +10,8 @@
     <Lexeme Pattern="[A-Z][a-zA-Z0-9_]*" Name="n" />
     <Lexeme Pattern="[a-z_][a-zA-Z0-9_]*" Name="t" />
     <Lexeme Pattern="\n([ \t]*(#[^\n]*)?\n)*" Name="e" />
-    <Lexeme Pattern="'((\\[\\'nrt])|[^\\'])*'" Name="q" />
-    <Lexeme Pattern="@'[^']*'" Name="v" />
+    <Lexeme Pattern="'((\\\\[\\\\'nrt])|[^\\\\'])*'" Name="quotedString" />
+    <Lexeme Pattern="@'[^']*'" Name="verbatimString" />
   </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">
@@ -156,7 +156,7 @@
         <NonTerminal Name="String" />
       </Head>
       <Body>
-        <Terminal Name="q" />
+        <Terminal Name="quotedString" />
       </Body>
     </Rule>
     <Rule Ordinal="16">
@@ -164,41 +164,41 @@
         <NonTerminal Name="String" />
       </Head>
       <Body>
-        <Terminal Name="v" />
+        <Terminal Name="verbatimString" />
       </Body>
     </Rule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="e" TransitionTo="13" />
-    <Shift State="0" Terminal="i" TransitionTo="7" />
-    <Shift State="0" Terminal="l" TransitionTo="9" />
-    <Shift State="0" Terminal="n" TransitionTo="10" />
-    <Shift State="0" Terminal="q" TransitionTo="2" />
-    <Shift State="0" Terminal="t" TransitionTo="8" />
-    <Shift State="0" Terminal="v" TransitionTo="3" />
-    <Shift State="1" Terminal="i" TransitionTo="7" />
+    <Shift State="0" Terminal="i" TransitionTo="5" />
+    <Shift State="0" Terminal="l" TransitionTo="7" />
+    <Shift State="0" Terminal="n" TransitionTo="8" />
+    <Shift State="0" Terminal="quotedString" TransitionTo="9" />
+    <Shift State="0" Terminal="t" TransitionTo="6" />
+    <Shift State="0" Terminal="verbatimString" TransitionTo="12" />
+    <Shift State="1" Terminal="i" TransitionTo="5" />
     <Shift State="1" Terminal="r" TransitionTo="14" />
     <Shift State="1" Terminal="t" TransitionTo="15" />
-    <Shift State="5" Terminal="e" TransitionTo="17" />
-    <Shift State="7" Terminal="q" TransitionTo="2" />
-    <Shift State="7" Terminal="v" TransitionTo="3" />
-    <Shift State="8" Terminal="q" TransitionTo="2" />
-    <Shift State="8" Terminal="s" TransitionTo="20" />
-    <Shift State="8" Terminal="v" TransitionTo="3" />
-    <Shift State="9" Terminal="e" TransitionTo="21" />
-    <Shift State="10" Terminal="a" TransitionTo="22" />
-    <Shift State="11" Terminal="n" TransitionTo="23" />
-    <Shift State="11" Terminal="t" TransitionTo="24" />
-    <Shift State="12" Terminal="n" TransitionTo="26" />
+    <Shift State="3" Terminal="e" TransitionTo="17" />
+    <Shift State="5" Terminal="quotedString" TransitionTo="9" />
+    <Shift State="5" Terminal="verbatimString" TransitionTo="12" />
+    <Shift State="6" Terminal="quotedString" TransitionTo="9" />
+    <Shift State="6" Terminal="s" TransitionTo="20" />
+    <Shift State="6" Terminal="verbatimString" TransitionTo="12" />
+    <Shift State="7" Terminal="e" TransitionTo="21" />
+    <Shift State="8" Terminal="a" TransitionTo="22" />
+    <Shift State="10" Terminal="n" TransitionTo="23" />
+    <Shift State="10" Terminal="t" TransitionTo="24" />
+    <Shift State="11" Terminal="n" TransitionTo="26" />
     <Shift State="13" Terminal="e" TransitionTo="13" />
-    <Shift State="13" Terminal="l" TransitionTo="9" />
+    <Shift State="13" Terminal="l" TransitionTo="7" />
     <Shift State="14" Terminal="e" TransitionTo="29" />
-    <Shift State="15" Terminal="q" TransitionTo="2" />
+    <Shift State="15" Terminal="quotedString" TransitionTo="9" />
     <Shift State="15" Terminal="s" TransitionTo="20" />
-    <Shift State="15" Terminal="v" TransitionTo="3" />
+    <Shift State="15" Terminal="verbatimString" TransitionTo="12" />
     <Shift State="16" Terminal="e" TransitionTo="30" />
-    <Shift State="20" Terminal="q" TransitionTo="2" />
-    <Shift State="20" Terminal="v" TransitionTo="3" />
+    <Shift State="20" Terminal="quotedString" TransitionTo="9" />
+    <Shift State="20" Terminal="verbatimString" TransitionTo="12" />
     <Shift State="22" Terminal="n" TransitionTo="23" />
     <Shift State="22" Terminal="t" TransitionTo="24" />
     <Shift State="26" Terminal="a" TransitionTo="22" />
@@ -207,18 +207,18 @@
     <Shift State="32" Terminal="n" TransitionTo="23" />
     <Shift State="32" Terminal="t" TransitionTo="24" />
     <Shift State="34" Terminal="n" TransitionTo="26" />
-    <Reduce State="2" Terminal="e" RuleOrdinal="15" />
-    <Reduce State="3" Terminal="e" RuleOrdinal="16" />
-    <Reduce State="4" EndOfInput="$" RuleOrdinal="0" />
-    <Reduce State="6" Terminal="e" RuleOrdinal="11" />
-    <Reduce State="6" Terminal="n" RuleOrdinal="11" />
-    <Reduce State="6" Terminal="t" RuleOrdinal="11" />
-    <Reduce State="8" Terminal="e" RuleOrdinal="13" />
-    <Reduce State="8" Terminal="n" RuleOrdinal="13" />
-    <Reduce State="8" Terminal="t" RuleOrdinal="13" />
-    <Reduce State="10" Terminal="e" RuleOrdinal="14" />
-    <Reduce State="10" Terminal="n" RuleOrdinal="14" />
-    <Reduce State="10" Terminal="t" RuleOrdinal="14" />
+    <Reduce State="2" EndOfInput="$" RuleOrdinal="0" />
+    <Reduce State="4" Terminal="e" RuleOrdinal="11" />
+    <Reduce State="4" Terminal="n" RuleOrdinal="11" />
+    <Reduce State="4" Terminal="t" RuleOrdinal="11" />
+    <Reduce State="6" Terminal="e" RuleOrdinal="13" />
+    <Reduce State="6" Terminal="n" RuleOrdinal="13" />
+    <Reduce State="6" Terminal="t" RuleOrdinal="13" />
+    <Reduce State="8" Terminal="e" RuleOrdinal="14" />
+    <Reduce State="8" Terminal="n" RuleOrdinal="14" />
+    <Reduce State="8" Terminal="t" RuleOrdinal="14" />
+    <Reduce State="9" Terminal="e" RuleOrdinal="15" />
+    <Reduce State="12" Terminal="e" RuleOrdinal="16" />
     <Reduce State="17" EndOfInput="$" RuleOrdinal="8" />
     <Reduce State="17" Terminal="n" RuleOrdinal="8" />
     <Reduce State="18" Terminal="e" RuleOrdinal="7" />
@@ -244,25 +244,25 @@
     <Reduce State="33" EndOfInput="$" RuleOrdinal="9" />
     <Reduce State="33" Terminal="n" RuleOrdinal="9" />
     <Reduce State="34" EndOfInput="$" RuleOrdinal="1" />
-    <Goto State="0" NonTerminal="FullGrammar" TransitionTo="4" />
-    <Goto State="0" NonTerminal="Grammar" TransitionTo="12" />
+    <Goto State="0" NonTerminal="FullGrammar" TransitionTo="2" />
+    <Goto State="0" NonTerminal="Grammar" TransitionTo="11" />
     <Goto State="0" NonTerminal="Lexemes" TransitionTo="1" />
-    <Goto State="0" NonTerminal="Rule" TransitionTo="5" />
-    <Goto State="0" NonTerminal="RuleBody" TransitionTo="11" />
-    <Goto State="0" NonTerminal="Symbol" TransitionTo="6" />
+    <Goto State="0" NonTerminal="Rule" TransitionTo="3" />
+    <Goto State="0" NonTerminal="RuleBody" TransitionTo="10" />
+    <Goto State="0" NonTerminal="Symbol" TransitionTo="4" />
     <Goto State="1" NonTerminal="LexemePattern" TransitionTo="16" />
-    <Goto State="7" NonTerminal="String" TransitionTo="18" />
-    <Goto State="8" NonTerminal="String" TransitionTo="19" />
-    <Goto State="11" NonTerminal="Symbol" TransitionTo="25" />
-    <Goto State="12" NonTerminal="Rule" TransitionTo="27" />
+    <Goto State="5" NonTerminal="String" TransitionTo="18" />
+    <Goto State="6" NonTerminal="String" TransitionTo="19" />
+    <Goto State="10" NonTerminal="Symbol" TransitionTo="25" />
+    <Goto State="11" NonTerminal="Rule" TransitionTo="27" />
     <Goto State="13" NonTerminal="FullGrammar" TransitionTo="28" />
     <Goto State="13" NonTerminal="Lexemes" TransitionTo="1" />
     <Goto State="15" NonTerminal="String" TransitionTo="19" />
     <Goto State="20" NonTerminal="String" TransitionTo="31" />
     <Goto State="22" NonTerminal="RuleBody" TransitionTo="32" />
-    <Goto State="22" NonTerminal="Symbol" TransitionTo="6" />
+    <Goto State="22" NonTerminal="Symbol" TransitionTo="4" />
     <Goto State="29" NonTerminal="Grammar" TransitionTo="34" />
-    <Goto State="29" NonTerminal="Rule" TransitionTo="5" />
+    <Goto State="29" NonTerminal="Rule" TransitionTo="3" />
     <Goto State="32" NonTerminal="Symbol" TransitionTo="25" />
     <Goto State="34" NonTerminal="Rule" TransitionTo="27" />
   </ParsingTable>

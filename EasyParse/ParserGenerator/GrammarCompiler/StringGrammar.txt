@@ -1,12 +1,17 @@
 ﻿lexemes:
-'p' is @'[^\\]+'
-'e' is @'\\.'
-
-# p - plain text segment
-# e - escaping sequence (\ followed by a character)
+plaintext is @'[^\\]+'
+newLine is @'\n'
+carriageReturn is @'\r'
+tab is @'\t'
+backslash is @'\\'
+quote is '\\\''
 
 rules:
 String -> Segment
 String -> String Segment
-Segment -> p
-Segment -> e
+Segment -> plaintext
+Segment -> newLine
+Segment -> carriageReturn
+Segment -> tab
+Segment -> backslash
+Segment -> quote
