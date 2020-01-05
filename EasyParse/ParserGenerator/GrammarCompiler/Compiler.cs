@@ -19,7 +19,6 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         {
             ("quotedString", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
             ("verbatimString", raw => raw.Substring(2, raw.Length - 3)),
-            ("n", value => new NonTerminal(value)),
             ("nonTerminal", value => new NonTerminal(value)),
         };
 

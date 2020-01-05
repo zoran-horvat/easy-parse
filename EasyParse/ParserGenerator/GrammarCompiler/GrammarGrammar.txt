@@ -4,7 +4,7 @@ ignore @'#[^\n]*'
 a is @'\->'                                   # arrow
 l is 'lexemes:'                               # lexemes keyword
 i is 'ignore'                                 # ignore keyword
-s is 'is'                                     # is keyword
+keywordIs is 'is'                                     # is keyword
 rules is 'rules:'                                 # rules keyword
 nonTerminal is '[A-Z][a-zA-Z0-9_]*'                     # non-terminal
 terminal is @'[a-z_][a-zA-Z0-9_]*'                   # terminal
@@ -17,7 +17,7 @@ FullGrammar -> Lexemes rules eoln Grammar
 FullGrammar -> eoln FullGrammar
 Lexemes -> l eoln
 Lexemes -> Lexemes LexemePattern eoln
-LexemePattern -> terminal s String
+LexemePattern -> terminal keywordIs String
 LexemePattern -> i String
 Grammar -> Rule eoln
 Grammar -> Grammar Rule eoln
