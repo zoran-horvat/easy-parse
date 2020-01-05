@@ -32,7 +32,9 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
         private ImmutableList<Lexeme> Lexemes(string lexemesKeyword, string endOfLine) => ImmutableList<Lexeme>.Empty;
         private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next, string endOfLine) => lexemes.Add(next);
         private Lexeme LexemePattern(string name, string @is, string pattern) => new LexemePattern(name, pattern);
+
         private Lexeme LexemePattern(string ignoreKeyword, string pattern) => new IgnoreLexeme(pattern);
+
         private Grammar Grammar(Rule rule, string endOfLine) => new Grammar(rule);
         private Grammar Grammar(Grammar rules, Rule next, string endOfLine) => rules.Add(next);
         private Rule Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body) => new Rule(nonTerminal, body);
