@@ -4,7 +4,6 @@ ignore @'#[^\n]*'
 arrow matches @'\->'
 lexemes matches 'lexemes:'
 keywordIgnore matches 'ignore'
-keywordMatches matches 'matches'
 rules matches 'rules:'
 nonTerminal matches '[A-Z][a-zA-Z0-9_]*'
 terminal matches @'[a-z_][a-zA-Z0-9_]*'
@@ -17,8 +16,7 @@ FullGrammar -> Lexemes rules eoln Grammar
 FullGrammar -> eoln FullGrammar
 Lexemes -> lexemes eoln
 Lexemes -> Lexemes LexemePattern eoln
-LexemePattern -> terminal keywordMatches String
-LexemePattern -> terminal 'matched' String
+LexemePattern -> terminal 'matches' String
 LexemePattern -> keywordIgnore String
 Grammar -> Rule eoln
 Grammar -> Grammar Rule eoln
