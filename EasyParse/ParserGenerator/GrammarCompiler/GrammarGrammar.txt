@@ -18,6 +18,7 @@ FullGrammar -> eoln FullGrammar
 Lexemes -> lexemes eoln
 Lexemes -> Lexemes LexemePattern eoln
 LexemePattern -> terminal keywordMatches String
+LexemePattern -> terminal 'matched' String
 LexemePattern -> keywordIgnore String
 Grammar -> Rule eoln
 Grammar -> Grammar Rule eoln

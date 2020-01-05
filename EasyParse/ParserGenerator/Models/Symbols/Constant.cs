@@ -1,6 +1,6 @@
 ﻿namespace EasyParse.ParserGenerator.Models.Symbols
 {
-    public class Constant : Symbol
+    public class Constant : Terminal
     {
         public Constant(string value) : base(value)
         {

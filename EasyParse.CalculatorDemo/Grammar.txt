@@ -8,7 +8,8 @@ closedParen matches @'\)'
 
 rules:
 Additive -> Multiplicative
-Additive -> Additive adOp Multiplicative
+Additive -> Additive '+' Multiplicative
+Additive -> Additive '-' Multiplicative
 Unit -> number
 Unit -> openParen Additive closedParen
 Multiplicative -> Unit

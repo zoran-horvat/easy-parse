@@ -33,13 +33,21 @@ namespace EasyParse.ParserGenerator.Models
 
         private XElement LexicalRulesToXml() =>
             new XElement("LexicalRules", 
-                this.IgnoreLexemesToXml().Concat(this.LexemePatternsToXml()));
+                this.IgnoreLexemesToXml()
+                    .Concat(this.ConstantLexemesToXml())
+                    .Concat(this.LexemePatternsToXml()));
 
         private IEnumerable<XElement> IgnoreLexemesToXml() =>
             this.Grammar.IgnoreLexemes.Select(this.IgnoreLexemeToXml);
         private XElement IgnoreLexemeToXml(IgnoreLexeme lexeme) =>
             new XElement("Ignore", new XAttribute("Pattern", lexeme.Pattern.ToString()));
 
+        private IEnumerable<XElement> ConstantLexemesToXml() =>
+            this.Grammar.ConstantLexemes.Select(this.ConstantLexemeToXml);
+
+        private XElement ConstantLexemeToXml(ConstantLexeme lexeme) =>
+            new XElement("Constant", new XAttribute("Value", lexeme.ConstantValue));
+            
         private IEnumerable<XElement> LexemePatternsToXml() =>
             this.Grammar.LexemePatterns.Select(this.LexemePatternToXml);
 
@@ -58,7 +66,9 @@ namespace EasyParse.ParserGenerator.Models
             this.SymbolsToXml((IEnumerable<Symbol>) symbols);
 
         private IEnumerable<XElement> SymbolsToXml(IEnumerable<Symbol> symbols) =>
-            symbols.Select(symbol => new XElement(symbol is Terminal ? "Terminal" : "NonTerminal", new XAttribute("Name", symbol.Value)));
+            symbols.Select(symbol => 
+                symbol is Constant constant ? new XElement("Constant", new XAttribute("Value", constant.Value)) 
+                : new XElement(symbol is Terminal ? "Terminal" : "NonTerminal", new XAttribute("Name", symbol.Value)));
 
         private XElement ParsingTableToXml() =>
             new XElement("ParsingTable", 

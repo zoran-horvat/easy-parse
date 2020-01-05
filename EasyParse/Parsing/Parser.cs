@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing.Collections;
 using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Patterns;
+using EndOfInput = EasyParse.LexicalAnalysis.Tokens.EndOfInput;
 
 namespace EasyParse.Parsing
 {
@@ -35,15 +38,29 @@ namespace EasyParse.Parsing
             new Parser(lexicalRules(LoadLexer(definition)), new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
 
         private static Lexer LoadLexer(XDocument definition) =>
-            LexerWithPatterns(LexerWithIgnores(definition), definition);
+            LexerWithPatterns(
+                LexerWithConstants(
+                    LexerWithIgnores(definition), definition), definition);
 
         private static Lexer LexerWithIgnores(XDocument definition) =>
             LoadIgnorePatterns(definition)
                 .Aggregate(new Lexer(), (lexer, ignore) => lexer.IgnorePattern(ignore));
 
+        private static Lexer LexerWithConstants(Lexer initial, XDocument definition) =>
+            LoadConstantLexemes(definition)
+                .Aggregate(initial, (lexer, constant) => lexer.AddPattern(Regex.Escape(constant), constant));
+
         private static Lexer LexerWithPatterns(Lexer initial, XDocument definition) =>
             LoadLexicalPatterns(definition)
                 .Aggregate(initial, (lexer, pattern) => lexer.AddPattern(pattern.pattern, pattern.name));
+
+        private static IEnumerable<string> LoadConstantLexemes(XDocument definition) =>
+            definition.Root
+                ?.Element("LexicalRules")
+                ?.Elements("Constant")
+                .Select(constant => constant.Attribute("Value")?.Value ?? string.Empty)
+                .Where(constant => !string.IsNullOrEmpty(constant))
+            ?? Enumerable.Empty<string>();
 
         private static IEnumerable<string> LoadIgnorePatterns(XDocument definition) =>
             definition.Root
