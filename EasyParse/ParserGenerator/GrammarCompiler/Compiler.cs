@@ -29,14 +29,14 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private Grammar Grammar(ImmutableList<Lexeme> lexemes, NonTerminal start, ImmutableList<RuleDefinition> rules) => new Grammar(start, rules).AddRange(lexemes);
         
-        private ImmutableList<Lexeme> Lexemes(string lexemesKeyword) => ImmutableList<Lexeme>.Empty;
+        private ImmutableList<Lexeme> Lexemes(string lexemesKeyword, string colon) => ImmutableList<Lexeme>.Empty;
         private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next) => lexemes.Add(next);
         private Lexeme Lexeme(string ignoreKeyword, string pattern, string semicolon) => new IgnoreLexeme(pattern);
         private Lexeme Lexeme(Terminal terminal, string matchesKeyword, string pattern, string semicolon) => new LexemePattern(terminal.Value, pattern);
 
-        private NonTerminal Start(string startKeyword, NonTerminal nonTerminal, string semicolon) => nonTerminal;
+        private NonTerminal Start(string startKeyword, string colon, NonTerminal nonTerminal, string semicolon) => nonTerminal;
 
-        private ImmutableList<RuleDefinition> Rules(string rulesKeyword) => ImmutableList<RuleDefinition>.Empty;
+        private ImmutableList<RuleDefinition> Rules(string rulesKeyword, string colon) => ImmutableList<RuleDefinition>.Empty;
         private ImmutableList<RuleDefinition> Rules(ImmutableList<RuleDefinition> rules, RuleDefinition next) => rules.Add(next);
         private RuleDefinition Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body, string semicolon) => new RuleDefinition(nonTerminal, body);
         private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);

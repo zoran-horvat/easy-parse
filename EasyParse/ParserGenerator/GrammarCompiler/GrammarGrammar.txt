@@ -11,14 +11,14 @@ start: Grammar;
 rules:
 Grammar -> Lexemes Start Rules;
 
-Start -> 'start:' nonTerminal ';';
+Start -> 'start' ':' nonTerminal ';';
 
-Lexemes -> 'lexemes:';
+Lexemes -> 'lexemes' ':';
 Lexemes -> Lexemes Lexeme;
 Lexeme -> 'ignore' String ';';
 Lexeme -> terminal 'matches' String ';';
 
-Rules -> 'rules:';
+Rules -> 'rules' ':';
 Rules -> Rules Rule;
 Rule -> nonTerminal '->' RuleBody ';';
 RuleBody -> Symbol;

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
