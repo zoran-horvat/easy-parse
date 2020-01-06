@@ -45,5 +45,8 @@ namespace EasyParse.Parsing
 
         public override string ToString() => 
             this.Content.Printable();
+
+        public string ToDenseString() =>
+            this.Content.Printable(true);
     }
 }
