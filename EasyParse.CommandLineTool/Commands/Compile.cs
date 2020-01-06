@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using EasyParse.ParserGenerator;
+using EasyParse.ParserGenerator.Models;
+using EasyParse.Parsing;
 
 namespace EasyParse.CommandLineTool.Commands
 {
@@ -21,10 +23,12 @@ namespace EasyParse.CommandLineTool.Commands
         }
 
         private void CreateDestinationFile(FileInfo grammar) =>
-            new GrammarLoader()
-                .From(grammar.FullName)
-                .BuildParser()
-                .ToXml()
-                .Save(this.DestinationFile(grammar).FullName);
+            this.CreateDestinationFile(grammar, new GrammarLoader().From(grammar.FullName).BuildParser());
+
+        private void CreateDestinationFile(FileInfo grammar, ParserDefinition definition) =>
+            this.CreateDestinationFile(grammar, definition, Parser.From(definition));
+
+        private void CreateDestinationFile(FileInfo grammar, ParserDefinition definition, Parser parser) =>
+            definition.ToXml().Save(this.DestinationFile(grammar).FullName);
     }
 }
