@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
+using EasyParse.ParserGenerator.Models;
 
 namespace EasyParse.LexicalAnalysis
 {
@@ -10,14 +11,29 @@ namespace EasyParse.LexicalAnalysis
         public static Lexer From(XDocument definition) =>
             new Lexer()
                 .AddIgnorePatterns(definition)
-                .AddConstants(ConstantLexemes(definition))
-                .AddPatterns(LexicalPatterns(definition));
+                .AddConstants(definition)
+                .AddPatterns(definition);
 
-        private static Lexer AddIgnorePatterns(this Lexer lexer, XDocument definition) => 
-            IgnorePatterns(definition).Aggregate(lexer, (cur, ignore) => cur.IgnorePattern(ignore));
-        
+        public static Lexer From(ParserDefinition definition) =>
+            new Lexer()
+                .AddIgnorePatterns(definition.Grammar.IgnoreLexemes.Select(ignore => ignore.Pattern.ToString()))
+                .AddConstants(definition.Grammar.ConstantLexemes.Select(constant => constant.ConstantValue))
+                .AddPatterns(definition.Grammar.LexemePatterns.Select(pattern => (pattern.Pattern.ToString(), pattern.Name)));
+
+        private static Lexer AddIgnorePatterns(this Lexer lexer, XDocument definition) =>
+            lexer.AddIgnorePatterns(IgnorePatterns(definition));
+
+        private static Lexer AddIgnorePatterns(this Lexer lexer, IEnumerable<string> ignores) =>
+            ignores.Aggregate(lexer, (cur, ignore) => cur.IgnorePattern(ignore));
+
+        private static Lexer AddConstants(this Lexer lexer, XDocument definition) =>
+            lexer.AddConstants(ConstantLexemes(definition));
+
         private static Lexer AddConstants(this Lexer lexer, IEnumerable<string> constants) =>
             constants.Aggregate(lexer, (cur, constant) => cur.AddPattern(Regex.Escape(constant), constant));
+
+        private static Lexer AddPatterns(this Lexer lexer, XDocument definition) =>
+            lexer.AddPatterns(LexicalPatterns(definition));
 
         private static Lexer AddPatterns(this Lexer lexer, IEnumerable<(string expression, string name)> patterns) =>
             patterns.Aggregate(lexer, (cur, pattern) => cur.AddPattern(pattern.expression, pattern.name));

@@ -36,24 +36,13 @@ namespace EasyParse.Parsing
             FromXmlResource(assembly, resourceName, lexer => lexer);
 
         public static Parser From(ParserDefinition definition) =>
-            new Parser(LexerFrom(definition),
+            new Parser(
+                LexerLoader.From(definition),
                 ShiftTable.From(definition.Table.Shift),
                 ReduceTable.From(definition.Table.Reduce, definition.Grammar.Rules.ToArray()),
                 GotoTable.From(definition.Table.Goto));
-
-        private static Lexer LexerFrom(ParserDefinition definition)
-        {
-            Lexer lexer = new Lexer();
-            foreach (var pattern in definition.Grammar.IgnoreLexemes)
-                lexer = lexer.IgnorePattern(pattern.Pattern.ToString());
-            foreach (var pattern in definition.Grammar.ConstantLexemes)
-                lexer = lexer.AddPattern(Regex.Escape(pattern.ConstantValue), pattern.ConstantValue);
-            foreach (var pattern in definition.Grammar.LexemePatterns)
-                lexer = lexer.AddPattern(pattern.Pattern.ToString(), pattern.Name);
-            return lexer;
-        }
             
-        private static Parser From(XDocument definition, Func<Lexer, Lexer> lexicalRules) => 
+        public static Parser From(XDocument definition, Func<Lexer, Lexer> lexicalRules) => 
             new Parser(lexicalRules(LexerLoader.From(definition)), 
                 ShiftTable.From(definition), ReduceTable.From(definition), GotoTable.From(definition));
                 
