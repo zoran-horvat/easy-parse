@@ -22,8 +22,8 @@ namespace EasyParse.ParserGenerator.Models.Rules
 
         public static string AugmentedRootNonTerminal => "S'";
 
-        public static Rule AugmentedGrammarRoot(string startingSymbol) =>
-            new Rule(new NonTerminal(AugmentedRootNonTerminal), new Symbol[] {new NonTerminal(startingSymbol)});
+        public static Rule AugmentedGrammarRoot(NonTerminal startSymbol) =>
+            new Rule(new NonTerminal(AugmentedRootNonTerminal), new Symbol[] {startSymbol});
 
         public Progression ToProgression() => new Progression(this);
 

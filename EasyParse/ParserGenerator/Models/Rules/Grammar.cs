@@ -10,10 +10,9 @@ namespace EasyParse.ParserGenerator.Models.Rules
 {
     public class Grammar
     {
-        public IEnumerable<Rule> Rules => 
-            this.RulesRepresentation.SelectMany(
-                (rule, index) => index == 0 ? new[] {Rule.AugmentedGrammarRoot(rule.Head.Value), rule} : new[] {rule});
-
+        private NonTerminal StartSymbol { get; }
+        public IEnumerable<Rule> Rules => this.AugmentedGrammarRule.Concat(this.RulesRepresentation);
+        private IEnumerable<Rule> AugmentedGrammarRule => new[] {Rule.AugmentedGrammarRoot(this.StartSymbol)};
         public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.LexemesRepresentation.OfType<IgnoreLexeme>();
         public IEnumerable<LexemePattern> LexemePatterns => this.LexemesRepresentation.OfType<LexemePattern>();
         public IEnumerable<ConstantLexeme> ConstantLexemes => this.Rules.SelectMany(rule => rule.ConstantLexemes).Distinct();
@@ -22,30 +21,31 @@ namespace EasyParse.ParserGenerator.Models.Rules
 
         private ImmutableList<Lexeme> LexemesRepresentation { get; }
 
-        public Grammar(params Rule[] rules) : this((IEnumerable<Rule>)rules)
+        public Grammar(NonTerminal startSymbol, params Rule[] rules) : this(startSymbol, (IEnumerable<Rule>)rules)
         {
         }
 
-        public Grammar(IEnumerable<Rule> rules) :
-            this(rules.ToImmutableList(), ImmutableList<Lexeme>.Empty)
+        public Grammar(NonTerminal startSymbol, IEnumerable<Rule> rules) :
+            this(startSymbol, rules.ToImmutableList(), ImmutableList<Lexeme>.Empty)
         {
         }
 
-        private Grammar(ImmutableList<Rule> rules, ImmutableList<Lexeme> lexemes)
+        private Grammar(NonTerminal startSymbol, ImmutableList<Rule> rules, ImmutableList<Lexeme> lexemes)
         {
+            this.StartSymbol = startSymbol;
             this.RulesRepresentation = rules;
             this.LexemesRepresentation = lexemes;
         }
 
         public Grammar Add(Rule rule) =>
-            new Grammar(this.RulesRepresentation.Add(rule), this.LexemesRepresentation);
+            new Grammar(this.StartSymbol, this.RulesRepresentation.Add(rule), this.LexemesRepresentation);
 
         public Grammar AddRange(IEnumerable<Lexeme> lexemes) =>
             lexemes.Aggregate(this, (grammar, lexeme) => grammar.Add(lexeme));
 
         private Grammar Add(Lexeme lexeme) =>
             this.LexemesRepresentation.Any(existing => existing.Pattern.ToString().Equals(lexeme.Pattern.ToString())) ? this
-            : new Grammar(this.RulesRepresentation, this.LexemesRepresentation.Add(lexeme));
+            : new Grammar(this.StartSymbol, this.RulesRepresentation, this.LexemesRepresentation.Add(lexeme));
         
         public int SortOrderFor(NonTerminal nonTerminal) =>
             Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);
