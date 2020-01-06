@@ -5,6 +5,7 @@ using EasyParse.ParserGenerator.Collections;
 using EasyParse.ParserGenerator.Formatting;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
+using EasyParse.Parsing;
 
 namespace EasyParse.ParserGenerator.Models
 {
@@ -25,7 +26,9 @@ namespace EasyParse.ParserGenerator.Models
             this.Table = table;
         }
 
-        public XDocument ToXml() => new XDocument(
+        public XDocument ToXml() => this.ToXml(Parser.From(this));
+
+        private XDocument ToXml(Parser fullParser) => new XDocument(
             new XElement("ParserDefinition",
                 this.LexicalRulesToXml(),
                 this.GrammarToXml(),
