@@ -54,49 +54,8 @@ namespace EasyParse.Parsing
         }
             
         private static Parser From(XDocument definition, Func<Lexer, Lexer> lexicalRules) => 
-            new Parser(lexicalRules(
-                LoadLexer(definition)), ShiftTable.From(definition), ReduceTable.From(definition), GotoTable.From(definition));
-
-        private static Lexer LoadLexer(XDocument definition) =>
-            LexerWithPatterns(
-                LexerWithConstants(
-                    LexerWithIgnores(definition), definition), definition);
-
-        private static Lexer LexerWithIgnores(XDocument definition) =>
-            LoadIgnorePatterns(definition)
-                .Aggregate(new Lexer(), (lexer, ignore) => lexer.IgnorePattern(ignore));
-
-        private static Lexer LexerWithConstants(Lexer initial, XDocument definition) =>
-            LoadConstantLexemes(definition)
-                .Aggregate(initial, (lexer, constant) => lexer.AddPattern(Regex.Escape(constant), constant));
-
-        private static Lexer LexerWithPatterns(Lexer initial, XDocument definition) =>
-            LoadLexicalPatterns(definition)
-                .Aggregate(initial, (lexer, pattern) => lexer.AddPattern(pattern.pattern, pattern.name));
-
-        private static IEnumerable<string> LoadConstantLexemes(XDocument definition) =>
-            definition.Root
-                ?.Element("LexicalRules")
-                ?.Elements("Constant")
-                .Select(constant => constant.Attribute("Value")?.Value ?? string.Empty)
-                .Where(constant => !string.IsNullOrEmpty(constant))
-            ?? Enumerable.Empty<string>();
-
-        private static IEnumerable<string> LoadIgnorePatterns(XDocument definition) =>
-            definition.Root
-                ?.Element("LexicalRules")
-                ?.Elements("Ignore")
-                .Select(ignore => ignore.Attribute("Pattern")?.Value ?? string.Empty)
-                .Where(pattern => !string.IsNullOrEmpty(pattern))
-            ?? Enumerable.Empty<string>();
-
-        private static IEnumerable<(string pattern, string name)> LoadLexicalPatterns(XDocument definition) =>
-            definition.Root
-                ?.Element("LexicalRules")
-                ?.Elements("Lexeme")
-                .Select(lexeme => (pattern: lexeme.Attribute("Pattern")?.Value ?? string.Empty, name: lexeme.Attribute("Name")?.Value ?? string.Empty))
-                .Where(tuple => !string.IsNullOrEmpty(tuple.pattern) && !string.IsNullOrEmpty(tuple.name))
-            ?? Enumerable.Empty<(string, string)>();
+            new Parser(lexicalRules(LexerLoader.From(definition)), 
+                ShiftTable.From(definition), ReduceTable.From(definition), GotoTable.From(definition));
                 
         public ParsingResult Parse(string input) =>
             this.Parse(this.Lexer.Tokenize(input));
