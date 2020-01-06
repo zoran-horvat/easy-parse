@@ -99,7 +99,7 @@
     <Compile Include="ParserGenerator\Collections\LabeledSet.cs" />
     <Compile Include="ParserGenerator\Collections\Set.cs" />
     <Compile Include="ParserGenerator\Collections\SetExtensions.cs" />
-    <Compile Include="ParserGenerator\Models\Parser.cs" />
+    <Compile Include="ParserGenerator\Models\ParserDefinition.cs" />
     <Compile Include="ParserGenerator\Models\Builders\ParserBuilder.cs" />
     <Compile Include="ParserGenerator\Models\Rules\Progression.cs" />
     <Compile Include="ParserGenerator\Models\Rules\StateElement.cs" />

@@ -11,7 +11,7 @@ namespace EasyParse.ParserGenerator.Formatting
 {
     static class Formatter
     {
-        public static string ToString(Parser parser) =>
+        public static string ToString(ParserDefinition parser) =>
             $"{parser.Grammar}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.Table}{Environment.NewLine}{Environment.NewLine}" +
             $"{parser.FirstSets.ToString(set => parser.Grammar.SortOrderFor(set.Label))}{Environment.NewLine}{Environment.NewLine}" +
@@ -22,10 +22,16 @@ namespace EasyParse.ParserGenerator.Formatting
             $"{progression.Rule.Head} -> {BodyToString(progression)}";
 
         private static string BodyToString(Progression progression) =>
-            Join(progression.ConsumedSymbols, string.Empty) + "∘" + Join(progression.PendingSymbols, string.Empty);
+            ProgressionBodyToString(Join(progression.ConsumedSymbols, " "), Join(progression.PendingSymbols, " "));
+
+        private static string ProgressionBodyToString(string consumed, string pending) =>
+            consumed + 
+            (consumed.Length == 0 || consumed.EndsWith(" ") ? "" : " ") +
+            "∘" + 
+            pending;
 
         public static string NamedToString<TSymbol>(NonTerminalToSymbols<TSymbol> set, string name) where TSymbol : Symbol =>
-            $"{name}({set.Label.Value}) = {ToString(set, "{", string.Empty, "}")}";
+            $"{name}({set.Label.Value}) = {ToString(set, "{", ", ", "}")}";
 
         public static string ToString(State state) =>
             ToString(state, ProgressionToStringWidth(state));
@@ -50,20 +56,14 @@ namespace EasyParse.ParserGenerator.Formatting
             : set is Set<FollowSet> followSets ? ToString(followSets, string.Empty, Environment.NewLine, string.Empty, followSet => sortOrder(followSet as T))
             : ToString(set, string.Empty);
 
-        public static string ToString(Set<FirstSet> firstSets, Func<FirstSet, int> sortOrder) =>
-            ToString<FirstSet>(firstSets, String.Empty, Environment.NewLine, string.Empty, sortOrder);
-
-        public static string ToString(Set<FollowSet> followSets, Func<FollowSet, int> sortOrder) =>
-            ToString<FollowSet>(followSets, String.Empty, Environment.NewLine, string.Empty, sortOrder);
-
         public static string ToString(Set<Terminal> set) =>
-            ToString(set.OrderBy(x => x), "{", string.Empty, "}");
+            ToString(set.OrderBy(x => x), "{", ", ", "}");
 
         private static int ProgressionToStringWidth(State state) =>
             state.Elements.Max(element => element.Progression.ToString().Length);
 
         public static string ToString(Rule rule) =>
-            $"{rule.Head} -> {ToString(rule.Body, string.Empty, string.Empty, string.Empty)}";
+            $"{rule.Head} -> {ToString(rule.Body, string.Empty, " ", string.Empty)}";
 
         public static string ToString(Grammar grammar) =>
             ToString(grammar.Rules);
@@ -128,22 +128,14 @@ namespace EasyParse.ParserGenerator.Formatting
         public static string ToString(StateElement stateElement) =>
             $"{ToString(stateElement.Progression)} {ToString(stateElement.FollowedBy)}";
 
-        public static string SymbolsToString<TSymbol>(IEnumerable<TSymbol> set, string separator) where TSymbol : Symbol =>
-            ToString(set.OrderBy(x => x).Select(value => value.Value), "{", separator, "}");
-
-        public static string ToString<T>(IEnumerable<T> set, string separator, Func<T, int> sortOrder) =>
-            ToString(set, "{", separator, "}", sortOrder);
-
         public static string ToString<T>(IEnumerable<T> set, string prefix, string separator, string suffix, Func<T, int> sortOrder) =>
             ToString(set.OrderBy(sortOrder), prefix, separator, suffix);
 
         public static string ToString<T>(IEnumerable<T> set, string separator) =>
             ToString(set, "{", separator, "}");
 
-        public static string ToString<T>(IEnumerable<T> set, string prefix, string separator, string suffix) =>
+        private static string ToString<T>(IEnumerable<T> set, string prefix, string separator, string suffix) =>
             prefix + Join(set, separator) + suffix;
-
-        private static string Join<T>(IEnumerable<T> sequence) => Join(sequence, string.Empty);
 
         private static string Join<T>(IEnumerable<T> sequence, string separator) =>
             string.Join(separator, sequence.Select(x => $"{x}").ToArray());

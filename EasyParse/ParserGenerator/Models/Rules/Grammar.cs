@@ -53,7 +53,7 @@ namespace EasyParse.ParserGenerator.Models.Rules
         private IEnumerable<NonTerminal> SortOrder =>
             this.Rules.Select(rule => rule.Head).Distinct();
 
-        public Parser BuildParser() =>
+        public ParserDefinition BuildParser() =>
             ParserBuilder.For(this).Build();
 
         public override string ToString() => Formatter.ToString(this);

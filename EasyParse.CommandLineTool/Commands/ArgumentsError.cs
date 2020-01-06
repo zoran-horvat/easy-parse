@@ -20,6 +20,9 @@ namespace EasyParse.CommandLineTool.Commands
             $"{ToolName} -grammar=<grammar-file>.txt -compile",
             "  Builds an XML file with parser definition based on specified grammar",
             "",
+            $"{ToolName} -grammar=<grammar-file>.txt -construct",
+            "  Displays parser definition built from the grammar file",
+            "",
         };
 
         private static string InstructionsText => string.Join(Environment.NewLine, Instructions);

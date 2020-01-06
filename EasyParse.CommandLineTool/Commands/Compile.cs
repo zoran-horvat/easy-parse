@@ -16,11 +16,8 @@ namespace EasyParse.CommandLineTool.Commands
 
         public Compile(FileInfo grammar)
         {
-            Grammar = grammar;
+            this.Grammar = grammar;
         }
-
-        public static Command Create(FileInfo grammar) =>
-            grammar.Exists ? (Command)new Compile(grammar) : new FileNotFound(grammar);
 
         public override void Execute()
         {

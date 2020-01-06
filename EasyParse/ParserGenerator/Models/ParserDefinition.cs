@@ -8,7 +8,7 @@ using EasyParse.ParserGenerator.Models.Symbols;
 
 namespace EasyParse.ParserGenerator.Models
 {
-    public class Parser
+    public class ParserDefinition
     {
         public Grammar Grammar { get; }
         public Set<FirstSet> FirstSets { get; }
@@ -16,7 +16,7 @@ namespace EasyParse.ParserGenerator.Models
         public StateVector States { get; }
         public ParsingTable Table { get; }
 
-        public Parser(Grammar grammar, Set<FirstSet> firstSets, Set<FollowSet> followSets, StateVector states, ParsingTable table)
+        public ParserDefinition(Grammar grammar, Set<FirstSet> firstSets, Set<FollowSet> followSets, StateVector states, ParsingTable table)
         {
             this.Grammar = grammar;
             this.FirstSets = firstSets;

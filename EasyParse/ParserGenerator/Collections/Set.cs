@@ -38,9 +38,11 @@ namespace EasyParse.ParserGenerator.Collections
         IEnumerator IEnumerable.GetEnumerator() => 
             GetEnumerator();
 
-        public override string ToString() => Formatter.ToString(this, ", ");
+        public override string ToString() => 
+            Formatter.ToString(this, ", ");
 
-        public string ToString(string prefix, string separator, string suffix, Func<TValue, int> sortOrder) => Formatter.ToString(this, prefix, separator, suffix, sortOrder);
+        public string ToString(string prefix, string separator, string suffix, Func<TValue, int> sortOrder) => 
+            Formatter.ToString(this, prefix, separator, suffix, sortOrder);
 
         public string ToString(Func<TValue, int> sortOrder) => Formatter.ToString(this, sortOrder);
     }
