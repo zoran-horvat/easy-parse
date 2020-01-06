@@ -6,7 +6,6 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
-using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing.Collections;
 using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Patterns;

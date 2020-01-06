@@ -1,11 +1,20 @@
-﻿namespace EasyParse.CommandLineTool
+﻿using System;
+
+namespace EasyParse.CommandLineTool
 {
     class Program
     {
 
         static void Main(string[] args)
         {
-            CommandBuilder.FromArguments(args).Execute();
+            try
+            {
+                CommandBuilder.FromArguments(args).Execute();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Reflection;
 using EasyParse.ParserGenerator.GrammarCompiler;
 using EasyParse.ParserGenerator.Models.Rules;
-using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Testing;
 using Xunit;
 

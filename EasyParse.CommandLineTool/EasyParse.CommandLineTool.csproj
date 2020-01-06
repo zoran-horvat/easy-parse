@@ -54,7 +54,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\EasyParse\EasyParse.csproj">
+      <Project>{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}</Project>
+      <Name>EasyParse</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y $(TargetPath) $(TargetDir)parser.exe</PostBuildEvent>
