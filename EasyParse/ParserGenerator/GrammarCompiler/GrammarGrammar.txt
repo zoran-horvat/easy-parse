@@ -18,7 +18,7 @@ Lexemes -> Lexemes Lexeme;
 Lexeme -> 'ignore' String ';';
 Lexeme -> terminal 'matches' String ';';
 
-Rules -> 'rules' ':';
+Rules -> 'rules' ':' Rule;
 Rules -> Rules Rule;
 Rule -> nonTerminal '->' RuleBody ';';
 RuleBody -> Symbol;

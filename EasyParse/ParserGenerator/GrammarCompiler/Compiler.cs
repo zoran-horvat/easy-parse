@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Data;
 using System.Reflection;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
@@ -36,7 +37,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private NonTerminal Start(string startKeyword, string colon, NonTerminal nonTerminal, string semicolon) => nonTerminal;
 
-        private ImmutableList<RuleDefinition> Rules(string rulesKeyword, string colon) => ImmutableList<RuleDefinition>.Empty;
+        private ImmutableList<RuleDefinition> Rules(string rulesKeyword, string colon, RuleDefinition initialRule) => ImmutableList<RuleDefinition>.Empty.Add(initialRule);
         private ImmutableList<RuleDefinition> Rules(ImmutableList<RuleDefinition> rules, RuleDefinition next) => rules.Add(next);
         private RuleDefinition Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body, string semicolon) => new RuleDefinition(nonTerminal, body);
         private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
