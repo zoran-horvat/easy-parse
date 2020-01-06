@@ -23,6 +23,7 @@ namespace EasyParse.CommandLineTool
         private static Func<Command> FromExistingGrammar(FileInfo grammar, string[] arguments) =>
             Compile(grammar, arguments)
                 .Concat(Construct(grammar, arguments))
+                .Concat(Emulate(grammar, arguments))
                 .DefaultIfEmpty(ArgumentsError())
                 .First();
 
@@ -30,6 +31,7 @@ namespace EasyParse.CommandLineTool
         private static Func<Command> ArgumentsError() => () => new ArgumentsError();
         private static Func<Command> Compile(FileInfo grammar) => () => new Compile(grammar);
         private static Func<Command> Construct(FileInfo grammar) => () => new Construct(grammar);
+        private static Func<Command> Emulate(FileInfo grammar) => () => new Emulate(grammar);
 
         private static IEnumerable<FileInfo> GrammarFile(string[] arguments) =>
             arguments.SelectMany(GrammarFile).Take(1);
@@ -48,6 +50,9 @@ namespace EasyParse.CommandLineTool
 
         private static IEnumerable<Func<Command>> Construct(FileInfo grammar, string[] arguments) =>
             CommandFlagFor(grammar, arguments, "-construct").Select(Construct);
+
+        private static IEnumerable<Func<Command>> Emulate(FileInfo grammar, string[] arguments) =>
+            CommandFlagFor(grammar, arguments, "-emulate").Select(Emulate);
 
         private static IEnumerable<FileInfo> CommandFlagFor(FileInfo grammar, string[] arguments, string flag) =>
             arguments.Where(arg => arg == flag).Select(_ => grammar);
