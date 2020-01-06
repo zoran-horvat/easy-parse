@@ -48,7 +48,9 @@
     <Compile Include="Command.cs" />
     <Compile Include="Commands\Compile.cs" />
     <Compile Include="Commands\Construct.cs" />
+    <Compile Include="Commands\Emulate.cs" />
     <Compile Include="Commands\FileNotFound.cs" />
+    <Compile Include="Commands\GrammarCommand.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

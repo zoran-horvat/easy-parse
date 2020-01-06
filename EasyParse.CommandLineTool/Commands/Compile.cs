@@ -4,32 +4,27 @@ using EasyParse.ParserGenerator;
 
 namespace EasyParse.CommandLineTool.Commands
 {
-    class Compile : Command
+    class Compile : GrammarCommand
     {
-        private FileInfo Grammar { get; }
+        private FileInfo DestinationFile(FileInfo grammar) =>
+            new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), this.DestinationFileName(grammar)));
 
-        private FileInfo DestinationFile =>
-            new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), this.DestinationFileName));
+        private string DestinationFileName(FileInfo grammar) =>
+            Path.ChangeExtension(grammar.Name, ".xml");
 
-        private string DestinationFileName =>
-            Path.ChangeExtension(Grammar.Name, ".xml");
+        public Compile(FileInfo grammar) : base(grammar) { }
 
-        public Compile(FileInfo grammar)
+        protected override void Execute(FileInfo grammar)
         {
-            this.Grammar = grammar;
+            this.CreateDestinationFile(grammar);
+            Console.WriteLine($"Created parser definition in {this.DestinationFile(grammar).FullName}");
         }
 
-        public override void Execute()
-        {
-            this.CreateDestinationFile();
-            Console.WriteLine($"Created parser definition in {this.DestinationFile.FullName}");
-        }
-
-        private void CreateDestinationFile() =>
+        private void CreateDestinationFile(FileInfo grammar) =>
             new GrammarLoader()
-                .From(this.Grammar.FullName)
+                .From(grammar.FullName)
                 .BuildParser()
                 .ToXml()
-                .Save(this.DestinationFile.FullName);
+                .Save(this.DestinationFile(grammar).FullName);
     }
 }

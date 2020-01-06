@@ -1,25 +1,21 @@
 ﻿using System;
 using System.IO;
+using System.Reflection;
 using EasyParse.ParserGenerator;
 using EasyParse.ParserGenerator.Models;
 
 namespace EasyParse.CommandLineTool.Commands
 {
-    class Construct : Command
+    class Construct : GrammarCommand
     {
-        private FileInfo Grammar { get; }
+        public Construct(FileInfo grammar) : base(grammar) { }
 
-        public Construct(FileInfo grammar)
-        {
-            this.Grammar = grammar;
-        }
+        protected override void Execute(FileInfo grammar) =>
+            Console.WriteLine(this.CreateParser(grammar));
 
-        public override void Execute() =>
-            Console.WriteLine(this.CreateParser());
-
-        private ParserDefinition CreateParser() =>
+        private ParserDefinition CreateParser(FileInfo grammar) =>
             new GrammarLoader()
-                .From(this.Grammar.FullName)
+                .From(grammar.FullName)
                 .BuildParser();
     }
 }
