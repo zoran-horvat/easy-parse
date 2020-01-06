@@ -6,6 +6,8 @@ tab matches @'\\t';
 backslash matches @'\\\\';
 quote matches '\\\\\'';
 
+start: String;
+
 rules:
 String -> Segment;
 String -> String Segment;

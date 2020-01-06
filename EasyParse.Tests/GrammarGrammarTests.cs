@@ -15,6 +15,7 @@ namespace EasyParse.Tests
         [Theory]
         [InlineData(
             "lexemes:",
+            "start: A;",
             "# Comment on its own line",
             "       # Comment on a line containing blank spaces",
             "rules:",
@@ -29,6 +30,7 @@ namespace EasyParse.Tests
             "M -> M '/' U;")]
         [InlineData(
             "lexemes:",
+            "start: G;",
             "rules:",
             "# L - Line containing a single rule",
             "# R - Rule",
@@ -55,6 +57,7 @@ namespace EasyParse.Tests
             "",
             "# Grammar beginning with a blank line and a comment",
             "lexemes:",
+            "start: S;",
             "rules:",
             "S -> x;")]
         public void RecognizesValidGrammar(params string[] grammar) => 
@@ -64,6 +67,7 @@ namespace EasyParse.Tests
         [InlineData(
             "lexemes:",
             "",
+            "start: A;",
             "rules:",
             "# Comment on its own line",
             "A -> M # Comment on a line with a rule",

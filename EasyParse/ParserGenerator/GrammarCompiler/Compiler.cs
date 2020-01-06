@@ -27,12 +27,15 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             string.IsNullOrEmpty(content) ? string.Empty
             : this.StringParser.Parse(content).Compile(this.StringCompiler);
 
+        private Grammar Grammar(ImmutableList<Lexeme> lexemes, NonTerminal start, ImmutableList<Rule> rules) => new Grammar(rules).AddRange(lexemes);
         private Grammar Grammar(ImmutableList<Lexeme> lexemes, ImmutableList<Rule> rules) => new Grammar(rules).AddRange(lexemes);
 
         private ImmutableList<Lexeme> Lexemes(string lexemesKeyword) => ImmutableList<Lexeme>.Empty;
         private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next) => lexemes.Add(next);
         private Lexeme Lexeme(string ignoreKeyword, string pattern, string semicolon) => new IgnoreLexeme(pattern);
         private Lexeme Lexeme(Terminal terminal, string matchesKeyword, string pattern, string semicolon) => new LexemePattern(terminal.Value, pattern);
+
+        private NonTerminal Start(string startKeyword, NonTerminal nonTerminal, string semicolon) => nonTerminal;
 
         private ImmutableList<Rule> Rules(string rulesKeyword) => ImmutableList<Rule>.Empty;
         private ImmutableList<Rule> Rules(ImmutableList<Rule> rules, Rule next) => rules.Add(next);

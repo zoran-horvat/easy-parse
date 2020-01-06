@@ -18,23 +18,27 @@ namespace EasyParse.Tests
         [Theory]
         [InlineData(0,
             "lexemes:",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData(1,
             "lexemes:",
             "ignore '';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData(1,
             "lexemes:",
             "ignore 'something';",
             "ignore 'something';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData(2,
             "lexemes:",
             "ignore 'something';",
             "ignore 'again';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         public void CompilesGrammarWithIgnoreLexemes_GrammarContainsSpecifiedNumberOfIgnores(int expectedCount, params string[] grammar) => 
@@ -44,11 +48,13 @@ namespace EasyParse.Tests
         [InlineData("something",
             "lexemes:",
             "ignore 'something';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData("again, and again",
             "lexemes:",
             "ignore 'again, and again';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         public void CompilesGrammarWithIgnoreLexeme_GrammarContainsIgnorePattern(string ignore, params string[] grammar) => 
@@ -58,6 +64,7 @@ namespace EasyParse.Tests
         [InlineData(0,
             "lexemes:",
             "ignore 'something';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData(2, 
@@ -65,6 +72,7 @@ namespace EasyParse.Tests
             "ignore 'something';",
             "n matches '[A-Z]';",
             "g matches '@';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData(1, 
@@ -72,6 +80,7 @@ namespace EasyParse.Tests
             "ignore 'something';",
             "n matches @'[A-Z]';",
             "n matches @'[A-Z]';",
+            "start: X;",
             "rules:",
             "X -> a;")]
         [InlineData(2,
@@ -84,6 +93,7 @@ namespace EasyParse.Tests
             "# p - plain text segment",
             "# a - verbatim string indicator",
             "",
+            "start: S;",
             "rules:",
             "S -> q q;",
             "S -> q C q;",

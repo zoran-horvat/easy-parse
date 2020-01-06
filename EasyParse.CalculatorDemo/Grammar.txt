@@ -2,8 +2,9 @@
 ignore @'\s+';
 number matches @'\d+';
 
+start: Add;
+
 rules:
-Expression -> Add;
 Add -> Mul;
 Add -> Add '+' Mul;
 Add -> Add '-' Mul;

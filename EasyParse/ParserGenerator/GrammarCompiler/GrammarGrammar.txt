@@ -6,8 +6,12 @@ terminal matches @'[a-z_][a-zA-Z0-9_]*';
 quotedString matches '\'((\\\\[\\\\\'nrt])|[^\\\\\'])*\'';
 verbatimString matches '@\'[^\']*\'';
 
+start: Grammar;
+
 rules:
-Grammar -> Lexemes Rules;
+Grammar -> Lexemes Start Rules;
+
+Start -> 'start:' nonTerminal ';';
 
 Lexemes -> 'lexemes:';
 Lexemes -> Lexemes Lexeme;

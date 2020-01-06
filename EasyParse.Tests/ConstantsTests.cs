@@ -19,14 +19,17 @@ namespace EasyParse.Tests
         [Theory]
         [InlineData(0,
             "lexemes:",
+            "start: A;",
             "rules:",
             "A -> x;")]
         [InlineData(1,
             "lexemes:",
+            "start: A;",
             "rules:",
             "A -> 'const';")]
         [InlineData(3,
             "lexemes:",
+            "start: C;",
             "rules:",
             "A -> 'something';",
             "B -> 'again';",
@@ -37,10 +40,12 @@ namespace EasyParse.Tests
         [Theory]
         [InlineData("const",
             "lexemes:",
+            "start: A;",
             "rules:",
             "A -> 'const';")]
         [InlineData("something, again",
             "lexemes:",
+            "start: A;",
             "rules:",
             "A -> 'something, again';")]
         public void GrammarContainsOneConstantLexeme_ReturnsThatConstantLexeme(string expectedValue, params string[] grammar) =>
