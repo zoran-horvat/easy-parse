@@ -16,7 +16,7 @@ namespace EasyParse.ParserGenerator.Models.Rules
 
         public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.LexemesRepresentation.OfType<IgnoreLexeme>();
         public IEnumerable<LexemePattern> LexemePatterns => this.LexemesRepresentation.OfType<LexemePattern>();
-        public IEnumerable<ConstantLexeme> ConstantLexemes => this.Rules.SelectMany(rule => rule.ConstantLexemes);
+        public IEnumerable<ConstantLexeme> ConstantLexemes => this.Rules.SelectMany(rule => rule.ConstantLexemes).Distinct();
 
         private ImmutableList<Rule> RulesRepresentation { get; }
 
