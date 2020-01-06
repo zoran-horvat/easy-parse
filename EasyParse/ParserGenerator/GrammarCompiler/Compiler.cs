@@ -27,7 +27,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
             string.IsNullOrEmpty(content) ? string.Empty
             : this.StringParser.Parse(content).Compile(this.StringCompiler);
 
-        private Grammar Grammar(ImmutableList<Lexeme> lexemes, NonTerminal start, ImmutableList<Rule> rules) => new Grammar(start, rules).AddRange(lexemes);
+        private Grammar Grammar(ImmutableList<Lexeme> lexemes, NonTerminal start, ImmutableList<RuleDefinition> rules) => new Grammar(start, rules).AddRange(lexemes);
         
         private ImmutableList<Lexeme> Lexemes(string lexemesKeyword) => ImmutableList<Lexeme>.Empty;
         private ImmutableList<Lexeme> Lexemes(ImmutableList<Lexeme> lexemes, Lexeme next) => lexemes.Add(next);
@@ -36,9 +36,9 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private NonTerminal Start(string startKeyword, NonTerminal nonTerminal, string semicolon) => nonTerminal;
 
-        private ImmutableList<Rule> Rules(string rulesKeyword) => ImmutableList<Rule>.Empty;
-        private ImmutableList<Rule> Rules(ImmutableList<Rule> rules, Rule next) => rules.Add(next);
-        private Rule Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body, string semicolon) => new Rule(nonTerminal, body);
+        private ImmutableList<RuleDefinition> Rules(string rulesKeyword) => ImmutableList<RuleDefinition>.Empty;
+        private ImmutableList<RuleDefinition> Rules(ImmutableList<RuleDefinition> rules, RuleDefinition next) => rules.Add(next);
+        private RuleDefinition Rule(NonTerminal nonTerminal, string arrow, ImmutableList<Symbol> body, string semicolon) => new RuleDefinition(nonTerminal, body);
         private ImmutableList<Symbol> RuleBody(Symbol symbol) => ImmutableList<Symbol>.Empty.Add(symbol);
         private ImmutableList<Symbol> RuleBody(ImmutableList<Symbol> symbols, Symbol next) => symbols.Add(next);
         private Symbol Symbol(Symbol symbol) => symbol;

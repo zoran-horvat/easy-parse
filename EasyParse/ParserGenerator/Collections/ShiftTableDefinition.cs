@@ -7,16 +7,16 @@ using EasyParse.ParserGenerator.Models.Transitions;
 
 namespace EasyParse.ParserGenerator.Collections
 {
-    public class ShiftTable : TransitionTable<int, Terminal, int>, IEnumerable<ShiftCommand>
+    public class ShiftTableDefinition : TransitionTable<int, Terminal, int>, IEnumerable<ShiftCommand>
     {
-        public ShiftTable() { }
+        public ShiftTableDefinition() { }
 
-        private ShiftTable(Set<Transition<int, Terminal, int>> content) : base(content) { }
+        private ShiftTableDefinition(Set<Transition<int, Terminal, int>> content) : base(content) { }
 
-        public ShiftTable Add(ShiftCommand command) =>
-            new ShiftTable(base.Content.Union(new[] {command}));
+        public ShiftTableDefinition Add(ShiftCommand command) =>
+            new ShiftTableDefinition(base.Content.Union(new[] {command}));
 
-        public ShiftTable TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
+        public ShiftTableDefinition TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is Terminal ? this.Add(ShiftCommand.Of(transition, coreToIndex)) : this;
 
         public IEnumerator<ShiftCommand> GetEnumerator() => 

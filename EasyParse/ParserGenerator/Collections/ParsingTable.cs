@@ -10,15 +10,15 @@ namespace EasyParse.ParserGenerator.Collections
     public class ParsingTable
     {
         private IDictionary<Core, int> CoreToIndex { get; }
-        private IDictionary<Rule, int> RuleToIndex { get; }
-        public ShiftTable Shift { get; }
-        public GotoTable Goto { get; }
-        public ReduceTable Reduce { get; }
-        private ImmutableList<Rule> Rules { get; }
+        private IDictionary<RuleDefinition, int> RuleToIndex { get; }
+        public ShiftTableDefinition Shift { get; }
+        public GotoTableDefinition Goto { get; }
+        public ReduceTableDefinition Reduce { get; }
+        private ImmutableList<RuleDefinition> Rules { get; }
 
         public IEnumerable<int> StateIndexes => this.CoreToIndex.Values;
 
-        public ParsingTable(List<State> parserStates, List<Rule> rules)
+        public ParsingTable(List<State> parserStates, List<RuleDefinition> rules)
         {
             this.Rules = rules.ToImmutableList();
 
@@ -30,12 +30,12 @@ namespace EasyParse.ParserGenerator.Collections
                 .Select((rule, index) => (rule, index))
                 .ToDictionary(tuple => tuple.rule, tuple => tuple.index);
 
-            this.Shift = new ShiftTable();
-            this.Goto = new GotoTable();
-            this.Reduce = new ReduceTable();
+            this.Shift = new ShiftTableDefinition();
+            this.Goto = new GotoTableDefinition();
+            this.Reduce = new ReduceTableDefinition();
         }
 
-        private ParsingTable(ParsingTable table, ShiftTable shift, GotoTable @goto, ReduceTable reduce)
+        private ParsingTable(ParsingTable table, ShiftTableDefinition shift, GotoTableDefinition @goto, ReduceTableDefinition reduce)
         {
             this.Rules = table.Rules;
             this.CoreToIndex = table.CoreToIndex;

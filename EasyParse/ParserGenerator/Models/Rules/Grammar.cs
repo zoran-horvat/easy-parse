@@ -11,33 +11,33 @@ namespace EasyParse.ParserGenerator.Models.Rules
     public class Grammar
     {
         private NonTerminal StartSymbol { get; }
-        public IEnumerable<Rule> Rules => this.AugmentedGrammarRule.Concat(this.RulesRepresentation);
-        private IEnumerable<Rule> AugmentedGrammarRule => new[] {Rule.AugmentedGrammarRoot(this.StartSymbol)};
+        public IEnumerable<RuleDefinition> Rules => this.AugmentedGrammarRule.Concat(this.RulesRepresentation);
+        private IEnumerable<RuleDefinition> AugmentedGrammarRule => new[] {RuleDefinition.AugmentedGrammarRoot(this.StartSymbol)};
         public IEnumerable<IgnoreLexeme> IgnoreLexemes => this.LexemesRepresentation.OfType<IgnoreLexeme>();
         public IEnumerable<LexemePattern> LexemePatterns => this.LexemesRepresentation.OfType<LexemePattern>();
         public IEnumerable<ConstantLexeme> ConstantLexemes => this.Rules.SelectMany(rule => rule.ConstantLexemes).Distinct();
 
-        private ImmutableList<Rule> RulesRepresentation { get; }
+        private ImmutableList<RuleDefinition> RulesRepresentation { get; }
 
         private ImmutableList<Lexeme> LexemesRepresentation { get; }
 
-        public Grammar(NonTerminal startSymbol, params Rule[] rules) : this(startSymbol, (IEnumerable<Rule>)rules)
+        public Grammar(NonTerminal startSymbol, params RuleDefinition[] rules) : this(startSymbol, (IEnumerable<RuleDefinition>)rules)
         {
         }
 
-        public Grammar(NonTerminal startSymbol, IEnumerable<Rule> rules) :
+        public Grammar(NonTerminal startSymbol, IEnumerable<RuleDefinition> rules) :
             this(startSymbol, rules.ToImmutableList(), ImmutableList<Lexeme>.Empty)
         {
         }
 
-        private Grammar(NonTerminal startSymbol, ImmutableList<Rule> rules, ImmutableList<Lexeme> lexemes)
+        private Grammar(NonTerminal startSymbol, ImmutableList<RuleDefinition> rules, ImmutableList<Lexeme> lexemes)
         {
             this.StartSymbol = startSymbol;
             this.RulesRepresentation = rules;
             this.LexemesRepresentation = lexemes;
         }
 
-        public Grammar Add(Rule rule) =>
+        public Grammar Add(RuleDefinition rule) =>
             new Grammar(this.StartSymbol, this.RulesRepresentation.Add(rule), this.LexemesRepresentation);
 
         public Grammar AddRange(IEnumerable<Lexeme> lexemes) =>

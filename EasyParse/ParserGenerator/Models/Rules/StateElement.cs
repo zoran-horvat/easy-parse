@@ -44,8 +44,8 @@ namespace EasyParse.ParserGenerator.Models.Rules
         private IEnumerable<(NonTerminal next, Set<Terminal> follow)> Peek(NonTerminal first, NonTerminal follow, Set<FirstSet> firstSets) =>
             new[] {(upcodming: first, firstSets.Find(follow))};
 
-        public IEnumerable<(Rule reduce, Set<Terminal> terminals)> Reductions =>
-            this.Progression.Position < this.Progression.Length ? Enumerable.Empty<(Rule, Set<Terminal>)>()
+        public IEnumerable<(RuleDefinition reduce, Set<Terminal> terminals)> Reductions =>
+            this.Progression.Position < this.Progression.Length ? Enumerable.Empty<(RuleDefinition, Set<Terminal>)>()
             : new[] {(this.Progression.Rule, this.FollowedBy)};
 
         public override string ToString() => Formatter.ToString(this);

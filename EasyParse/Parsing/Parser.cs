@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Xml.Linq;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.ParserGenerator.Models;
 using EasyParse.Parsing.Collections;
 using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Patterns;
@@ -33,8 +34,28 @@ namespace EasyParse.Parsing
 
         public static Parser FromXmlResource(Assembly assembly, string resourceName) =>
             FromXmlResource(assembly, resourceName, lexer => lexer);
+
+        public static Parser From(ParserDefinition definition) =>
+            new Parser(LexerFrom(definition),
+                ShiftTable.From(definition.Table.Shift),
+                ReduceTable.From(definition.Table.Reduce, definition.Grammar.Rules.ToArray()),
+                GotoTable.From(definition.Table.Goto));
+
+        private static Lexer LexerFrom(ParserDefinition definition)
+        {
+            Lexer lexer = new Lexer();
+            foreach (var pattern in definition.Grammar.IgnoreLexemes)
+                lexer = lexer.IgnorePattern(pattern.Pattern.ToString());
+            foreach (var pattern in definition.Grammar.ConstantLexemes)
+                lexer = lexer.AddPattern(Regex.Escape(pattern.ConstantValue), pattern.ConstantValue);
+            foreach (var pattern in definition.Grammar.LexemePatterns)
+                lexer = lexer.AddPattern(pattern.Pattern.ToString(), pattern.Name);
+            return lexer;
+        }
+            
         private static Parser From(XDocument definition, Func<Lexer, Lexer> lexicalRules) => 
-            new Parser(lexicalRules(LoadLexer(definition)), new ShiftTable(definition), new ReduceTable(definition), new GotoTable(definition));
+            new Parser(lexicalRules(
+                LoadLexer(definition)), ShiftTable.From(definition), ReduceTable.From(definition), GotoTable.From(definition));
 
         private static Lexer LoadLexer(XDocument definition) =>
             LexerWithPatterns(

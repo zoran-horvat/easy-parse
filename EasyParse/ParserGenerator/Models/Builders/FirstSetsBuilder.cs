@@ -8,13 +8,13 @@ namespace EasyParse.ParserGenerator.Models.Builders
 {
     static class FirstSetsBuilder
     {
-        public static Set<FirstSet> BuildFor(IEnumerable<Rule> rules) =>
+        public static Set<FirstSet> BuildFor(IEnumerable<RuleDefinition> rules) =>
             PurgeNonTerminals(Closure(InitialFirstSets(rules)));
 
         private static Set<FirstSet> PurgeNonTerminals(Set<IntermediateFirstSet> firstSets) =>
             firstSets.Select(set => set.PurgeNonTerminals()).AsSet();
 
-        private static Set<IntermediateFirstSet> InitialFirstSets(IEnumerable<Rule> rules) =>
+        private static Set<IntermediateFirstSet> InitialFirstSets(IEnumerable<RuleDefinition> rules) =>
             rules
                 .Select(rule => (head: rule.Head, body: rule.Body.Take(1)))
                 .SelectMany(tuple => tuple.body.Select(terminal => (head: tuple.head, terminal: terminal)))

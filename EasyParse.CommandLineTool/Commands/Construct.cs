@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using EasyParse.ParserGenerator;
 using EasyParse.ParserGenerator.Models;
 

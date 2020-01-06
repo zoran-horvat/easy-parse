@@ -4,9 +4,9 @@ using EasyParse.ParserGenerator.Models.Symbols;
 
 namespace EasyParse.ParserGenerator.Models.Transitions
 {
-    public class CoreReduction : Transition<Core, Terminal, Rule>
+    public class CoreReduction : Transition<Core, Terminal, RuleDefinition>
     {
-        public CoreReduction(Core from, Terminal symbol, Rule to) : base(from, symbol, to)
+        public CoreReduction(Core from, Terminal symbol, RuleDefinition to) : base(from, symbol, to)
         {
         }
     }

@@ -1,5 +1,8 @@
 ﻿using System;
 using System.IO;
+using EasyParse.ParserGenerator;
+using EasyParse.ParserGenerator.Models;
+using EasyParse.Parsing;
 
 namespace EasyParse.CommandLineTool.Commands
 {
@@ -9,7 +12,15 @@ namespace EasyParse.CommandLineTool.Commands
 
         protected override void Execute(FileInfo grammar)
         {
-            Console.WriteLine("Emulating...");
+            Console.WriteLine($"Emulating with {this.CreateParser(grammar)}");
         }
+
+        private Parser CreateParser(FileInfo grammar) =>
+            Parser.From(this.CreateParserDefinition(grammar));
+
+        private ParserDefinition CreateParserDefinition(FileInfo grammar) =>
+            new GrammarLoader()
+                .From(grammar.FullName)
+                .BuildParser();
     }
 }

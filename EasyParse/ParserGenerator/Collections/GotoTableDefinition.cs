@@ -7,16 +7,16 @@ using EasyParse.ParserGenerator.Models.Transitions;
 
 namespace EasyParse.ParserGenerator.Collections
 {
-    public class GotoTable : TransitionTable<int, NonTerminal, int>, IEnumerable<GotoCommand>
+    public class GotoTableDefinition : TransitionTable<int, NonTerminal, int>, IEnumerable<GotoCommand>
     {
-        public GotoTable() { }
+        public GotoTableDefinition() { }
 
-        private GotoTable(Set<Transition<int, NonTerminal, int>> content) : base(content) { }
+        private GotoTableDefinition(Set<Transition<int, NonTerminal, int>> content) : base(content) { }
 
-        public GotoTable Add(GotoCommand command) =>
-            new GotoTable(base.Content.Union(new[] {command}));
+        public GotoTableDefinition Add(GotoCommand command) =>
+            new GotoTableDefinition(base.Content.Union(new[] {command}));
 
-        public GotoTable TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
+        public GotoTableDefinition TryAdd(CoreTransition transition, IDictionary<Core, int> coreToIndex) =>
             transition.Symbol is NonTerminal ? this.Add(GotoCommand.Of(transition, coreToIndex)) : this;
 
         public IEnumerator<GotoCommand> GetEnumerator() =>

@@ -62,19 +62,19 @@ namespace EasyParse.ParserGenerator.Formatting
         private static int ProgressionToStringWidth(State state) =>
             state.Elements.Max(element => element.Progression.ToString().Length);
 
-        public static string ToString(Rule rule) =>
+        public static string ToString(RuleDefinition rule) =>
             $"{rule.Head} -> {ToString(rule.Body, string.Empty, " ", string.Empty)}";
 
         public static string ToString(Grammar grammar) =>
             ToString(grammar.Rules);
 
-        public static string ToString(ParsingTable table, List<Rule> rules) =>
+        public static string ToString(ParsingTable table, List<RuleDefinition> rules) =>
             ToString(table, SortedTerminals(rules).ToList(), SortedNonTerminals(rules).ToList());
 
-        private static IEnumerable<Terminal> SortedTerminals(List<Rule> rules) =>
+        private static IEnumerable<Terminal> SortedTerminals(List<RuleDefinition> rules) =>
             rules.AllSymbols().OfType<Terminal>().OrderBy(x => x).Concat(new[] {new EndOfInput()});
 
-        private static IEnumerable<NonTerminal> SortedNonTerminals(List<Rule> rules) =>
+        private static IEnumerable<NonTerminal> SortedNonTerminals(List<RuleDefinition> rules) =>
             rules
                 .Select((rule, index) => (symbol: rule.Head, index))
                 .GroupBy(tuple => tuple.symbol, tuple => tuple.index)
@@ -91,13 +91,13 @@ namespace EasyParse.ParserGenerator.Formatting
                 .AddContent(table.Shift.Select(shift => (shift.From, (Symbol)shift.Symbol, $"S{shift.To}")))
                 .AddContent(table.Reduce.Select(reduce => (reduce.From, (Symbol)reduce.Symbol, $"R{reduce.To}")))
                 .AddContent(table.Goto.Select(@goto => (@goto.From, (Symbol)@goto.Symbol, $"{@goto.To}")))
-                .AddContent(0, new NonTerminal(Rule.AugmentedRootNonTerminal), "ACC")
+                .AddContent(0, new NonTerminal(RuleDefinition.AugmentedRootNonTerminal), "ACC")
                 .ToString();
 
-        public static string ToString(ShiftTable shift) =>
+        public static string ToString(ShiftTableDefinition shift) =>
             $"SHIFT{Environment.NewLine}{ToString((TransitionTable<int, Terminal, int>)shift)}";
 
-        public static string ToString(GotoTable @goto) =>
+        public static string ToString(GotoTableDefinition @goto) =>
             $"GOTO{Environment.NewLine}{ToString((TransitionTable<int, NonTerminal, int>)@goto)}";
 
         private static string ToString<TState, TSymbol, TResult>(TransitionTable<TState, TSymbol, TResult> table) where TSymbol : Symbol =>
@@ -119,7 +119,7 @@ namespace EasyParse.ParserGenerator.Formatting
             row.OrderBy(item => item.Symbol)
                 .Select(item => $"{item.Symbol}->{item.To}");
 
-        private static string ToString(IEnumerable<Rule> rules) =>
+        private static string ToString(IEnumerable<RuleDefinition> rules) =>
             ToString(rules.Select((rule, index) => $"{index, 3}. {ToString(rule)}"), string.Empty, Environment.NewLine, string.Empty);
 
         private static int ProgressionToStringWidth(IEnumerable<State> states) =>

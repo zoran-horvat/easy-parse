@@ -6,7 +6,7 @@ using EasyParse.ParserGenerator.Models.Symbols;
 
 namespace EasyParse.ParserGenerator.Models.Rules
 {
-    public class Rule : IEquatable<Rule>
+    public class RuleDefinition : IEquatable<RuleDefinition>
     {
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
@@ -14,7 +14,7 @@ namespace EasyParse.ParserGenerator.Models.Rules
         public IEnumerable<ConstantLexeme> ConstantLexemes =>
             this.Body.OfType<Constant>().Select(constant => new ConstantLexeme(constant.Value));
      
-        public Rule(NonTerminal head, IEnumerable<Symbol> body)
+        public RuleDefinition(NonTerminal head, IEnumerable<Symbol> body)
         {
             this.Head = head;
             this.Body = body.ToList();
@@ -22,17 +22,17 @@ namespace EasyParse.ParserGenerator.Models.Rules
 
         public static string AugmentedRootNonTerminal => "S'";
 
-        public static Rule AugmentedGrammarRoot(NonTerminal startSymbol) =>
-            new Rule(new NonTerminal(AugmentedRootNonTerminal), new Symbol[] {startSymbol});
+        public static RuleDefinition AugmentedGrammarRoot(NonTerminal startSymbol) =>
+            new RuleDefinition(new NonTerminal(AugmentedRootNonTerminal), new Symbol[] {startSymbol});
 
         public Progression ToProgression() => new Progression(this);
 
         public override string ToString() => Formatter.ToString(this);
 
         public override bool Equals(object obj) =>
-            this.Equals(obj as Rule);
+            this.Equals(obj as RuleDefinition);
 
-        public bool Equals(Rule other) =>
+        public bool Equals(RuleDefinition other) =>
             !(other is null) &&
             other.Head.Equals(this.Head) &&
             other.Body.SequenceEqual(this.Body);

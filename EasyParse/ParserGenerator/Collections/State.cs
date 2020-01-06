@@ -10,15 +10,15 @@ namespace EasyParse.ParserGenerator.Collections
 {
     public class State : IEquatable<State>
     {
-        private Set<Rule> Rules { get; }
+        private Set<RuleDefinition> Rules { get; }
         private Set<FirstSet> FirstSets { get; }
         public Set<StateElement> Elements { get; }
 
         public Core Core { get; }
 
-        public State(IEnumerable<Rule> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets)
+        public State(IEnumerable<RuleDefinition> rules, Set<FirstSet> firstSets, Set<FollowSet> followSets)
         {
-            List<Rule> rulesList = new List<Rule>(rules);
+            List<RuleDefinition> rulesList = new List<RuleDefinition>(rules);
             this.Rules = rulesList.AsSet();
             this.FirstSets = firstSets;
             this.Elements = rulesList.Select(rule => rule.ToProgression().ToStateElement(followSets)).AsSet();
@@ -63,7 +63,7 @@ namespace EasyParse.ParserGenerator.Collections
             return result;
         }
 
-        public IEnumerable<(Core core, Rule reduce, Set<Terminal> terminals)> Reductions =>
+        public IEnumerable<(Core core, RuleDefinition reduce, Set<Terminal> terminals)> Reductions =>
             this.Elements.SelectMany(element => element.Reductions).Select(tuple => (this.Core, tuple.reduce, tuple.terminals));
 
         public override string ToString() => Formatter.ToString(this);

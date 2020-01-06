@@ -8,40 +8,40 @@ namespace EasyParse.ParserGenerator.Models.Builders
 {
     static class FollowSetsBuilder
     {
-        public static Set<FollowSet> BuildFor(IEnumerable<Rule> rules, Set<FirstSet> firstSets) =>
+        public static Set<FollowSet> BuildFor(IEnumerable<RuleDefinition> rules, Set<FirstSet> firstSets) =>
             PurgeNonTerminals(BuildFor(rules.ToList(), firstSets));
 
         private static Set<FollowSet> PurgeNonTerminals(Set<IntermediateFollowSet> followSets) =>
             followSets.Select(followSet => followSet.PurgeNonTerminals()).AsSet();
 
-        private static Set<IntermediateFollowSet> BuildFor(List<Rule> rules, Set<FirstSet> firstSets) =>
+        private static Set<IntermediateFollowSet> BuildFor(List<RuleDefinition> rules, Set<FirstSet> firstSets) =>
             Closure(rules, InitialFollowSets(rules), firstSets);
 
-        private static Set<IntermediateFollowSet> InitialFollowSets(List<Rule> rules) =>
+        private static Set<IntermediateFollowSet> InitialFollowSets(List<RuleDefinition> rules) =>
             rules
                 .Select(rule => rule.Head)
                 .Select(nonTerminal => new IntermediateFollowSet(nonTerminal, ImmediateFollowers(rules, nonTerminal)))
                 .AsSet();
 
-        private static IEnumerable<Symbol> ImmediateFollowers(IEnumerable<Rule> rules, NonTerminal of) =>
+        private static IEnumerable<Symbol> ImmediateFollowers(IEnumerable<RuleDefinition> rules, NonTerminal of) =>
             ImmediateFollowers(rules)
                 .Where(tuple => tuple.preceding.Equals(of))
                 .Select(tuple => tuple.following)
                 .Concat(EndOfInputFollow(of));
 
         private static IEnumerable<Symbol> EndOfInputFollow(NonTerminal of) =>
-            of.Equals(new NonTerminal(Rule.AugmentedRootNonTerminal)) ? new[] {new EndOfInput(),} : Enumerable.Empty<Symbol>();
+            of.Equals(new NonTerminal(RuleDefinition.AugmentedRootNonTerminal)) ? new[] {new EndOfInput(),} : Enumerable.Empty<Symbol>();
 
-        private static IEnumerable<(NonTerminal preceding, Symbol following)> ImmediateFollowers(IEnumerable<Rule> rules) =>
+        private static IEnumerable<(NonTerminal preceding, Symbol following)> ImmediateFollowers(IEnumerable<RuleDefinition> rules) =>
             rules.SelectMany(ImmediateFollowers);
 
-        private static IEnumerable<(NonTerminal preceding, Symbol following)> ImmediateFollowers(Rule rule) =>
+        private static IEnumerable<(NonTerminal preceding, Symbol following)> ImmediateFollowers(RuleDefinition rule) =>
             rule.Body
                 .Zip(rule.Body.Skip(1), (preceding, following) => (preceding, following))
                 .Where(tuple => tuple.preceding is NonTerminal)
                 .Select(tuple => ((NonTerminal) tuple.preceding, tuple.following));
 
-        private static Set<IntermediateFollowSet> Closure(List<Rule> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets)
+        private static Set<IntermediateFollowSet> Closure(List<RuleDefinition> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets)
         {
             Set<IntermediateFollowSet> result = followSets;
             while (Advance(rules, result, firstSets) is Set<IntermediateFollowSet> next && !(next.Equals(result)))
@@ -51,10 +51,10 @@ namespace EasyParse.ParserGenerator.Models.Builders
             return result;
         }
 
-        private static Set<IntermediateFollowSet> Advance(List<Rule> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets) =>
+        private static Set<IntermediateFollowSet> Advance(List<RuleDefinition> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets) =>
             followSets.Select(set => Advance(set, rules, followSets, firstSets)).AsSet();
 
-        private static IntermediateFollowSet Advance(IntermediateFollowSet set, List<Rule> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets) =>
+        private static IntermediateFollowSet Advance(IntermediateFollowSet set, List<RuleDefinition> rules, Set<IntermediateFollowSet> followSets, Set<FirstSet> firstSets) =>
             set.Union(SymbolsToAdd(set, firstSets)).Union(SymbolsToAdd(set, rules, followSets));
 
         private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, Set<FirstSet> firstSets) =>
@@ -63,7 +63,7 @@ namespace EasyParse.ParserGenerator.Models.Builders
                     .Where(firstSet => set.OfType<NonTerminal>().Contains(firstSet.Label))
                     .SelectMany(firstSet => firstSet));
 
-        private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, List<Rule> rules, Set<IntermediateFollowSet> followSets) =>
+        private static IntermediateFollowSet SymbolsToAdd(IntermediateFollowSet set, List<RuleDefinition> rules, Set<IntermediateFollowSet> followSets) =>
             new IntermediateFollowSet(set.Label,
                 rules
                     .Where(rule => rule.Body.LastOrDefault() is NonTerminal last && last.Equals(set.Label))

@@ -9,13 +9,13 @@ namespace EasyParse.ParserGenerator.Models.Rules
 {
     public class Progression : IEquatable<Progression>
     {
-        public Rule Rule { get; }
+        public RuleDefinition Rule { get; }
         public int Position { get; }
         public int Length => this.Rule.Body.Count();
      
-        public Progression(Rule rule) : this(rule, 0) { }
+        public Progression(RuleDefinition rule) : this(rule, 0) { }
 
-        private Progression(Rule rule, int position)
+        private Progression(RuleDefinition rule, int position)
         {
             this.Rule = rule;
             this.Position = position;

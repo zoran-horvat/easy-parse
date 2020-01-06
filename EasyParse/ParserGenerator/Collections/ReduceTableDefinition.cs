@@ -6,14 +6,14 @@ using EasyParse.ParserGenerator.Models.Transitions;
 
 namespace EasyParse.ParserGenerator.Collections
 {
-    public class ReduceTable : TransitionTable<int, Terminal, int>, IEnumerable<ReduceCommand>
+    public class ReduceTableDefinition : TransitionTable<int, Terminal, int>, IEnumerable<ReduceCommand>
     {
-        public ReduceTable() { }
+        public ReduceTableDefinition() { }
 
-        public ReduceTable(Set<Transition<int, Terminal, int>> content) : base(content) { }
+        public ReduceTableDefinition(Set<Transition<int, Terminal, int>> content) : base(content) { }
 
-        public ReduceTable AddRange(IEnumerable<ReduceCommand> reductions) =>
-            new ReduceTable(base.Content.Union(reductions));
+        public ReduceTableDefinition AddRange(IEnumerable<ReduceCommand> reductions) =>
+            new ReduceTableDefinition(base.Content.Union(reductions));
 
         public IEnumerator<ReduceCommand> GetEnumerator() =>
             base.Content.OfType<ReduceCommand>().GetEnumerator();
