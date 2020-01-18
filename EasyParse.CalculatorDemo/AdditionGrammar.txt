@@ -1,0 +1,16 @@
+﻿lexemes:                   # Mandatory block defining lexical analysis
+ignore @'\s+';             # Ignore text matching regex (i.e. whitespace)
+number matches @'\d+';	   # Match stream of digits as a lexeme called 'number'
+
+start: Expr;               # Mandatory block defining the starting symbol
+
+rules:                     # Mandatory block defining the grammar rules
+
+Expr -> number;            # All rules are in form:
+                           # non-terminal, arrow, body, semicolon
+
+Expr -> Expr '+' number;   # Constants can appear in rules under single quotes
+                           # Strings can be escaped like in C/C++
+
+Expr -> Expr @'-' number;  # Constants can also be verbatim stringsT
+                           # They do not support escaping and single quotes

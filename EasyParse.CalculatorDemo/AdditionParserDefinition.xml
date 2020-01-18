@@ -1,0 +1,64 @@
+﻿<ParserDefinition>
+  <LexicalRules>
+    <Ignore Pattern="\s+" />
+    <Constant Value="+" />
+    <Constant Value="-" />
+    <Lexeme Pattern="\d+" Name="number" />
+  </LexicalRules>
+  <Grammar>
+    <Rule Ordinal="0">
+      <Head>
+        <NonTerminal Name="S'" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Expr" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="1">
+      <Head>
+        <NonTerminal Name="Expr" />
+      </Head>
+      <Body>
+        <Terminal Name="number" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="2">
+      <Head>
+        <NonTerminal Name="Expr" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Expr" />
+        <Constant Value="+" />
+        <Terminal Name="number" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="3">
+      <Head>
+        <NonTerminal Name="Expr" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Expr" />
+        <Constant Value="-" />
+        <Terminal Name="number" />
+      </Body>
+    </Rule>
+  </Grammar>
+  <ParsingTable>
+    <Shift State="0" Terminal="number" TransitionTo="1" />
+    <Shift State="2" Terminal="-" TransitionTo="4" />
+    <Shift State="2" Terminal="+" TransitionTo="3" />
+    <Shift State="3" Terminal="number" TransitionTo="5" />
+    <Shift State="4" Terminal="number" TransitionTo="6" />
+    <Reduce State="1" Terminal="-" RuleOrdinal="1" />
+    <Reduce State="1" EndOfInput="$" RuleOrdinal="1" />
+    <Reduce State="1" Terminal="+" RuleOrdinal="1" />
+    <Reduce State="2" EndOfInput="$" RuleOrdinal="0" />
+    <Reduce State="5" Terminal="-" RuleOrdinal="2" />
+    <Reduce State="5" EndOfInput="$" RuleOrdinal="2" />
+    <Reduce State="5" Terminal="+" RuleOrdinal="2" />
+    <Reduce State="6" Terminal="-" RuleOrdinal="3" />
+    <Reduce State="6" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="6" Terminal="+" RuleOrdinal="3" />
+    <Goto State="0" NonTerminal="Expr" TransitionTo="2" />
+  </ParsingTable>
+</ParserDefinition>
