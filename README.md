@@ -35,7 +35,7 @@ As you may suspect, the # symbol denotes beginning of the line comment. Each def
 Some lexemes are ignored and do not appear in the grammar. The rest of the lexemes are true terminal symbols, which will be matched by the parser. Starting symbol definition immediately follows. The rest of the grammar is the list of rules.
 
 ## Building a Parser
-The simplest way to build a parser definition is to compile it using the 'parser' tool (produced when [EasyParse.CommandLineTool](EasyParse.CommandLineTool) is built):
+The simplest way to build a parser definition is to compile it using the `parser.exe` tool (produced when [EasyParse.CommandLineTool](EasyParse.CommandLineTool) is built):
 
     parser -grammar=AdditionGrammar.txt -compile
     
