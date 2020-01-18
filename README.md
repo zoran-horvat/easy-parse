@@ -41,7 +41,7 @@ The simplest way to build a parser definition is to compile it using the `parser
     
 This command will create `AdditionGrammar.xml` file, which should be included in the product as an embedded resource.
 
-When you wish to parse an input text, use the static [Parser.FromXmlResource method](EasyParse/Parsing.Parser.cs). Just supply the resource name and this method will return a valid instance of the `Parser` classs.
+When you wish to parse an input text, use the static [Parser.FromXmlResource method](EasyParse/Parsing/Parser.cs). Just supply the resource name and this method will return a valid instance of the `Parser` classs.
 
     var parser = EasyParse.Parsing.Parser.FromXmlResource("EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
