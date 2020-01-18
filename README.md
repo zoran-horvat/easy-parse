@@ -31,10 +31,4 @@ Operators are applied from left to right.
 
 As you may suspect, the # symbol denotes beginning of the line comment. Each definition ends with a semicolon. Besides that, grammar consists of three sections, starting with "lexemes", "start" and "rules" keywords. Lexeme definitions are given as regular expressions.
 
-Some lexemes are ignored and do not appear in the grammar. You would typically skip whitespace and newline characters (in multiline parsers).
-
-The rest of the lexemes are true terminal symbols, which will be matched by the parser. Each nonterminal symbol has a name and a regular expression which matches it in the input. Name of a nonterminal starts with a lowercase letter, followed by letters, digits or underscores.
-
-Starting symbol definition follows, and it gives name of the grammar's start symbol.
-
-After that, the list of rules is defined. Rules can include nonterminals, terminals and constants. Nonterminals are named with initial uppercase letter, followed by letters, digits or underscores.
+Some lexemes are ignored and do not appear in the grammar. The rest of the lexemes are true terminal symbols, which will be matched by the parser. Starting symbol definition immediately follows. The rest of the grammar is the list of rules.
