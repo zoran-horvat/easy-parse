@@ -12,12 +12,23 @@ namespace EasyParse.CalculatorDemo
         public static void Main(string[] args)
         {
             Parser parser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.ParserDefinition.xml");
+            Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionParserDefinition.xml");
 
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
             {
+                ProcessAddition(addingParser, line);
                 Process(parser, line);
             }
+        }
+
+        private static void ProcessAddition(Parser parser, string line)
+        {
+            ParsingResult result = parser.Parse(line);
+            if (result.IsSuccess)
+                Console.WriteLine(result);
+            else
+                Console.WriteLine($"Not an additive expression: {result.ErrorMessage}");
         }
 
         private static void Process(Parser parser, string line)
