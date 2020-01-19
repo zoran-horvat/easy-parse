@@ -32,7 +32,7 @@ Operators are applied from left to right.
 
 As you may suspect, the # symbol denotes beginning of the line comment. Each definition ends with a semicolon. Besides that, grammar consists of three sections, starting with "lexemes", "start" and "rules" keywords. Lexeme definitions are given as regular expressions.
 
-Some lexemes are ignored and do not appear in the grammar. The rest of the lexemes are true terminal symbols, which will be matched by the parser. Starting symbol definition immediately follows. The rest of the grammar is the list of rules.
+Some lexemes are ignored and do not appear in the grammar (e.g. whitespace in the grammar above). The rest of the lexemes are true terminal symbols, which will be matched by the parser (e.g. the `number` terminal). Starting symbol definition immediately follows. The rest of the grammar is the list of rules.
 
 ## Building a Parser
 The simplest way to build a parser definition is to compile it using the `parser.exe` tool (produced when [EasyParse.CommandLineTool](EasyParse.CommandLineTool) is built):
