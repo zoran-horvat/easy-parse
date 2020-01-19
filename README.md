@@ -76,3 +76,45 @@ Parser's `Parse` method is returning the [ParsingResult](EasyParse/Parsing/Parsi
     +--- 3
 
 Note that syntax tree is not accessible via the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object. Syntax tree is expressed in objects of internal classes and cannot be used directly by the consumer. You would have to supply a compiler object to build your custom result out of a parsed text.
+
+## Compiling Text
+Ultimate purpose of a parser is to compile the syntax tree it generates into a custom object. For a given grammar, you can define a class which compiles it into a custom object:
+
+    class AdditiveCompiler : MethodMapCompiler
+    {
+        // Corresponds to grammar line: number matches @'\d+';
+        private int TerminalNumber(string value) => int.Parse(value);
+
+        // Corresponds to grammar line: Expr -> number;
+        public int Expr(int number) => number;
+
+        // Corresponds to grammar lines:
+        // Expr -> Expr '+' number;
+        // Expr -> Expr @'-' number;
+        public int Expr(int a, string op, int b) =>
+            op == "+" ? a + b : a - b;
+
+    }
+
+The simplest way to code a compiler is to derive it from the [EasyParse.Parsing.MethodMapCompiler](EasyParse/Parsing/MethodMapCompiler.cs) class. `MethodMapCompiler` is inspecting methods added by the derived class and matching them with the grammar. These methods will be invoked to traverse the syntax tree in postorder (this order is guaranteed).
+
+Concrete compiler defines two kinds of methods. Ones are matching terminal symbols, and their name is always Terminal***, where *** is the name of the terminal from the grammar. Other methods are matching nonterminal symbols from grammar, and their name must match the nonterminal name.
+
+The result of compiling the syntax tree using a concrete compiler object is whatever the result was when the last method of the compiler was invoked. That call will correspond to the root node of the syntax tree.
+
+Compiling is performed on [ParsingResult](EasyParse/Parsing/ParsingResult.cs), by calling its `Compile` method and passing a concrete compiler:
+
+    ParsingResult result = parser.Parse(line);
+    Console.WriteLine(result.IsSuccess
+        ? $"{line} = {result.Compile(new AdditiveCompiler())}"
+        : $"Not an additive expression: {result.ErrorMessage}");
+
+You have to check whether parsing passed well or not, by testing the `ParsingResult.IsSuccess` property. You can compile the same syntax tree (i.e. `ParsingResult` object) multiple times.
+
+Code example above produces output:
+
+    1++2
+    Not an additive expression: Unexpected input: [+(+)] at 3
+    
+    1 - 2 + 3
+    1 - 2 + 3 = 2
