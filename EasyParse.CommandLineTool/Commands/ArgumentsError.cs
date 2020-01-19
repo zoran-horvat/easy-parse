@@ -23,6 +23,9 @@ namespace EasyParse.CommandLineTool.Commands
             $"{ToolName} -grammar=<grammar-file>.txt -construct",
             "  Displays parser definition built from the grammar file",
             "",
+            $"{ToolName} -grammar=<grammar-file>.txt -emulate",
+            "  Parses the grammar and applies it to interactive input",
+            "",
         };
 
         private static string InstructionsText => string.Join(Environment.NewLine, Instructions);
