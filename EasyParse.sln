@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.Tests", "EasyPars
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.CommandLineTool", "EasyParse.CommandLineTool\EasyParse.CommandLineTool.csproj", "{F65F3D6E-0722-4406-8199-FDEFBCA5D28C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.WordAnalysisDemo", "EasyParse.WordAnalysisDemo\EasyParse.WordAnalysisDemo.csproj", "{A4B30705-2BB1-4000-9571-6178B017AC6E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{F65F3D6E-0722-4406-8199-FDEFBCA5D28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F65F3D6E-0722-4406-8199-FDEFBCA5D28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F65F3D6E-0722-4406-8199-FDEFBCA5D28C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

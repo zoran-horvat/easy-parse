@@ -1,0 +1,13 @@
+﻿lexemes:
+ignore @'[ \t\.,;:!?]+';
+word matches @'[\p{L}-]+';
+
+start: Text;
+
+rules:
+Text -> Line;
+Text -> Text Line;
+Line -> '\n';
+Line -> Words '\n';
+Words -> word;
+Words -> Words word;

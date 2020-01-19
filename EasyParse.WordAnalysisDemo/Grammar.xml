@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ParserDefinition>
+  <LexicalRules>
+    <Ignore Pattern="[ \t\.,;:!?]+" />
+    <Constant Value="&#xA;" />
+    <Lexeme Pattern="[\p{L}-]+" Name="word" />
+  </LexicalRules>
+  <Grammar>
+    <Rule Ordinal="0">
+      <Head>
+        <NonTerminal Name="S'" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Text" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="1">
+      <Head>
+        <NonTerminal Name="Text" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Line" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="2">
+      <Head>
+        <NonTerminal Name="Text" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Text" />
+        <NonTerminal Name="Line" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="3">
+      <Head>
+        <NonTerminal Name="Line" />
+      </Head>
+      <Body>
+        <Constant Value="&#xA;" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="4">
+      <Head>
+        <NonTerminal Name="Line" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Words" />
+        <Constant Value="&#xA;" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="5">
+      <Head>
+        <NonTerminal Name="Words" />
+      </Head>
+      <Body>
+        <Terminal Name="word" />
+      </Body>
+    </Rule>
+    <Rule Ordinal="6">
+      <Head>
+        <NonTerminal Name="Words" />
+      </Head>
+      <Body>
+        <NonTerminal Name="Words" />
+        <Terminal Name="word" />
+      </Body>
+    </Rule>
+  </Grammar>
+  <ParsingTable>
+    <Shift State="0" Terminal="&#xA;" TransitionTo="5" />
+    <Shift State="0" Terminal="word" TransitionTo="4" />
+    <Shift State="1" Terminal="&#xA;" TransitionTo="7" />
+    <Shift State="1" Terminal="word" TransitionTo="6" />
+    <Shift State="2" Terminal="&#xA;" TransitionTo="5" />
+    <Shift State="2" Terminal="word" TransitionTo="4" />
+    <Reduce State="2" EndOfInput="$" RuleOrdinal="0" />
+    <Reduce State="3" Terminal="&#xA;" RuleOrdinal="1" />
+    <Reduce State="3" EndOfInput="$" RuleOrdinal="1" />
+    <Reduce State="3" Terminal="word" RuleOrdinal="1" />
+    <Reduce State="4" Terminal="&#xA;" RuleOrdinal="5" />
+    <Reduce State="4" Terminal="word" RuleOrdinal="5" />
+    <Reduce State="5" Terminal="&#xA;" RuleOrdinal="3" />
+    <Reduce State="5" EndOfInput="$" RuleOrdinal="3" />
+    <Reduce State="5" Terminal="word" RuleOrdinal="3" />
+    <Reduce State="6" Terminal="&#xA;" RuleOrdinal="6" />
+    <Reduce State="6" Terminal="word" RuleOrdinal="6" />
+    <Reduce State="7" Terminal="&#xA;" RuleOrdinal="4" />
+    <Reduce State="7" EndOfInput="$" RuleOrdinal="4" />
+    <Reduce State="7" Terminal="word" RuleOrdinal="4" />
+    <Reduce State="8" Terminal="&#xA;" RuleOrdinal="2" />
+    <Reduce State="8" EndOfInput="$" RuleOrdinal="2" />
+    <Reduce State="8" Terminal="word" RuleOrdinal="2" />
+    <Goto State="0" NonTerminal="Line" TransitionTo="3" />
+    <Goto State="0" NonTerminal="Text" TransitionTo="2" />
+    <Goto State="0" NonTerminal="Words" TransitionTo="1" />
+    <Goto State="2" NonTerminal="Line" TransitionTo="8" />
+    <Goto State="2" NonTerminal="Words" TransitionTo="1" />
+  </ParsingTable>
+</ParserDefinition>
