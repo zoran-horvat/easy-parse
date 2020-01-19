@@ -27,7 +27,7 @@ Operators are applied from left to right.
     Expr -> Expr '+' number;   # Constants can appear in rules under single quotes
                                # Strings can be escaped like in C/C++
     
-    Expr -> Expr @'-' number;  # Constants can also be verbatim stringsT
+    Expr -> Expr @'-' number;  # Constants can also be verbatim strings
                                # They do not support escaping and single quotes
 
 As you may suspect, the # symbol denotes beginning of the line comment. Each definition ends with a semicolon. Besides that, grammar consists of three sections, starting with "lexemes", "start" and "rules" keywords. Lexeme definitions are given as regular expressions.
@@ -43,15 +43,19 @@ This command will create `AdditionGrammar.xml` file, which should be included in
 
 When you wish to parse an input text, use the static [Parser.FromXmlResource method](EasyParse/Parsing/Parser.cs). Just supply the resource name and this method will return a valid instance of the `Parser` classs.
 
-    using EasyParse.Parsing;
-    
-    var parser = Parser.FromXmlResource("EasyParse.CalculatorDemo.AdditionGrammar.xml");
+``` csharp
+using EasyParse.Parsing;
+
+var parser = Parser.FromXmlResource("EasyParse.CalculatorDemo.AdditionGrammar.xml");
+```
 
 ## Parsing Text
 When parser was constructed, you can use it to recognize text.
 
-    ParsingResult result = parser.Parse(line);
-    Console.WriteLine(result);
+``` csharp
+ParsingResult result = parser.Parse(line);
+Console.WriteLine(result);
+```
 
 Parser's `Parse` method is returning the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object which either indicates an error or a successful match. In case of a success, the `ParsingResult` object will hold a syntax tree. For instance, code above produces the following output:
 
@@ -82,21 +86,22 @@ Ultimate purpose of a parser is to compile the syntax tree it generates into a c
 
 [[Source: EasyParse.CalculatorDemo/AdditiveCompiler.cs](EasyParse.CalculatorDemo/AdditiveCompiler.cs)]
 
-    class AdditiveCompiler : MethodMapCompiler
-    {
-        // Corresponds to grammar line: number matches @'\d+';
-        private int TerminalNumber(string value) => int.Parse(value);
+``` csharp
+class AdditiveCompiler : MethodMapCompiler
+{
+    // Corresponds to grammar line: number matches @'\d+';
+    private int TerminalNumber(string value) => int.Parse(value);
 
-        // Corresponds to grammar line: Expr -> number;
-        public int Expr(int number) => number;
+    // Corresponds to grammar line: Expr -> number;
+    public int Expr(int number) => number;
 
-        // Corresponds to grammar lines:
-        // Expr -> Expr '+' number;
-        // Expr -> Expr @'-' number;
-        public int Expr(int a, string op, int b) =>
-            op == "+" ? a + b : a - b;
-
-    }
+    // Corresponds to grammar lines:
+    // Expr -> Expr '+' number;
+    // Expr -> Expr @'-' number;
+    public int Expr(int a, string op, int b) =>
+        op == "+" ? a + b : a - b;
+}
+```
 
 The simplest way to code a compiler is to derive it from the [EasyParse.Parsing.MethodMapCompiler](EasyParse/Parsing/MethodMapCompiler.cs) class. `MethodMapCompiler` is inspecting methods added by the derived class and matching them with the grammar. These methods will be invoked to traverse the syntax tree in postorder (this order is guaranteed).
 
@@ -106,10 +111,12 @@ The result of compiling the syntax tree using a concrete compiler object is what
 
 Compiling is performed on [ParsingResult](EasyParse/Parsing/ParsingResult.cs), by calling its `Compile` method and passing a concrete compiler:
 
-    ParsingResult result = parser.Parse(line);
-    Console.WriteLine(result.IsSuccess
-        ? $"{line} = {result.Compile(new AdditiveCompiler())}"
-        : $"Not an additive expression: {result.ErrorMessage}");
+``` csharp
+ParsingResult result = parser.Parse(line);
+Console.WriteLine(result.IsSuccess
+    ? $"{line} = {result.Compile(new AdditiveCompiler())}"
+    : $"Not an additive expression: {result.ErrorMessage}");
+```
 
 You have to check whether parsing passed well or not, by testing the `ParsingResult.IsSuccess` property.
 
@@ -128,21 +135,25 @@ For instance, in addition to the [AdditiveCompiler](EasyParse.CalculatorDemo/Add
 
 [[Source: EasyParse.CalculatorDemo/FullAdditiveParenthesizer.cs](EasyParse.CalculatorDemo/FullAdditiveParenthesizer.cs)]
 
-    class FullAdditiveParenthesizer : MethodMapCompiler
-    {
-        private string TerminalNumber(string value) => value;
+``` csharp
+class FullAdditiveParenthesizer : MethodMapCompiler
+{
+    private string TerminalNumber(string value) => value;
 
-        private string Expr(string value) => value;
+    private string Expr(string value) => value;
 
-        private string Expr(string a, string op, string b) => $"({a} {op} {b})";
-    }
+    private string Expr(string a, string op, string b) => $"({a} {op} {b})";
+}
+```
 
 Both compilers can be applied to the same syntax tree produced by the parser:
 
-    ParsingResult result = parser.Parse(line);
-    Console.WriteLine(result.IsSuccess
-        ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveCompiler())}"
-        : $"Not an additive expression: {result.ErrorMessage}");
+``` csharp
+ParsingResult result = parser.Parse(line);
+Console.WriteLine(result.IsSuccess
+    ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveCompiler())}"
+    : $"Not an additive expression: {result.ErrorMessage}");
+```
 
 After successful parsing, the [FullAdditiveParenthesizer](EasyParse.CalculatorDemo/FullAdditiveParenthesizer.cs) is applied to compile the expression into fully parenthesized form. Then the [AdditiveCompiler](EasyParse.CalculatorDemo/AdditiveCompiler.cs) is applied to the same [ParsingResult](EasyParse/Parsing/ParsingResult.cs) to produce an arithmetic value of the expression.
 
