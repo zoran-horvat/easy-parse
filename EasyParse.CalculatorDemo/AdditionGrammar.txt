@@ -12,5 +12,5 @@ Expr -> number;            # All rules are in form:
 Expr -> Expr '+' number;   # Constants can appear in rules under single quotes
                            # Strings can be escaped like in C/C++
 
-Expr -> Expr @'-' number;  # Constants can also be verbatim stringsT
+Expr -> Expr @'-' number;  # Constants can also be verbatim strings
                            # They do not support escaping and single quotes

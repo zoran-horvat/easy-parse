@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="AdditiveCompiler.cs" />
     <Compile Include="Calculator.cs" />
+    <Compile Include="FullAdditiveParenthesizer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextReaderExtensions.cs" />

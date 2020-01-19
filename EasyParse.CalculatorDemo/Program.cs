@@ -25,10 +25,9 @@ namespace EasyParse.CalculatorDemo
         private static void ProcessAddition(Parser parser, string line)
         {
             ParsingResult result = parser.Parse(line);
-            if (result.IsSuccess)
-                Console.WriteLine($"{line} = {result.Compile(new AdditiveCompiler())}");
-            else
-                Console.WriteLine($"Not an additive expression: {result.ErrorMessage}");
+            Console.WriteLine(result.IsSuccess
+                ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveCompiler())}"
+                : $"Not an additive expression: {result.ErrorMessage}");
         }
 
         private static void Process(Parser parser, string line)
