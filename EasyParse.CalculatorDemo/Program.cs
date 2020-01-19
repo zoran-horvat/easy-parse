@@ -26,7 +26,7 @@ namespace EasyParse.CalculatorDemo
         {
             ParsingResult result = parser.Parse(line);
             if (result.IsSuccess)
-                Console.WriteLine(result);
+                Console.WriteLine($"{line} = {result.Compile(new AdditiveCompiler())}");
             else
                 Console.WriteLine($"Not an additive expression: {result.ErrorMessage}");
         }
