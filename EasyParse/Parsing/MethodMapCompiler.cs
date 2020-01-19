@@ -7,11 +7,16 @@ namespace EasyParse.Parsing
 {
     public abstract class MethodMapCompiler : ICompiler
     {
-        protected abstract IEnumerable<(string terminal, Func<string, object> map)> TerminalMap { get; }
+        private IEnumerable<(string terminal, Func<string, object> map)> TerminalMap { get; }
+
+        protected MethodMapCompiler()
+        {
+            this.TerminalMap = this.FindTerminalMethods().ToList();
+        }
 
         public object CompileTerminal(string label, string value) =>
             this.TerminalMap
-                .Where(tuple => tuple.terminal == label)
+                .Where(tuple => tuple.terminal.Equals(label, StringComparison.OrdinalIgnoreCase))
                 .Select(tuple => tuple.map(value))
                 .DefaultIfEmpty(value)
                 .First();
@@ -27,10 +32,23 @@ namespace EasyParse.Parsing
         private IEnumerable<MethodInfo> FindMethods(string name, object[] arguments) =>
             this.GetType()
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
                 .Where(method => string.Equals(name, method.Name, StringComparison.InvariantCultureIgnoreCase))
                 .Where(method => !method.ContainsGenericParameters)
                 .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
                 .Where(method => this.CanBind(method, arguments));
+
+        private IEnumerable<(string label, Func<string, object> method)> FindTerminalMethods() =>
+            this.GetType()
+                .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
+                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
+                .Where(method => method.GetParameters() is ParameterInfo[] parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
+                .Where(method => typeof(object).IsAssignableFrom(method.ReturnType))
+                .Where(method => method.Name.StartsWith("Terminal", StringComparison.OrdinalIgnoreCase))
+                .Where(method => method.Name.Length > "Terminal".Length)
+                .Select(method => (
+                    method.Name.Substring("Terminal".Length), 
+                    (Func<string, object>) (value => method.Invoke(this, new object[] {value}))));
 
         private bool CanBind(MethodInfo method, object[] arguments) =>
             this.CanBind(method.GetParameters(), arguments);

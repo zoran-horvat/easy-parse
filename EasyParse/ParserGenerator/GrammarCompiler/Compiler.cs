@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Data;
+﻿using System.Collections.Immutable;
 using System.Reflection;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
@@ -16,17 +13,21 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private StringCompiler StringCompiler { get; } = new StringCompiler();
 
-        protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
-        {
-            ("quotedString", raw => this.CompileString(raw.Substring(1, raw.Length - 2))),
-            ("verbatimString", raw => raw.Substring(2, raw.Length - 3)),
-            ("terminal", name => new Terminal(name)),
-            ("nonTerminal", value => new NonTerminal(value)),
-        };
+        private string TerminalQuotedString(string value) =>
+            this.CompileString(value.Substring(1, value.Length - 2));
 
-        private object CompileString(string content) =>
+        private string TerminalVerbatimString(string value) =>
+            value.Substring(2, value.Length - 3);
+
+        private Terminal TerminalTerminal(string name) =>
+            new Terminal(name);
+
+        private NonTerminal TerminalNonTerminal(string value) =>
+            new NonTerminal(value);
+
+        private string CompileString(string content) =>
             string.IsNullOrEmpty(content) ? string.Empty
-            : this.StringParser.Parse(content).Compile(this.StringCompiler);
+            : (string)this.StringParser.Parse(content).Compile(this.StringCompiler);
 
         private Grammar Grammar(ImmutableList<Lexeme> lexemes, NonTerminal start, ImmutableList<RuleDefinition> rules) => new Grammar(start, rules).AddRange(lexemes);
         

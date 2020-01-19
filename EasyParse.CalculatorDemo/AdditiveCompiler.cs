@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using EasyParse.Parsing;
+﻿using EasyParse.Parsing;
 
 namespace EasyParse.CalculatorDemo
 {
     class AdditiveCompiler : MethodMapCompiler
     {
-        protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap =>
-            new (string, Func<string, object>)[]
-            {
-                // Corresponds to grammar line: number matches @'\d+';
-                ("number", n => int.Parse(n)),
-            };
+        // Corresponds to grammar line: number matches @'\d+';
+        private int TerminalNumber(string value) => int.Parse(value);
 
         // Corresponds to grammar line: Expr -> number;
         public int Expr(int number) => number;

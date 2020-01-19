@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using EasyParse.Parsing;
+﻿using EasyParse.Parsing;
 
 namespace EasyParse.ParserGenerator.GrammarCompiler
 {
     public class StringCompiler : MethodMapCompiler
     {
-        protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string terminal, Func<string, object> map)[]
-        {
-            ("newLine", _ => "\n"), 
-            ("carriageReturn", _ => "\r"),
-            ("tab", _ => "\t"),
-            ("backslash", _ => @"\"),
-            ("quote", _ => "'"),
-        };
+        private string TerminalNewLine(string value) => "\n";
+
+        private string TerminalCarriageReturn(string value) => "\r";
+
+        private string TerminalTab(string value) => "\t";
+
+        private string TerminalBackslash(string value) => @"\";
+
+        public string TerminalQuote(string value) => "'";
 
         private string String(string value) => value;
         private string String(string left, string next) => left + next;

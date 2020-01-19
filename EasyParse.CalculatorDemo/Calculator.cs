@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using EasyParse.Parsing;
 
 namespace EasyParse.CalculatorDemo
 {
     public class Calculator : MethodMapCompiler
     {
-        protected override IEnumerable<(string terminal, Func<string, object> map)> TerminalMap => new (string, Func<string, object>)[]
-        {
-            ("number", value => int.TryParse(value, out int result) ? (object)result : new OverflowException()),
-        };
+        private object TerminalNumber(string value) =>
+            int.TryParse(value, out int result) ? (object)result : new OverflowException();
 
         private object Expression(object result) => result;
         private object Mul(int value) => value;
