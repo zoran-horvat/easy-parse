@@ -47,3 +47,34 @@ When you wish to parse an input text, use the static [Parser.FromXmlResource met
     
     var parser = Parser.FromXmlResource("EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
+## Parsing Text
+When parser was constructed, you can use it to recognize text.
+
+    ParsingResult result = parser.Parse(line);
+    if (result.IsSuccess)
+        Console.WriteLine(result);
+    else
+        Console.WriteLine(result.ErrorMessage);
+
+Parser's `Parse` method is returning the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object which either indicates an error or a successful match. In case of a success, the `ParsingResult` object will hold a syntax tree. For instance, code above produces the following output:
+
+    1++2
+    Unexpected input: [+(+)] at 3
+    
+    1+2+3
+    Add
+    +-- Add
+    | +-- Add
+    | | +-- Mul
+    | |   +-- Unit
+    | |     +-- 1
+    | +-- +
+    | +-- Mul
+    |   +-- Unit
+    |     +-- 2
+    +-- +
+    +-- Mul
+      +-- Unit
+        +-- 3
+
+Note that syntax tree is not accessible via the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object. Syntax tree is expressed in objects of internal classes and cannot be used directly by the consumer. You would have to supply a compiler object to build your custom result out of a parsed text.
