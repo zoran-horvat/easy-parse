@@ -1,4 +1,4 @@
-# Easy Parse - Parser Generator
+# Easy Parse: Parser Generator and Plaintext Compiler
 
 Library project which helps incorporate parsing and compiling plaintext into other projects. Basic feature include:
 * Compiling grammar into a reusable parser definition - Parser generation is an expensive operation, and hence it is done only once per grammar
