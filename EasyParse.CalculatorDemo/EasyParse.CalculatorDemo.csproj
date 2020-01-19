@@ -52,17 +52,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AdditionGrammar.txt" />
+    <EmbeddedResource Include="AdditionGrammar.xml" />
     <Content Include="Grammar.txt" />
-    <Content Include="AdditionParserDefinition.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>AdditionParserDefinition.xml</LastGenOutput>
-    </Content>
-    <EmbeddedResource Include="AdditionParserDefinition.xml">
-      <DependentUpon>AdditionParserDefinition.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DesignTime>True</DesignTime>
-    </EmbeddedResource>
     <Content Include="ParserDefinition.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ParserDefinition.xml</LastGenOutput>
