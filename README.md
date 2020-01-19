@@ -161,3 +161,38 @@ This code produces output:
 
     1-2+3-4+5
     ((((1 - 2) + 3) - 4) + 5) = 3
+
+## Parsing Multiline Input
+Parser has two variants of the [Parse](EasyParse/Parsing/Parser.cs) method: One receiving a single string, and another receiving a sequence of strings.
+
+``` csharp
+class Parser
+{
+    public ParsingResult Parse(string input);
+    public ParsingResult Parse(IEnumerable<string> lines);
+}
+```
+
+`Parse` method receiving a sequence is used to parse a block of text. Internally, these lines will be glued into a single string, where each separate line ends in a \n character (not \r\n, \n\r, \r or any other end of line combination). Each line, including the last one, is guaranteed to end in \n.
+
+For instance, the following grammar matches separate words from a multiline text, while ignoring whitespace and punctuation.
+
+[[Source: EasyParse.WordAnalysisDemo/Grammar.txt]()EasyParse.WordAnalysisDemo/Grammar.txt]
+
+    lexemes:
+    ignore @'[ \t\.,;:!?]+';
+    word matches @'[\p{L}-]+';
+    
+    start: Text;
+    
+    rules:
+    Text -> Line;
+    Text -> Text Line;
+    Line -> '\n';
+    Line -> Words '\n';
+    Words -> word;
+    Words -> Words word;
+
+Observe that `Line` nonterminal is explicitly matching the end of line character.
+
+For the full example parsing and compiling a multiline text, refer to the [WordAnalysisDemo](EasyParse.WordAnalysisDemo) demo project.
