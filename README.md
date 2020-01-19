@@ -80,6 +80,8 @@ Note that syntax tree is not accessible via the [ParsingResult](EasyParse/Parsin
 ## Compiling Text
 Ultimate purpose of a parser is to compile the syntax tree it generates into a custom object. For a given grammar, you can define a class which compiles it into a custom object:
 
+[[Source: EasyParse.CalculatorDemo/AdditiveCompiler.cs](EasyParse.CalculatorDemo/AdditiveCompiler.cs)]
+
     class AdditiveCompiler : MethodMapCompiler
     {
         // Corresponds to grammar line: number matches @'\d+';
@@ -109,7 +111,7 @@ Compiling is performed on [ParsingResult](EasyParse/Parsing/ParsingResult.cs), b
         ? $"{line} = {result.Compile(new AdditiveCompiler())}"
         : $"Not an additive expression: {result.ErrorMessage}");
 
-You have to check whether parsing passed well or not, by testing the `ParsingResult.IsSuccess` property. You can compile the same syntax tree (i.e. `ParsingResult` object) multiple times.
+You have to check whether parsing passed well or not, by testing the `ParsingResult.IsSuccess` property.
 
 Code example above produces output:
 
@@ -118,3 +120,33 @@ Code example above produces output:
     
     1 - 2 + 3
     1 - 2 + 3 = 2
+
+## Applying Multiple Compilers
+You can compile the same syntax tree (i.e. [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object) multiple times.
+
+For instance, in addition to the [AdditiveCompiler](EasyParse.CalculatorDemo/AdditiveCompiler.cs) class which calculates an integer value of an additive expression, we can also define a compiler which adds parentheses to the expression:
+
+[[Source: EasyParse.CalculatorDemo/FullAdditiveParenthesizer.cs](EasyParse.CalculatorDemo/FullAdditiveParenthesizer.cs)]
+
+    class FullAdditiveParenthesizer : MethodMapCompiler
+    {
+        private string TerminalNumber(string value) => value;
+
+        private string Expr(string value) => value;
+
+        private string Expr(string a, string op, string b) => $"({a} {op} {b})";
+    }
+
+Both compilers can be applied to the same syntax tree produced by the parser:
+
+    ParsingResult result = parser.Parse(line);
+    Console.WriteLine(result.IsSuccess
+        ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveCompiler())}"
+        : $"Not an additive expression: {result.ErrorMessage}");
+
+After successful parsing, the [FullAdditiveParenthesizer](EasyParse.CalculatorDemo/FullAdditiveParenthesizer.cs) is applied to compile the expression into fully parenthesized form. Then the [AdditiveCompiler](EasyParse.CalculatorDemo/AdditiveCompiler.cs) is applied to the same [ParsingResult](EasyParse/Parsing/ParsingResult.cs) to produce an arithmetic value of the expression.
+
+This code produces output:
+
+    1-2+3-4+5
+    ((((1 - 2) + 3) - 4) + 5) = 3
