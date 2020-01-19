@@ -177,7 +177,7 @@ class Parser
 
 For instance, the following grammar matches separate words from a multiline text, while ignoring whitespace and punctuation.
 
-[[Source: EasyParse.WordAnalysisDemo/Grammar.txt]()EasyParse.WordAnalysisDemo/Grammar.txt]
+[[Source: EasyParse.WordAnalysisDemo/Grammar.txt](EasyParse.WordAnalysisDemo/Grammar.txt)]
 
     lexemes:
     ignore @'[ \t\.,;:!?]+';
