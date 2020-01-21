@@ -3,8 +3,8 @@
 Library project which helps incorporate parsing and compiling plaintext into other projects. Basic feature include:
 * Compiling grammar into a reusable parser definition - Parser generation is an expensive operation, and hence it is done only once per grammar
 * Loading parser definition at run time - Building a parser from XML definition is cheap and it can be done over and over again with every execution of the program
-* Applying the parser to plaintext - Parser can be applied to a plaintext to build a syntax tree for that text
-* Compiling the syntax tree into an object - Caller can supply a custom compiler which will be applied to the syntax tree
+* Applying the parser to plaintext - Parser can be applied to a plaintext to build a parse tree for that text
+* Compiling the parse tree into an object - Caller can supply a custom compiler which will be applied to the parse tree
 
 Grammar format is intuitive and simple. It mostly resembles what one would write with pencil and paper.
 Below is an example of a valid grammar which recognizes arithmetic expressions with addition and subtraction.
@@ -57,7 +57,7 @@ ParsingResult result = parser.Parse(line);
 Console.WriteLine(result);
 ```
 
-Parser's `Parse` method is returning the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object which either indicates an error or a successful match. In case of a success, the `ParsingResult` object will hold a syntax tree. For instance, code above produces the following output:
+Parser's `Parse` method is returning the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object which either indicates an error or a successful match. In case of a success, the `ParsingResult` object will hold a parse tree. For instance, code above produces the following output:
 
     1++2
     Unexpected input: [+(+)] at 3
@@ -79,10 +79,10 @@ Parser's `Parse` method is returning the [ParsingResult](EasyParse/Parsing/Parsi
     |
     +--- 3
 
-Note that syntax tree is not accessible via the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object. Syntax tree is expressed in objects of internal classes and cannot be used directly by the consumer. You would have to supply a compiler object to build your custom result out of a parsed text.
+Note that parse tree is not accessible via the [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object. Parse tree is expressed in objects of internal classes and cannot be used directly by the consumer. You would have to supply a compiler object to build your custom result out of a parsed text.
 
 ## Compiling Text
-Ultimate purpose of a parser is to compile the syntax tree it generates into a custom object. For a given grammar, you can define a class which compiles it into a custom object:
+Ultimate purpose of a parser is to compile the parse tree it generates into a custom object. For a given grammar, you can define a class which compiles it into a custom object:
 
 [[Source: EasyParse.CalculatorDemo/AdditiveCompiler.cs](EasyParse.CalculatorDemo/AdditiveCompiler.cs)]
 
@@ -103,11 +103,11 @@ class AdditiveCompiler : MethodMapCompiler
 }
 ```
 
-The simplest way to code a compiler is to derive it from the [EasyParse.Parsing.MethodMapCompiler](EasyParse/Parsing/MethodMapCompiler.cs) class. `MethodMapCompiler` is inspecting methods added by the derived class and matching them with the grammar. These methods will be invoked to traverse the syntax tree in postorder (this order is guaranteed).
+The simplest way to code a compiler is to derive it from the [EasyParse.Parsing.MethodMapCompiler](EasyParse/Parsing/MethodMapCompiler.cs) class. `MethodMapCompiler` is inspecting methods added by the derived class and matching them with the grammar. These methods will be invoked to traverse the parse tree in postorder (this order is guaranteed).
 
 Concrete compiler defines two kinds of methods. Ones are matching terminal symbols, and their name is always Terminal***, where *** is the name of the terminal from the grammar. Other methods are matching nonterminal symbols from grammar, and their name must match the nonterminal name.
 
-The result of compiling the syntax tree using a concrete compiler object is whatever the result was when the last method of the compiler was invoked. That call will correspond to the root node of the syntax tree.
+The result of compiling the parse tree using a concrete compiler object is whatever the result was when the last method of the compiler was invoked. That call will correspond to the root node of the parse tree.
 
 Compiling is performed on [ParsingResult](EasyParse/Parsing/ParsingResult.cs), by calling its `Compile` method and passing a concrete compiler:
 
@@ -129,7 +129,7 @@ Code example above produces output:
     1 - 2 + 3 = 2
 
 ## Applying Multiple Compilers
-You can compile the same syntax tree (i.e. [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object) multiple times.
+You can compile the same parse tree (i.e. [ParsingResult](EasyParse/Parsing/ParsingResult.cs) object) multiple times.
 
 For instance, in addition to the [AdditiveCompiler](EasyParse.CalculatorDemo/AdditiveCompiler.cs) class which calculates an integer value of an additive expression, we can also define a compiler which adds parentheses to the expression:
 
@@ -146,7 +146,7 @@ class FullAdditiveParenthesizer : MethodMapCompiler
 }
 ```
 
-Both compilers can be applied to the same syntax tree produced by the parser:
+Both compilers can be applied to the same parse tree produced by the parser:
 
 ``` csharp
 ParsingResult result = parser.Parse(line);
