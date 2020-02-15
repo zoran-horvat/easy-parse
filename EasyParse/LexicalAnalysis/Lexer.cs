@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Text;
 using EasyParse.LexicalAnalysis.Tokens;
 
 namespace EasyParse.LexicalAnalysis
@@ -49,9 +48,12 @@ namespace EasyParse.LexicalAnalysis
             matches
                 .Where(match => match.Position == position)
                 .Select(match => (position: match.Position, length: match.Length, tokenFactory: (Func<Token>) (() => match.Token)))
-                .DefaultIfEmpty((position: position, length: input.Length - position, () => new InvalidInput(input.LocationFor(position), input.Content.Substring(position))))
+                .DefaultIfEmpty((position: position, length: input.Length - position, tokenFactory: () => this.Invalid(input, position)))
                 .Aggregate((longest, cur) => cur.length > longest.length ? cur : longest)
                 .tokenFactory();
+
+        private Token Invalid(Plaintext input, int position) =>
+            new InvalidInput(input.LocationFor(position), input.Content.Substring(position));
 
         private IEnumerable<Match> Advance(IEnumerable<Match> matches, int position) =>
             matches.SelectMany(match => 
