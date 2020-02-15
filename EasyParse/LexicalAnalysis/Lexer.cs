@@ -26,27 +26,24 @@ namespace EasyParse.LexicalAnalysis
         public Lexer IgnorePattern(string regex) =>
             new Lexer(this.Patterns.Add(new Pattern(regex)));
 
-        public IEnumerable<Token> Tokenize(string input)
+        public IEnumerable<Token> Tokenize(Plaintext input)
         {
-            List<Match> matches = input.FirstMatches(this.Patterns).ToList();
+            List<Match> matches = input.Content.FirstMatches(this.Patterns).ToList();
             int position = 0;
 
             while (matches.Any() && position < input.Length)
             {
-                Token output = TokenAt(position, input, matches);
+                Token output = TokenAt(position, input.Content, matches);
                 if (!(output is Ignored)) yield return output;
                 matches = this.Advance(matches, output.PositionAfter).ToList();
                 position = output.PositionAfter;
             }
 
             if (position < input.Length)
-                yield return new InvalidInput(position, input.Substring(position));
+                yield return new InvalidInput(position, input.Content.Substring(position));
             else
                 yield return new EndOfInput(position);
         }
-
-        public IEnumerable<Token> Tokenize(IEnumerable<string> lines) =>
-            this.Tokenize(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString());
 
         private Token TokenAt(int position, string input, IEnumerable<Match> matches) =>
             matches

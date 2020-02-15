@@ -59,6 +59,7 @@
     <Compile Include="LexicalAnalysis\LexerLoader.cs" />
     <Compile Include="LexicalAnalysis\Match.cs" />
     <Compile Include="LexicalAnalysis\PatternExtensions.cs" />
+    <Compile Include="LexicalAnalysis\Plaintext.cs" />
     <Compile Include="LexicalAnalysis\Tokens\EndOfInput.cs" />
     <Compile Include="LexicalAnalysis\Tokens\Ignored.cs" />
     <Compile Include="LexicalAnalysis\Tokens\InvalidInput.cs" />

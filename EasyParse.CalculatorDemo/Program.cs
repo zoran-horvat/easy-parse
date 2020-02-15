@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing;
 
@@ -32,7 +33,7 @@ namespace EasyParse.CalculatorDemo
 
         private static void Process(Parser parser, string line)
         {
-            List<Token> tokens = parser.Lexer.Tokenize(line).ToList();
+            List<Token> tokens = parser.Lexer.Tokenize(new Plaintext(line)).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
             
             Console.WriteLine();

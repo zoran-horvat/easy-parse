@@ -46,10 +46,10 @@ namespace EasyParse.Parsing
                 ShiftTable.From(definition), ReduceTable.From(definition), GotoTable.From(definition));
                 
         public ParsingResult Parse(string input) =>
-            this.Parse(this.Lexer.Tokenize(input));
+            this.Parse(this.Lexer.Tokenize(new Plaintext(input)));
 
         public ParsingResult Parse(IEnumerable<string> lines) =>
-            this.Parse(this.Lexer.Tokenize(lines));
+            this.Parse(this.Lexer.Tokenize(new Plaintext(lines)));
 
         private ParsingResult Parse(IEnumerable<Token> input)
         {
