@@ -14,10 +14,10 @@ namespace EasyParse.LexicalAnalysis
 
         private Regex Pattern { get; }
         private RegexMatch RegexMatch { get; }
-        private string Input { get; }
-        private Func<string, int, Token> TokenFactory { get; }
+        private Plaintext Input { get; }
+        private Func<string, Location, Token> TokenFactory { get; }
 
-        private Match(Regex pattern, Func<string, int, Token> tokenFactory, RegexMatch match, string input)
+        private Match(Regex pattern, Func<string, Location, Token> tokenFactory, RegexMatch match, Plaintext input)
         {
             this.Pattern = pattern;
             this.TokenFactory = tokenFactory;
@@ -25,17 +25,17 @@ namespace EasyParse.LexicalAnalysis
             this.Input = input;
         }
 
-        public static IEnumerable<Match> FirstMatch(Regex pattern, Func<string, int, Token> tokenFactory, string input) =>
+        public static IEnumerable<Match> FirstMatch(Regex pattern, Func<string, Location, Token> tokenFactory, Plaintext input) =>
             Next(pattern, tokenFactory, input, 0);
 
         public IEnumerable<Match> Next(int position) =>
             Next(this.Pattern, this.TokenFactory, this.Input, position);
 
         public Token Token =>
-            this.TokenFactory(this.RegexMatch.Value, this.Position);
+            this.TokenFactory(this.RegexMatch.Value, this.Input.LocationFor(this.Position));
 
-        private static IEnumerable<Match> Next(Regex pattern, Func<string, int, Token> tokenFactory, string input, int position) =>
-            pattern.Match(input, position) is RegexMatch regexMatch && regexMatch.Success 
+        private static IEnumerable<Match> Next(Regex pattern, Func<string, Location, Token> tokenFactory, Plaintext input, int position) =>
+            pattern.Match(input.Content, position) is RegexMatch regexMatch && regexMatch.Success 
                 ? new []{new Match(pattern, tokenFactory, regexMatch, input)}
                 : Enumerable.Empty<Match>();
     }

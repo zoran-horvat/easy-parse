@@ -4,7 +4,7 @@
     {
         public string Value { get; }
 
-        public InvalidInput(int position, string value) : base(position, value.Length)
+        public InvalidInput(Location location, string value) : base(location, value.Length)
         {
             this.Value = value;
         }

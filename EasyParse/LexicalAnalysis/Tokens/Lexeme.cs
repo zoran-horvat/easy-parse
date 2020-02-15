@@ -5,7 +5,7 @@
         public string Label { get; }
         public string Value { get; }
 
-        public Lexeme(string label, int position, string value) : base(position, value.Length)
+        public Lexeme(string label, Location location, string value) : base(location, value.Length)
         {
             this.Label = label;
             this.Value = value;

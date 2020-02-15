@@ -4,7 +4,7 @@
     {
         public string Value { get; }
      
-        public Ignored(string value, int position) : base(position, value.Length)
+        public Ignored(string value, Location location) : base(location, value.Length)
         {
             this.Value = value;
         }

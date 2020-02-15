@@ -28,28 +28,28 @@ namespace EasyParse.LexicalAnalysis
 
         public IEnumerable<Token> Tokenize(Plaintext input)
         {
-            List<Match> matches = input.Content.FirstMatches(this.Patterns).ToList();
+            List<Match> matches = input.FirstMatches(this.Patterns).ToList();
             int position = 0;
 
             while (matches.Any() && position < input.Length)
             {
-                Token output = TokenAt(position, input.Content, matches);
+                Token output = TokenAt(position, input, matches);
                 if (!(output is Ignored)) yield return output;
-                matches = this.Advance(matches, output.PositionAfter).ToList();
-                position = output.PositionAfter;
+                matches = this.Advance(matches, position + output.Length).ToList();
+                position += output.Length;
             }
 
             if (position < input.Length)
-                yield return new InvalidInput(position, input.Content.Substring(position));
+                yield return new InvalidInput(input.LocationFor(position), input.Content.Substring(position));
             else
-                yield return new EndOfInput(position);
+                yield return new EndOfInput(input.LocationFor(position));
         }
 
-        private Token TokenAt(int position, string input, IEnumerable<Match> matches) =>
+        private Token TokenAt(int position, Plaintext input, IEnumerable<Match> matches) =>
             matches
                 .Where(match => match.Position == position)
                 .Select(match => (position: match.Position, length: match.Length, tokenFactory: (Func<Token>) (() => match.Token)))
-                .DefaultIfEmpty((position: position, length: input.Length - position, () => new InvalidInput(position, input.Substring(position))))
+                .DefaultIfEmpty((position: position, length: input.Length - position, () => new InvalidInput(input.LocationFor(position), input.Content.Substring(position))))
                 .Aggregate((longest, cur) => cur.length > longest.length ? cur : longest)
                 .tokenFactory();
 

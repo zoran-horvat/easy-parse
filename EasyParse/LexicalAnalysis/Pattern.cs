@@ -24,9 +24,9 @@ namespace EasyParse.LexicalAnalysis
             this.LexemeLabel = lexemeLabel;
         }
 
-        public Token CreateToken(string value, int position) =>
-            this.LexemeLabel.Select<string, Token>(label => new Lexeme(label, position, value))
-                .DefaultIfEmpty(new Ignored(value, position))
+        public Token CreateToken(string value, Location location) =>
+            this.LexemeLabel.Select<string, Token>(label => new Lexeme(label, location, value))
+                .DefaultIfEmpty(new Ignored(value, location))
                 .First();
 
         public override string ToString() =>

@@ -2,7 +2,7 @@
 {
     public class EndOfInput : Lexeme
     {
-        public EndOfInput(int position) : base("$", position, "$")
+        public EndOfInput(Location location) : base("$", location, "$")
         {
         }
 

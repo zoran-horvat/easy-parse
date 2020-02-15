@@ -2,13 +2,13 @@
 {
     public abstract class Token
     {
-        public int Position { get; }
-        public int PositionAfter { get; }
+        public Location Location { get; }
+        public int Length { get; }
 
-        protected Token(int position, int length)
+        protected Token(Location location, int length)
         {
-            this.Position = position;
-            this.PositionAfter = position + length;
+            this.Location = location;
+            this.Length = length;
         }
     }
 }

@@ -136,8 +136,8 @@ namespace EasyParse.Parsing
         }
 
         private TreeElement InputError(Token input) =>
-            input is InvalidInput invalid ? new Error($"Unexpected input: {invalid.Value} at {input.Position + 1}")
+            input is InvalidInput invalid ? new Error($"Unexpected input: {invalid.Value} at {input.Location}")
             : input is EndOfInput ? new Error("Unexpected end of input.") 
-            : new Error($"Unexpected input: {input} at {input.Position + 1}");
+            : new Error($"Unexpected input: {input} at {input.Location}");
     }
 }

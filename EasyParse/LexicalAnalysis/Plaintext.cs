@@ -8,7 +8,7 @@ namespace EasyParse.LexicalAnalysis
     {
         public string Content { get; }
         public int Length => this.Content.Length;
-     
+
         public Plaintext(string content)
         {
             this.Content = content;
@@ -18,5 +18,8 @@ namespace EasyParse.LexicalAnalysis
             : this(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString())
         {
         }
+
+        public Location LocationFor(int contentOffset) =>
+            new LineLocation(contentOffset);
     }
 }
