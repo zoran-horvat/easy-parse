@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EasyParse.LexicalAnalysis;
 
-namespace EasyParse.LexicalAnalysis
+namespace EasyParse.Text
 {
     public class Plaintext
     {

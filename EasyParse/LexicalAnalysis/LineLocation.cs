@@ -1,4 +1,6 @@
-﻿namespace EasyParse.LexicalAnalysis
+﻿using EasyParse.Text;
+
+namespace EasyParse.LexicalAnalysis
 {
     public class LineLocation : Location
     {

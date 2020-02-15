@@ -1,4 +1,6 @@
-﻿namespace EasyParse.LexicalAnalysis.Tokens
+﻿using EasyParse.Text;
+
+namespace EasyParse.LexicalAnalysis.Tokens
 {
     public class Ignored : Token
     {

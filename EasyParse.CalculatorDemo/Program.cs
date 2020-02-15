@@ -5,6 +5,7 @@ using System.Reflection;
 using EasyParse.LexicalAnalysis;
 using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Parsing;
+using EasyParse.Text;
 
 namespace EasyParse.CalculatorDemo
 {

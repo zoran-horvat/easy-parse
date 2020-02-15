@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.Text;
 
 namespace EasyParse.LexicalAnalysis
 {

@@ -1,4 +1,4 @@
-﻿namespace EasyParse.LexicalAnalysis
+﻿namespace EasyParse.Text
 {
     public abstract class Location
     {

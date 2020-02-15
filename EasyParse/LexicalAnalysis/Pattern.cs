@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text.RegularExpressions;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.Text;
 
 namespace EasyParse.LexicalAnalysis
 {

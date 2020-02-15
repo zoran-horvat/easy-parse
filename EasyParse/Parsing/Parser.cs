@@ -9,6 +9,7 @@ using EasyParse.ParserGenerator.Models;
 using EasyParse.Parsing.Collections;
 using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Patterns;
+using EasyParse.Text;
 using EndOfInput = EasyParse.LexicalAnalysis.Tokens.EndOfInput;
 
 namespace EasyParse.Parsing

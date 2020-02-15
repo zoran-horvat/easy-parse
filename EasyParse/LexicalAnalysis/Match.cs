@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.Text;
 using RegexMatch = System.Text.RegularExpressions.Match;
 
 namespace EasyParse.LexicalAnalysis
