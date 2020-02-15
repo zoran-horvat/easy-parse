@@ -58,6 +58,7 @@
   <ItemGroup>
     <Compile Include="LexicalAnalysis\LexerLoader.cs" />
     <Compile Include="LexicalAnalysis\LineLocation.cs" />
+    <Compile Include="Text\EndOfText.cs" />
     <Compile Include="Text\Location.cs" />
     <Compile Include="LexicalAnalysis\Match.cs" />
     <Compile Include="LexicalAnalysis\PatternExtensions.cs" />

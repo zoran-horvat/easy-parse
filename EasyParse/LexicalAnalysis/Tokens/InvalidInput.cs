@@ -6,7 +6,8 @@ namespace EasyParse.LexicalAnalysis.Tokens
     {
         public string Value { get; }
 
-        public InvalidInput(Location location, string value) : base(location, value.Length)
+        public InvalidInput(Location location, Location locationAfter, string value)
+            : base(location, locationAfter, value.Length)
         {
             this.Value = value;
         }

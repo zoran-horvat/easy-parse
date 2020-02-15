@@ -4,7 +4,8 @@ namespace EasyParse.LexicalAnalysis.Tokens
 {
     public class EndOfInput : Lexeme
     {
-        public EndOfInput(Location location) : base("$", location, "$")
+        public EndOfInput(Location location) 
+            : base("$", location, EndOfText.Value, "$")
         {
         }
 

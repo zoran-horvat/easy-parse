@@ -40,7 +40,7 @@ namespace EasyParse.LexicalAnalysis
             }
 
             if (position < input.Length)
-                yield return new InvalidInput(input.LocationFor(position), input.Content.Substring(position));
+                yield return new InvalidInput(input.LocationFor(position), EndOfText.Value, input.Content.Substring(position));
             else
                 yield return new EndOfInput(input.LocationFor(position));
         }
@@ -54,7 +54,7 @@ namespace EasyParse.LexicalAnalysis
                 .tokenFactory();
 
         private Token Invalid(Plaintext input, int position) =>
-            new InvalidInput(input.LocationFor(position), input.Content.Substring(position));
+            new InvalidInput(input.LocationFor(position), EndOfText.Value, input.Content.Substring(position));
 
         private IEnumerable<Match> Advance(IEnumerable<Match> matches, int position) =>
             matches.SelectMany(match => 
