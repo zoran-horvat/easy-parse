@@ -10,6 +10,8 @@ namespace EasyParse.Text
         public string Content { get; }
         public int Length => this.Content.Length;
 
+        public Location Beginning => new LineLocation(0);
+
         public Plaintext(string content)
         {
             this.Content = content;
@@ -21,6 +23,7 @@ namespace EasyParse.Text
         }
 
         public Location LocationFor(int contentOffset) =>
-            new LineLocation(contentOffset);
+            contentOffset >= this.Length ? EndOfText.Value
+            : new LineLocation(contentOffset);
     }
 }

@@ -1,14 +1,14 @@
-﻿Generated on 06-Jan-2020 11:41:35 UTC
+﻿Generated on 15-Feb-2020 19:48:02 UTC
 
   0. S' -> Add
   1. Add -> Mul
-  2. Add -> Add+Mul
-  3. Add -> Add-Mul
+  2. Add -> Add + Mul
+  3. Add -> Add - Mul
   4. Mul -> Unit
-  5. Mul -> Mul*Unit
-  6. Mul -> Mul/Unit
+  5. Mul -> Mul * Unit
+  6. Mul -> Mul / Unit
   7. Unit -> number
-  8. Unit -> (Add)
+  8. Unit -> ( Add )
 
 +-----+------------------------------------------------+-----------------------+
 |     |                  SHIFT/REDUCE                  |         GOTO          |
@@ -48,126 +48,126 @@
 | 15  |     | R8  | R8  | R8  | R8  | R8  |      | R8  |     |     |     |     |
 +-----+-----+-----+-----+-----+-----+-----+------+-----+-----+-----+-----+-----+
 
-FIRST(S') = {(number}
-FIRST(Add) = {(number}
-FIRST(Mul) = {(number}
-FIRST(Unit) = {(number}
+FIRST(S') = {(, number}
+FIRST(Add) = {(, number}
+FIRST(Mul) = {(, number}
+FIRST(Unit) = {(, number}
 
 FOLLOW(S') = {$}
-FOLLOW(Add) = {$-+)}
-FOLLOW(Mul) = {$/-+*)}
-FOLLOW(Unit) = {$/-+*)}
+FOLLOW(Add) = {$, -, +, )}
+FOLLOW(Mul) = {$, /, -, +, *, )}
+FOLLOW(Unit) = {$, /, -, +, *, )}
 
 S0
-Add -> ∘Mul      {)+-$}
-Mul -> ∘Unit     {)*+-/$}
-Mul -> ∘Mul*Unit {)*+-/$}
-Mul -> ∘Mul/Unit {)*+-/$}
-S' -> ∘Add       {$}
-Add -> ∘Add+Mul  {)+-$}
-Add -> ∘Add-Mul  {)+-$}
-Unit -> ∘number  {)*+-/$}
-Unit -> ∘(Add)   {)*+-/$}
+Add -> ∘Mul         {), +, -, $}
+Mul -> ∘Unit        {), *, +, -, /, $}
+Mul -> ∘Mul * Unit  {), *, +, -, /, $}
+Mul -> ∘Mul / Unit  {), *, +, -, /, $}
+S' -> ∘Add          {$}
+Add -> ∘Add + Mul   {), +, -, $}
+Add -> ∘Add - Mul   {), +, -, $}
+Unit -> ∘number     {), *, +, -, /, $}
+Unit -> ∘( Add )    {), *, +, -, /, $}
 
 S1
-Add -> Mul∘      {)+-$}
-Mul -> Mul∘*Unit {)*+-/$}
-Mul -> Mul∘/Unit {)*+-/$}
-Mul -> Mul∘/Unit {)*+-/}
-Mul -> Mul∘*Unit {)*+-/}
-Add -> Mul∘      {)+-}
+Add -> Mul ∘        {), +, -, $}
+Mul -> Mul ∘* Unit  {), *, +, -, /, $}
+Mul -> Mul ∘/ Unit  {), *, +, -, /, $}
+Mul -> Mul ∘/ Unit  {), *, +, -, /}
+Mul -> Mul ∘* Unit  {), *, +, -, /}
+Add -> Mul ∘        {), +, -}
 
 S2
-Mul -> Unit∘     {)*+-/$}
-Mul -> Unit∘     {)*+-/}
+Mul -> Unit ∘       {), *, +, -, /, $}
+Mul -> Unit ∘       {), *, +, -, /}
 
 S3
-S' -> Add∘       {$}
-Add -> Add∘+Mul  {)+-$}
-Add -> Add∘-Mul  {)+-$}
+S' -> Add ∘         {$}
+Add -> Add ∘+ Mul   {), +, -, $}
+Add -> Add ∘- Mul   {), +, -, $}
 
 S4
-Unit -> number∘  {)*+-/}
-Unit -> number∘  {)*+-/$}
+Unit -> number ∘    {), *, +, -, /}
+Unit -> number ∘    {), *, +, -, /, $}
 
 S5
-Unit -> (∘Add)   {)*+-/}
-Unit -> ∘(Add)   {)*+-/}
-Unit -> ∘number  {)*+-/}
-Mul -> ∘Mul/Unit {)*+-/}
-Mul -> ∘Mul*Unit {)*+-/}
-Add -> ∘Add+Mul  {)+-}
-Add -> ∘Add-Mul  {)+-}
-Unit -> (∘Add)   {)*+-/$}
-Add -> ∘Mul      {)+-}
-Mul -> ∘Unit     {)*+-/}
+Unit -> ( ∘Add )    {), *, +, -, /}
+Unit -> ∘( Add )    {), *, +, -, /}
+Unit -> ∘number     {), *, +, -, /}
+Mul -> ∘Mul / Unit  {), *, +, -, /}
+Mul -> ∘Mul * Unit  {), *, +, -, /}
+Add -> ∘Add + Mul   {), +, -}
+Add -> ∘Add - Mul   {), +, -}
+Unit -> ( ∘Add )    {), *, +, -, /, $}
+Add -> ∘Mul         {), +, -}
+Mul -> ∘Unit        {), *, +, -, /}
 
 S6
-Mul -> Mul*∘Unit {)*+-/$}
-Unit -> ∘number  {)*+-/$}
-Unit -> ∘(Add)   {)*+-/$}
+Mul -> Mul * ∘Unit  {), *, +, -, /, $}
+Unit -> ∘number     {), *, +, -, /, $}
+Unit -> ∘( Add )    {), *, +, -, /, $}
 
 S7
-Mul -> Mul/∘Unit {)*+-/$}
-Unit -> ∘number  {)*+-/$}
-Unit -> ∘(Add)   {)*+-/$}
+Mul -> Mul / ∘Unit  {), *, +, -, /, $}
+Unit -> ∘number     {), *, +, -, /, $}
+Unit -> ∘( Add )    {), *, +, -, /, $}
 
 S8
-Unit -> ∘(Add)   {)*+-/}
-Mul -> ∘Unit     {)*+-/$}
-Mul -> ∘Mul*Unit {)*+-/$}
-Mul -> ∘Mul/Unit {)*+-/$}
-Add -> Add+∘Mul  {)+-$}
-Unit -> ∘number  {)*+-/}
-Mul -> ∘Mul/Unit {)*+-/}
-Mul -> ∘Mul*Unit {)*+-/}
-Add -> Add+∘Mul  {)+-}
-Unit -> ∘number  {)*+-/$}
-Unit -> ∘(Add)   {)*+-/$}
-Mul -> ∘Unit     {)*+-/}
+Unit -> ∘( Add )    {), *, +, -, /}
+Mul -> ∘Unit        {), *, +, -, /, $}
+Mul -> ∘Mul * Unit  {), *, +, -, /, $}
+Mul -> ∘Mul / Unit  {), *, +, -, /, $}
+Add -> Add + ∘Mul   {), +, -, $}
+Unit -> ∘number     {), *, +, -, /}
+Mul -> ∘Mul / Unit  {), *, +, -, /}
+Mul -> ∘Mul * Unit  {), *, +, -, /}
+Add -> Add + ∘Mul   {), +, -}
+Unit -> ∘number     {), *, +, -, /, $}
+Unit -> ∘( Add )    {), *, +, -, /, $}
+Mul -> ∘Unit        {), *, +, -, /}
 
 S9
-Unit -> ∘(Add)   {)*+-/}
-Mul -> ∘Unit     {)*+-/$}
-Mul -> ∘Mul*Unit {)*+-/$}
-Mul -> ∘Mul/Unit {)*+-/$}
-Add -> Add-∘Mul  {)+-$}
-Unit -> ∘number  {)*+-/}
-Mul -> ∘Mul/Unit {)*+-/}
-Mul -> ∘Mul*Unit {)*+-/}
-Add -> Add-∘Mul  {)+-}
-Unit -> ∘number  {)*+-/$}
-Unit -> ∘(Add)   {)*+-/$}
-Mul -> ∘Unit     {)*+-/}
+Unit -> ∘( Add )    {), *, +, -, /}
+Mul -> ∘Unit        {), *, +, -, /, $}
+Mul -> ∘Mul * Unit  {), *, +, -, /, $}
+Mul -> ∘Mul / Unit  {), *, +, -, /, $}
+Add -> Add - ∘Mul   {), +, -, $}
+Unit -> ∘number     {), *, +, -, /}
+Mul -> ∘Mul / Unit  {), *, +, -, /}
+Mul -> ∘Mul * Unit  {), *, +, -, /}
+Add -> Add - ∘Mul   {), +, -}
+Unit -> ∘number     {), *, +, -, /, $}
+Unit -> ∘( Add )    {), *, +, -, /, $}
+Mul -> ∘Unit        {), *, +, -, /}
 
 S10
-Unit -> (Add∘)   {)*+-/}
-Add -> Add∘+Mul  {)+-}
-Add -> Add∘-Mul  {)+-}
-Unit -> (Add∘)   {)*+-/$}
+Unit -> ( Add ∘)    {), *, +, -, /}
+Add -> Add ∘+ Mul   {), +, -}
+Add -> Add ∘- Mul   {), +, -}
+Unit -> ( Add ∘)    {), *, +, -, /, $}
 
 S11
-Mul -> Mul*Unit∘ {)*+-/$}
+Mul -> Mul * Unit ∘ {), *, +, -, /, $}
 
 S12
-Mul -> Mul/Unit∘ {)*+-/$}
+Mul -> Mul / Unit ∘ {), *, +, -, /, $}
 
 S13
-Mul -> Mul∘*Unit {)*+-/$}
-Mul -> Mul∘/Unit {)*+-/$}
-Add -> Add+Mul∘  {)+-$}
-Mul -> Mul∘/Unit {)*+-/}
-Mul -> Mul∘*Unit {)*+-/}
-Add -> Add+Mul∘  {)+-}
+Mul -> Mul ∘* Unit  {), *, +, -, /, $}
+Mul -> Mul ∘/ Unit  {), *, +, -, /, $}
+Add -> Add + Mul ∘  {), +, -, $}
+Mul -> Mul ∘/ Unit  {), *, +, -, /}
+Mul -> Mul ∘* Unit  {), *, +, -, /}
+Add -> Add + Mul ∘  {), +, -}
 
 S14
-Mul -> Mul∘*Unit {)*+-/$}
-Mul -> Mul∘/Unit {)*+-/$}
-Add -> Add-Mul∘  {)+-$}
-Mul -> Mul∘/Unit {)*+-/}
-Mul -> Mul∘*Unit {)*+-/}
-Add -> Add-Mul∘  {)+-}
+Mul -> Mul ∘* Unit  {), *, +, -, /, $}
+Mul -> Mul ∘/ Unit  {), *, +, -, /, $}
+Add -> Add - Mul ∘  {), +, -, $}
+Mul -> Mul ∘/ Unit  {), *, +, -, /}
+Mul -> Mul ∘* Unit  {), *, +, -, /}
+Add -> Add - Mul ∘  {), +, -}
 
 S15
-Unit -> (Add)∘   {)*+-/}
-Unit -> (Add)∘   {)*+-/$}
+Unit -> ( Add ) ∘   {), *, +, -, /}
+Unit -> ( Add ) ∘   {), *, +, -, /, $}

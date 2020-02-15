@@ -29,20 +29,20 @@ namespace EasyParse.LexicalAnalysis
         public IEnumerable<Token> Tokenize(Plaintext input)
         {
             List<Match> matches = input.FirstMatches(this.Patterns).ToList();
-            int position = 0;
+            Location location = input.Beginning;
 
-            while (matches.Any() && position < input.Length)
+            while (matches.Any() && location is InnerLocation inner)
             {
-                Token output = TokenAt(position, input, matches);
+                Token output = TokenAt(inner.Offset, input, matches);
                 if (!(output is Ignored)) yield return output;
-                matches = this.Advance(matches, position + output.Length).ToList();
-                position += output.Length;
+                matches = this.Advance(matches, inner.Offset + output.Length).ToList();
+                location = output.LocationAfter;
             }
 
-            if (position < input.Length)
-                yield return new InvalidInput(input.LocationFor(position), EndOfText.Value, input.Content.Substring(position));
+            if (location is InnerLocation remaining)
+                yield return new InvalidInput(remaining, EndOfText.Value, input.Content.Substring(remaining.Offset));
             else
-                yield return new EndOfInput(input.LocationFor(position));
+                yield return new EndOfInput(location);
         }
 
         private Token TokenAt(int position, Plaintext input, IEnumerable<Match> matches) =>
