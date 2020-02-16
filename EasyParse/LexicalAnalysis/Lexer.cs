@@ -40,7 +40,7 @@ namespace EasyParse.LexicalAnalysis
             }
 
             if (location is InnerLocation remaining)
-                yield return new InvalidInput(remaining, EndOfText.Value, input.Content.Substring(remaining.Offset));
+                yield return new InvalidInput(remaining, EndOfText.Value, input.Substring(remaining));
             else
                 yield return new EndOfInput(location);
         }

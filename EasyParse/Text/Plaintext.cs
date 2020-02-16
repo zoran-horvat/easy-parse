@@ -9,9 +9,13 @@ namespace EasyParse.Text
     public class Plaintext
     {
         public string Content { get; }
-        public int Length => this.Content.Length;
-
+        private int Length => this.Content.Length;
+        
         public Location Beginning => new LineLocation(0);
+
+        public string Substring(Location startAt) =>
+            startAt is InnerLocation inner && inner.Offset < this.Length ? this.Content.Substring(inner.Offset)
+            : string.Empty;
 
         private Plaintext(string content)
         {
