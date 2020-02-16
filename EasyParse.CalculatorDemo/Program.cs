@@ -34,7 +34,7 @@ namespace EasyParse.CalculatorDemo
 
         private static void Process(Parser parser, string line)
         {
-            List<Token> tokens = parser.Lexer.Tokenize(new Plaintext(line)).ToList();
+            List<Token> tokens = parser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
             
             Console.WriteLine();

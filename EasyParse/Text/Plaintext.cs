@@ -13,15 +13,16 @@ namespace EasyParse.Text
 
         public Location Beginning => new LineLocation(0);
 
-        public Plaintext(string content)
+        private Plaintext(string content)
         {
             this.Content = content;
         }
 
-        public Plaintext(IEnumerable<string> lines)
-            : this(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString())
-        {
-        }
+        public static Plaintext Line(string content) =>
+            new Plaintext(content);
+
+        public static Plaintext Text(IEnumerable<string> lines) =>
+            new Plaintext(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString());
 
         public IEnumerable<(RegexMatch match, Location at, Location locationAfter)> TryMatch(Regex pattern, Location at) =>
             at is InnerLocation inner ? this.TryMatch(pattern, inner)
