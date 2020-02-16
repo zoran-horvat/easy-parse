@@ -41,8 +41,8 @@ namespace EasyParse.LexicalAnalysis
 
             if (location is InnerLocation remaining)
                 yield return new InvalidInput(remaining, EndOfText.Value, input.Substring(remaining));
-            else
-                yield return new EndOfInput(location);
+
+            yield return new EndOfInput(location);
         }
 
         private Token TokenAt(Location location, Plaintext input, IEnumerable<Match> matches) =>
