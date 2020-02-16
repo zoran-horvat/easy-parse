@@ -7,6 +7,6 @@ namespace EasyParse.LexicalAnalysis
     static class PatternExtensions
     {
         public static IEnumerable<Match> FirstMatches(this Plaintext input, IEnumerable<Pattern> patterns) =>
-            patterns.SelectMany(pattern => Match.FirstMatch(pattern.Expression, pattern.CreateToken, input));
+            patterns.SelectMany(pattern => Match.FirstMatch(pattern, input));
     }
 }

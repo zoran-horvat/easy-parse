@@ -8,5 +8,8 @@
 
         public override string ToString() =>
             "EndOfText";
+
+        public override int CompareTo(Location other) =>
+            other is EndOfText ? 0 : 1;
     }
 }

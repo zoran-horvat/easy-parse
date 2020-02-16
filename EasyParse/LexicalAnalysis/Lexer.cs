@@ -33,9 +33,9 @@ namespace EasyParse.LexicalAnalysis
 
             while (matches.Any() && location is InnerLocation inner)
             {
-                Token output = TokenAt(inner.Offset, input, matches);
+                Token output = TokenAt(location, input, matches);
                 if (!(output is Ignored)) yield return output;
-                matches = this.Advance(matches, inner.Offset + output.Length).ToList();
+                matches = this.Advance(matches, output.LocationAfter).ToList();
                 location = output.LocationAfter;
             }
 
@@ -45,20 +45,21 @@ namespace EasyParse.LexicalAnalysis
                 yield return new EndOfInput(location);
         }
 
-        private Token TokenAt(int position, Plaintext input, IEnumerable<Match> matches) =>
+        private Token TokenAt(Location location, Plaintext input, IEnumerable<Match> matches) =>
             matches
-                .Where(match => match.Position == position)
-                .Select(match => (position: match.Position, length: match.Length, tokenFactory: (Func<Token>) (() => match.Token)))
-                .DefaultIfEmpty((position: position, length: input.Length - position, tokenFactory: () => this.Invalid(input, position)))
-                .Aggregate((longest, cur) => cur.length > longest.length ? cur : longest)
-                .tokenFactory();
+                .Where(match => match.Location.CompareTo(location) == 0)
+                .Select(match => (nextLocation: match.LocationAfter, factory: (Func<Token>)(() => match.Token)))
+                .DefaultIfEmpty((nextLocation: EndOfText.Value, factory: () => this.Invalid(input, location)))
+                .Aggregate((longest, cur) => cur.nextLocation.CompareTo(longest.nextLocation) > 0 ? cur : longest)
+                .factory();
 
-        private Token Invalid(Plaintext input, int position) =>
-            new InvalidInput(input.LocationFor(position), EndOfText.Value, input.Content.Substring(position));
+        private Token Invalid(Plaintext input, Location location) =>
+            new InvalidInput(location, EndOfText.Value, 
+                location is InnerLocation inner ? input.Content.Substring(inner.Offset) : string.Empty);
 
-        private IEnumerable<Match> Advance(IEnumerable<Match> matches, int position) =>
+        private IEnumerable<Match> Advance(IEnumerable<Match> matches, Location to) =>
             matches.SelectMany(match => 
-                match.Position < position ? match.Next(position)
+                match.Location.CompareTo(to) < 0 ? match.Next(to)
                 : new [] {match});
     }
 }
