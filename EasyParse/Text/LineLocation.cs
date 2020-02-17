@@ -7,6 +7,6 @@
         }
 
         public override string ToString() =>
-            $"Pos: {base.Offset + 1}";
+            $"{base.Offset + 1}";
     }
 }
