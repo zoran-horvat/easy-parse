@@ -38,9 +38,11 @@ namespace EasyParse.Text
 
         private IEnumerable<(RegexMatch match, Location at, Location locationAfter)> CreateMatch(Regex pattern, RegexMatch match, InnerLocation at) => new[]
         {
-            (match, (Location)new LineLocation(match.Index),
-                match.Index + match.Length >= this.Content.Length ? EndOfText.Value
-                : new LineLocation(match.Index + match.Length))
+            (match, this.LocationFor(match.Index), this.LocationFor(match.Index + match.Length))
         };
+
+        private Location LocationFor(int offset) =>
+            offset >= this.Length ? EndOfText.Value
+            : new LineLocation(offset);
     }
 }
