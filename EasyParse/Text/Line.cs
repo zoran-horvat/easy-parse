@@ -3,6 +3,8 @@
     internal class Line : Plaintext
     {
         private int Length { get; }
+        public override Location Beginning => new LineLocation(0);
+
         public Line(string content) : base(content)
         {
             this.Length = content.Length;

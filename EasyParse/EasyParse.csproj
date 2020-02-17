@@ -144,6 +144,7 @@
     <Compile Include="ParserGenerator\Models\Symbols\Terminal.cs" />
     <Compile Include="ParserGenerator\Formatting\TableFormat.cs" />
     <Compile Include="Testing\ParserTestsBase.cs" />
+    <Compile Include="Text\Text.cs" />
     <Compile Include="Text\TextLocation.cs" />
   </ItemGroup>
   <ItemGroup>
