@@ -6,27 +6,26 @@ using RegexMatch = System.Text.RegularExpressions.Match;
 
 namespace EasyParse.Text
 {
-    public class Plaintext
+    public abstract class Plaintext
     {
         public string Content { get; }
         private int Length => this.Content.Length;
-        
         public Location Beginning => new LineLocation(0);
 
         public string Substring(Location startAt) =>
             startAt is InnerLocation inner && inner.Offset < this.Length ? this.Content.Substring(inner.Offset)
             : string.Empty;
 
-        private Plaintext(string content)
+        protected Plaintext(string content)
         {
             this.Content = content;
         }
 
         public static Plaintext Line(string content) =>
-            new Plaintext(content);
+            new Line(content);
 
         public static Plaintext Text(IEnumerable<string> lines) =>
-            new Plaintext(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString());
+            new Line(lines.Aggregate(new StringBuilder(), (text, line) => text.Append($"{line}\n")).ToString());
 
         public IEnumerable<(RegexMatch match, Location at, Location locationAfter)> TryMatch(Regex pattern, Location at) =>
             at is InnerLocation inner ? this.TryMatch(pattern, inner)
@@ -41,8 +40,6 @@ namespace EasyParse.Text
             (match, this.LocationFor(match.Index), this.LocationFor(match.Index + match.Length))
         };
 
-        private Location LocationFor(int offset) =>
-            offset >= this.Length ? EndOfText.Value
-            : new LineLocation(offset);
+        protected abstract Location LocationFor(int offset);
     }
 }

@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LexicalAnalysis\LexerLoader.cs" />
+    <Compile Include="Text\Line.cs" />
     <Compile Include="Text\LineLocation.cs" />
     <Compile Include="Text\EndOfText.cs" />
     <Compile Include="Text\InnerLocation.cs" />
