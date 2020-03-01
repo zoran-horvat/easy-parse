@@ -17,6 +17,9 @@ namespace EasyParse.Parsing
         public string ErrorMessage =>
             this.Content is Error error ? error.Message : string.Empty;
 
+        public object Error =>
+            this.Content is Error error ? error.Object : throw new InvalidOperationException("Not an error.");
+
         public bool IsSuccess =>
             this.Content is Node;
 
