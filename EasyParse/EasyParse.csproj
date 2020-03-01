@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LexicalAnalysis\LexerLoader.cs" />
+    <Compile Include="Parsing\Nodes\Errors\InternalError.cs" />
     <Compile Include="Parsing\Nodes\Errors\LexingError.cs" />
     <Compile Include="Parsing\Nodes\Errors\SyntaxError.cs" />
     <Compile Include="Parsing\Nodes\Errors\UnexpectedEndOfInput.cs" />

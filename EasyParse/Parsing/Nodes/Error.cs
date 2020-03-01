@@ -2,7 +2,7 @@
 
 namespace EasyParse.Parsing.Nodes
 {
-    public class Error : TreeElement
+    public abstract class Error : TreeElement
     {
         public Location Location { get; }
         public virtual string Message { get; }

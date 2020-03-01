@@ -63,7 +63,7 @@ namespace EasyParse.Parsing
 
         private TreeElement ParseInitial(IEnumerator<Token> input, ParsingStack stack) =>
             input.MoveNext() ? this.Parse(input, stack)
-            : new Error(input.Current.Location, "Internal error: Missing end of input.");
+            : new InternalError(input.Current.Location, "Missing end of input");
 
         private TreeElement Parse(IEnumerator<Token> input, ParsingStack stack)
         {
@@ -140,7 +140,7 @@ namespace EasyParse.Parsing
         private TreeElement InputError(Token input) =>
             input is InvalidInput invalid ? new LexingError(input.Location, invalid.Value)
             : input is EndOfInput ? new UnexpectedEndOfInput(input.Location) 
-            : input is Lexeme lexeme ? new SyntaxError(lexeme)
-            : new Error(input.Location, $"Unexpected input: {input} at {input.Location}");
+            : input is Lexeme lexeme ? (Error)new SyntaxError(lexeme)
+            : new InternalError(input.Location);
     }
 }
