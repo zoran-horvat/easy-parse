@@ -24,7 +24,8 @@ namespace EasyParse.Parsing
             this.Content is Node;
 
         public object Compile(ICompiler nodeCompiler) =>
-            this.Content is Node node ? this.Compile(node, nodeCompiler)
+            this.Content is Error error ? error
+            : this.Content is Node node ? this.Compile(node, nodeCompiler)
             : this.Throw(this.Content);
 
         private object Throw(object result) =>
