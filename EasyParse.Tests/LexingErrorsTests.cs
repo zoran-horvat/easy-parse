@@ -1,4 +1,5 @@
-﻿using EasyParse.Testing;
+﻿using EasyParse.Parsing.Nodes.Errors;
+using EasyParse.Testing;
 using Xunit;
 
 namespace EasyParse.Tests
@@ -23,6 +24,6 @@ namespace EasyParse.Tests
         [InlineData("bananas")]
         [InlineData("banan")]
         public void InvalidLexeme_ParserReturnsLexicalError(string text) => 
-            Assert.IsType<string>(base.Parsed(text).Error);
+            Assert.IsType<LexingError>(base.Parsed(text).Error);
     }
 }

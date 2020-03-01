@@ -57,6 +57,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LexicalAnalysis\LexerLoader.cs" />
+    <Compile Include="Parsing\Nodes\Errors\LexingError.cs" />
     <Compile Include="Testing\AnyGrammarParserTestsBase.cs" />
     <Compile Include="Testing\ParserTestsBase.cs" />
     <Compile Include="Text\Line.cs" />

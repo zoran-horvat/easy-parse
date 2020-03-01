@@ -1,13 +1,21 @@
-﻿namespace EasyParse.Parsing.Nodes
+﻿using EasyParse.Text;
+
+namespace EasyParse.Parsing.Nodes
 {
     public class Error : TreeElement
     {
-        public string Message { get; }
-        public string Object => this.Message;
+        public Location Location { get; }
+        public virtual string Message { get; }
 
-        public Error(string message)
+        public Error(Location location, string message)
         {
+            this.Location = location;
             this.Message = message;
+        }
+
+        protected Error()
+        {
+
         }
 
         public override string ToString() =>

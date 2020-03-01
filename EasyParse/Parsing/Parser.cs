@@ -8,6 +8,7 @@ using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.ParserGenerator.Models;
 using EasyParse.Parsing.Collections;
 using EasyParse.Parsing.Nodes;
+using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Parsing.Patterns;
 using EasyParse.Text;
 using EndOfInput = EasyParse.LexicalAnalysis.Tokens.EndOfInput;
@@ -62,7 +63,7 @@ namespace EasyParse.Parsing
 
         private TreeElement ParseInitial(IEnumerator<Token> input, ParsingStack stack) =>
             input.MoveNext() ? this.Parse(input, stack)
-            : new Error("Internal error: Missing end of input.");
+            : new Error(input.Current.Location, "Internal error: Missing end of input.");
 
         private TreeElement Parse(IEnumerator<Token> input, ParsingStack stack)
         {
@@ -114,7 +115,7 @@ namespace EasyParse.Parsing
         private IEnumerable<TreeElement> ExecuteShift(IEnumerator<Token> input, ParsingStack stack, int nextState)
         {
             stack.Shift(input.Current as Lexeme, nextState);
-            if (!input.MoveNext()) yield return new Error("Unexpected end of input.");
+            if (!input.MoveNext()) yield return new Error(input.Current.Location, "Unexpected end of input.");
         }
 
         private IEnumerable<TreeElement> ExecuteReduce(IEnumerator<Token> input, ParsingStack stack, RulePattern rule)
@@ -137,8 +138,8 @@ namespace EasyParse.Parsing
         }
 
         private TreeElement InputError(Token input) =>
-            input is InvalidInput invalid ? new Error($"Unexpected input: {invalid.Value} at {input.Location}")
-            : input is EndOfInput ? new Error("Unexpected end of input.") 
-            : new Error($"Unexpected input: {input} at {input.Location}");
+            input is InvalidInput invalid ? new LexingError(input.Location, invalid.Value)
+            : input is EndOfInput ? new Error(input.Location, "Unexpected end of input.") 
+            : new Error(input.Location, $"Unexpected input: {input} at {input.Location}");
     }
 }
