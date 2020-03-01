@@ -60,7 +60,7 @@
     <Compile Include="GrammarCompilerTests.cs" />
     <Compile Include="GrammarGrammarTests.cs" />
     <Compile Include="IgnoreLexemeCompilerTests.cs" />
-    <Compile Include="LexingErrorsTests.cs" />
+    <Compile Include="ParsingErrorsTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StringCompilerTests.cs" />
   </ItemGroup>

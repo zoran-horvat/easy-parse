@@ -13,11 +13,6 @@ namespace EasyParse.Parsing.Nodes
             this.Message = message;
         }
 
-        protected Error()
-        {
-
-        }
-
         protected static string Printable(string raw) =>
             raw.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
 

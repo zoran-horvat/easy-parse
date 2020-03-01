@@ -115,7 +115,7 @@ namespace EasyParse.Parsing
         private IEnumerable<TreeElement> ExecuteShift(IEnumerator<Token> input, ParsingStack stack, int nextState)
         {
             stack.Shift(input.Current as Lexeme, nextState);
-            if (!input.MoveNext()) yield return new Error(input.Current.Location, "Unexpected end of input.");
+            if (!input.MoveNext()) yield return new UnexpectedEndOfInput(input.Current.Location);
         }
 
         private IEnumerable<TreeElement> ExecuteReduce(IEnumerator<Token> input, ParsingStack stack, RulePattern rule)
@@ -139,7 +139,7 @@ namespace EasyParse.Parsing
 
         private TreeElement InputError(Token input) =>
             input is InvalidInput invalid ? new LexingError(input.Location, invalid.Value)
-            : input is EndOfInput ? new Error(input.Location, "Unexpected end of input.") 
+            : input is EndOfInput ? new UnexpectedEndOfInput(input.Location) 
             : new Error(input.Location, $"Unexpected input: {input} at {input.Location}");
     }
 }

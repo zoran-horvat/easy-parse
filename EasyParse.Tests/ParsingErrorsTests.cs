@@ -5,7 +5,7 @@ using Xunit;
 
 namespace EasyParse.Tests
 {
-    public class LexingErrorsTests : AnyGrammarParserTestsBase
+    public class ParsingErrorsTests : AnyGrammarParserTestsBase
     {
         private class Compiler : MethodMapCompiler
         {
@@ -15,13 +15,12 @@ namespace EasyParse.Tests
             public string B(string na, string b) => $"{na}{b}";
         }
 
-        public LexingErrorsTests() : base(new []
+        public ParsingErrorsTests() : base(new []
             {
                 "lexemes:",
                 "",
                 "start: A;",
                 "rules:",
-                "A -> 'ba';",
                 "A -> 'ba' B;",
                 "B -> 'na';",
                 "B -> 'na' B;"
@@ -40,5 +39,15 @@ namespace EasyParse.Tests
         [InlineData("banan")]
         public void InvalidLexeme_CompilerReturnsLexicalError(string text) => 
             Assert.IsType<LexingError>(base.Compiled(new Compiler(), text));
+
+        [Theory]
+        [InlineData("ba")]
+        public void ShortInput_ParserReturnsUnexpectedEndOfInput(string text) =>
+            Assert.IsType<UnexpectedEndOfInput>(base.Parsed(text).Error);
+
+        [Theory]
+        [InlineData("ba")]
+        public void ShortInput_CompileReturnsUnexpectedEndOfInput(string text) =>
+            Assert.IsType<UnexpectedEndOfInput>(base.Compiled(new Compiler(), text));
     }
 }
