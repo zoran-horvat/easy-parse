@@ -6,7 +6,7 @@ using Xunit;
 
 namespace EasyParse.Tests
 {
-    public class GrammarCompilerTests : ParserTestsBase
+    public class GrammarCompilerTests : GeneratedParserTestsBase
     {
         protected override Assembly XmlDefinitionAssembly => 
             typeof(GrammarParser).Assembly;

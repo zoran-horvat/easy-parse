@@ -6,7 +6,7 @@ using Xunit;
 
 namespace EasyParse.CalculatorDemo.Tests
 {
-    public class ParseResultTests : ParserTestsBase
+    public class ParseResultTests : GeneratedParserTestsBase
     {
         protected override Assembly XmlDefinitionAssembly => typeof(Calculator).Assembly;
         protected override string XmlDefinitionResourceName => "EasyParse.CalculatorDemo.ParserDefinition.xml";

@@ -1,30 +1,32 @@
 ﻿using System;
-using System.Reflection;
-using EasyParse.LexicalAnalysis;
 using EasyParse.Parsing;
 
 namespace EasyParse.Testing
 {
     public abstract class ParserTestsBase
     {
-        protected abstract Assembly XmlDefinitionAssembly { get; }
-        protected abstract string XmlDefinitionResourceName { get; }
-        protected virtual Func<Lexer, Lexer> LexicalRules { get; } = lexer => lexer;
+        protected abstract Parser CreateParser();
+
+        protected ParsingResult Parsed(string input) =>
+            this.CreateParser().Parse(input);
+
+        protected ParsingResult Parsed(params string[] input) =>
+            this.CreateParser().Parse(input);
 
         protected bool Recognized(string input) =>
-            this.CreateParser().Parse(input).IsSuccess;
+            this.Parsed(input).IsSuccess;
 
         protected bool Recognized(params string[] lines) =>
-            this.CreateParser().Parse(lines).IsSuccess;
+            this.Parsed(lines).IsSuccess;
 
         protected object Compiled(ICompiler compiler, string input) =>
-            this.CreateParser().Parse(input).Compile(compiler);
+            this.Parsed(input).Compile(compiler);
 
         protected object Compiled(ICompiler compiler, params string[] lines) =>
-            this.CreateParser().Parse(lines).Compile(compiler);
+            this.Parsed(lines).Compile(compiler);
 
         protected object CompiledLine(ICompiler compiler, string input) =>
-            this.CreateParser().Parse(input).Compile(compiler);
+            this.Parsed(input).Compile(compiler);
 
         protected T Compiled<T>(ICompiler compiler, params string[] lines) where T : class =>
             (T) this.Compiled(compiler, lines);
@@ -41,8 +43,5 @@ namespace EasyParse.Testing
             orElse(result);
             throw new InvalidOperationException($"Could not compile {result?.GetType().Name ?? "<null>"} into {typeof(T).Name}.");
         }
-
-        private Parser CreateParser() =>
-            Parser.FromXmlResource(this.XmlDefinitionAssembly, this.XmlDefinitionResourceName, this.LexicalRules);
     }
 }

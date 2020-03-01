@@ -8,7 +8,7 @@ using Xunit;
 
 namespace EasyParse.Tests
 {
-    public class IgnoreLexemeCompilerTests : ParserTestsBase
+    public class IgnoreLexemeCompilerTests : GeneratedParserTestsBase
     {
         protected override Assembly XmlDefinitionAssembly => 
             typeof(GrammarParser).Assembly;
