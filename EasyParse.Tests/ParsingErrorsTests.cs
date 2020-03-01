@@ -1,4 +1,5 @@
-﻿using EasyParse.Parsing;
+﻿using System;
+using EasyParse.Parsing;
 using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Testing;
 using Xunit;
@@ -29,25 +30,17 @@ namespace EasyParse.Tests
         }
 
         [Theory]
-        [InlineData("bananas")]
-        [InlineData("banan")]
-        public void InvalidLexeme_ParserReturnsLexicalError(string text) => 
-            Assert.IsType<LexingError>(base.Parsed(text).Error);
+        [InlineData("bananas", typeof(LexingError))]
+        [InlineData("banan", typeof(LexingError))]
+        [InlineData("ba", typeof(UnexpectedEndOfInput))]
+        public void InvalidText_ParserReturnsError(string text, Type errorType) => 
+            Assert.IsType(errorType, base.Parsed(text).Error);
 
         [Theory]
-        [InlineData("bananas")]
-        [InlineData("banan")]
-        public void InvalidLexeme_CompilerReturnsLexicalError(string text) => 
-            Assert.IsType<LexingError>(base.Compiled(new Compiler(), text));
-
-        [Theory]
-        [InlineData("ba")]
-        public void ShortInput_ParserReturnsUnexpectedEndOfInput(string text) =>
-            Assert.IsType<UnexpectedEndOfInput>(base.Parsed(text).Error);
-
-        [Theory]
-        [InlineData("ba")]
-        public void ShortInput_CompileReturnsUnexpectedEndOfInput(string text) =>
-            Assert.IsType<UnexpectedEndOfInput>(base.Compiled(new Compiler(), text));
+        [InlineData("bananas", typeof(LexingError))]
+        [InlineData("banan", typeof(LexingError))]
+        [InlineData("ba", typeof(UnexpectedEndOfInput))]
+        public void InvalidText_CompilerReturnsError(string text, Type errorType) => 
+            Assert.IsType(errorType, base.Compiled(new Compiler(), text));
     }
 }
