@@ -140,6 +140,7 @@ namespace EasyParse.Parsing
         private TreeElement InputError(Token input) =>
             input is InvalidInput invalid ? new LexingError(input.Location, invalid.Value)
             : input is EndOfInput ? new UnexpectedEndOfInput(input.Location) 
+            : input is Lexeme lexeme ? new SyntaxError(lexeme)
             : new Error(input.Location, $"Unexpected input: {input} at {input.Location}");
     }
 }

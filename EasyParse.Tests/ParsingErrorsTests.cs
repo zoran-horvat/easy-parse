@@ -33,6 +33,8 @@ namespace EasyParse.Tests
         [InlineData("bananas", typeof(LexingError))]
         [InlineData("banan", typeof(LexingError))]
         [InlineData("ba", typeof(UnexpectedEndOfInput))]
+        [InlineData("banaba", typeof(SyntaxError))]
+        [InlineData("babana", typeof(SyntaxError))]
         public void InvalidText_ParserReturnsError(string text, Type errorType) => 
             Assert.IsType(errorType, base.Parsed(text).Error);
 
@@ -40,6 +42,8 @@ namespace EasyParse.Tests
         [InlineData("bananas", typeof(LexingError))]
         [InlineData("banan", typeof(LexingError))]
         [InlineData("ba", typeof(UnexpectedEndOfInput))]
+        [InlineData("banaba", typeof(SyntaxError))]
+        [InlineData("babana", typeof(SyntaxError))]
         public void InvalidText_CompilerReturnsError(string text, Type errorType) => 
             Assert.IsType(errorType, base.Compiled(new Compiler(), text));
     }
