@@ -5,7 +5,7 @@ namespace EasyParse.Parsing.Nodes.Errors
     public class LexingError : Error
     {
         public LexingError(Location location, string unexpectedInput)
-            : base(location, $"Unexpected input: {Printable(unexpectedInput)} at {location}")
+            : base(location, $"Unexpected input at {location}: {Printable(unexpectedInput)}")
         {
         }
     }
