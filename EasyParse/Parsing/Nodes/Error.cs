@@ -18,6 +18,9 @@ namespace EasyParse.Parsing.Nodes
 
         }
 
+        protected static string Printable(string raw) =>
+            raw.Replace("\n", "\\n").Replace("\r", "\\r").Replace("\t", "\\t");
+
         public override string ToString() =>
             this.Message;
     }
