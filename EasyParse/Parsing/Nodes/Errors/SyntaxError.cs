@@ -1,4 +1,5 @@
-﻿using EasyParse.LexicalAnalysis.Tokens;
+﻿using System.Collections;
+using EasyParse.LexicalAnalysis.Tokens;
 
 namespace EasyParse.Parsing.Nodes.Errors
 {

@@ -16,6 +16,13 @@ namespace EasyParse.Tests
             public string B(string na, string b) => $"{na}{b}";
         }
 
+        private class IncompleteCompiler : MethodMapCompiler
+        {
+            public string A(string ba) => ba;
+            public string A(string ba, string b) => $"{ba}{b}";
+            public string B(string na) => na;
+        }
+
         public ParsingErrorsTests() : base(new []
             {
                 "lexemes:",
@@ -46,5 +53,10 @@ namespace EasyParse.Tests
         [InlineData("babana", typeof(SyntaxError))]
         public void InvalidText_CompilerReturnsError(string text, Type errorType) => 
             Assert.IsType(errorType, base.Compiled(new Compiler(), text));
+
+        [Theory]
+        [InlineData("banana", typeof(CompileError))]
+        public void ValidText_IncompleteCompiler_ReturnsError(string text, Type errorType) =>
+            Assert.IsType(errorType, base.Compiled(new IncompleteCompiler(), text));
     }
 }

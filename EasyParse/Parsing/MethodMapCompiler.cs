@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EasyParse.Parsing.Nodes.Errors;
 
 namespace EasyParse.Parsing
 {
@@ -61,7 +62,7 @@ namespace EasyParse.Parsing
                     || pair.value is null && (pair.definition.ParameterType.IsClass || pair.definition.ParameterType.IsInterface));
 
         private object Fail(string label, IEnumerable<object> arguments) =>
-            new Exception($"Cannot map {label} -> {this.Join(arguments)}");
+            new CompileError(label, arguments);
 
         private string Join(IEnumerable<object> arguments) =>
             string.Join(" ", arguments.Select(arg => $"[{this.ToString(arg)}]").ToArray());
