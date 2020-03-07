@@ -2,6 +2,7 @@
 using EasyParse.Parsing;
 using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Testing;
+using EasyParse.Text;
 using Xunit;
 
 namespace EasyParse.Tests
@@ -44,6 +45,19 @@ namespace EasyParse.Tests
         [InlineData("babana", typeof(SyntaxError))]
         public void InvalidText_ParserReturnsError(string text, Type errorType) => 
             Assert.IsType(errorType, base.Parsed(text).Error);
+
+        [Theory]
+        [InlineData("bananas", 6)]
+        [InlineData("banan", 4)]
+        [InlineData("banaba", 4)]
+        [InlineData("babana", 2)]
+        public void InvalidText_ParseReturnsExpectedErrorLocation(string text, int offset) =>
+            Assert.Equal(new LineLocation(offset), base.Parsed(text).Error.Location);
+
+        [Theory]
+        [InlineData("ba")]
+        public void InvalidText_ParseReturnsErrorOnEndPosition(string text) =>
+            Assert.Equal(EndOfText.Value, base.Parsed(text).Error.Location);
 
         [Theory]
         [InlineData("bananas", typeof(LexingError))]

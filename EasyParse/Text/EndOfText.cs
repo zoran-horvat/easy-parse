@@ -1,6 +1,6 @@
 ﻿namespace EasyParse.Text
 {
-    class EndOfText : Location
+    public class EndOfText : Location
     {
         private EndOfText() { }
 
