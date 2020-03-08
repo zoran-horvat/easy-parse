@@ -1,5 +1,6 @@
 ﻿using System;
 using EasyParse.Parsing;
+using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Testing;
 using EasyParse.Text;
@@ -72,5 +73,11 @@ namespace EasyParse.Tests
         [InlineData("banana", typeof(CompileError))]
         public void ValidText_IncompleteCompiler_ReturnsError(string text, Type errorType) =>
             Assert.IsType(errorType, base.Compiled(new IncompleteCompiler(), text));
+
+        [Theory]
+        [InlineData("banana", 4, Skip="Not implemented")]
+        public void ValidText_IncompleteCompiler_ReturnsErrorAtExpectedLocation(string text, int offset) =>
+            Assert.Equal(new LineLocation(offset),
+                ((Error) base.Compiled(new IncompleteCompiler(), text)).Location);
     }
 }
