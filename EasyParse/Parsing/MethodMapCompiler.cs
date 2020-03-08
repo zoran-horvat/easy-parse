@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EasyParse.Parsing.Nodes.Errors;
+using EasyParse.Text;
 
 namespace EasyParse.Parsing
 {
@@ -22,13 +23,13 @@ namespace EasyParse.Parsing
                 .DefaultIfEmpty(value)
                 .First();
 
-        public object CompileNonTerminal(string label, object[] children) => 
-            this.Compile(label, children);
+        public object CompileNonTerminal(Location location, string label, object[] children) => 
+            this.Compile(location, label, children);
 
-        private object Compile(string methodName, params object[] children) =>
+        private object Compile(Location location, string methodName, params object[] children) =>
             children.OfType<Exception>().FirstOrDefault() is Exception exc ? exc
             : this.FindMethods(methodName, children).FirstOrDefault() is MethodInfo method ? method.Invoke(this, children)
-            : this.Fail(methodName, children);
+            : this.Fail(location, methodName, children);
 
         private IEnumerable<MethodInfo> FindMethods(string name, object[] arguments) =>
             this.GetType()
@@ -61,8 +62,8 @@ namespace EasyParse.Parsing
                     pair.value?.GetType() is Type argumentType && pair.definition.ParameterType.IsAssignableFrom(argumentType)
                     || pair.value is null && (pair.definition.ParameterType.IsClass || pair.definition.ParameterType.IsInterface));
 
-        private object Fail(string label, IEnumerable<object> arguments) =>
-            new CompileError(label, arguments);
+        private object Fail(Location location, string label, IEnumerable<object> arguments) =>
+            new CompileError(location, label, arguments);
 
         private string Join(IEnumerable<object> arguments) =>
             string.Join(" ", arguments.Select(arg => $"[{this.ToString(arg)}]").ToArray());

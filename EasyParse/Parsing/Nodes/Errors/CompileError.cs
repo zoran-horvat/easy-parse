@@ -6,8 +6,8 @@ namespace EasyParse.Parsing.Nodes.Errors
 {
     public class CompileError : Error
     {
-        public CompileError(string label, IEnumerable<object> arguments)
-            : base(new LineLocation(0), FormatMapping(label, arguments))
+        public CompileError(Location location, string label, IEnumerable<object> arguments)
+            : base(location, FormatMapping(label, arguments))
         {
         }
 

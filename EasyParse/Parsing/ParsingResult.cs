@@ -2,6 +2,7 @@
 using System.Linq;
 using EasyParse.Parsing.Formatting;
 using EasyParse.Parsing.Nodes;
+using EasyParse.Text;
 
 namespace EasyParse.Parsing
 {
@@ -44,6 +45,7 @@ namespace EasyParse.Parsing
 
         private object Compile(NonTerminalNode nonTerminal, ICompiler nodeCompiler) =>
             nodeCompiler.CompileNonTerminal(
+                new LineLocation(0), 
                 nonTerminal.Label, 
                 nonTerminal.Children.Select(child => this.Compile(child, nodeCompiler)).ToArray());
 
