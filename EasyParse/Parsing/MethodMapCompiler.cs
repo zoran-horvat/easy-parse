@@ -27,7 +27,7 @@ namespace EasyParse.Parsing
             this.Compile(location, label, children);
 
         private object Compile(Location location, string methodName, params object[] children) =>
-            children.OfType<Exception>().FirstOrDefault() is Exception exc ? exc
+            children.OfType<CompileError>().FirstOrDefault() is CompileError error ? error
             : this.FindMethods(methodName, children).FirstOrDefault() is MethodInfo method ? method.Invoke(this, children)
             : this.Fail(location, methodName, children);
 

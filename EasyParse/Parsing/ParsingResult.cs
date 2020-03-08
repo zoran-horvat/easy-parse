@@ -45,7 +45,7 @@ namespace EasyParse.Parsing
 
         private object Compile(NonTerminalNode nonTerminal, ICompiler nodeCompiler) =>
             nodeCompiler.CompileNonTerminal(
-                new LineLocation(0), 
+                nonTerminal.Location,
                 nonTerminal.Label, 
                 nonTerminal.Children.Select(child => this.Compile(child, nodeCompiler)).ToArray());
 

@@ -22,7 +22,7 @@ namespace EasyParse.Parsing.Collections
 
         public void Shift(Lexeme input, int nextState)
         {
-            this.Content.Push(new TerminalNode(input.Label, input.Value));
+            this.Content.Push(new TerminalNode(input.Location, input.Label, input.Value));
             this.Content.Push(nextState);
         }
 
@@ -36,7 +36,7 @@ namespace EasyParse.Parsing.Collections
             }
 
             int stateIndex = (int) this.Content.Peek();
-            this.Content.Push(new NonTerminalNode(rule.NonTerminal, children));
+            this.Content.Push(new NonTerminalNode(children.First().Location, rule.NonTerminal, children));
             return stateIndex;
         }
 

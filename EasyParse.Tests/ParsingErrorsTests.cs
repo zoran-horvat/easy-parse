@@ -75,7 +75,7 @@ namespace EasyParse.Tests
             Assert.IsType(errorType, base.Compiled(new IncompleteCompiler(), text));
 
         [Theory]
-        [InlineData("banana", 4, Skip="Not implemented")]
+        [InlineData("banana", 2)]
         public void ValidText_IncompleteCompiler_ReturnsErrorAtExpectedLocation(string text, int offset) =>
             Assert.Equal(new LineLocation(offset),
                 ((Error) base.Compiled(new IncompleteCompiler(), text)).Location);
