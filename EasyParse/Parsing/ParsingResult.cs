@@ -2,6 +2,7 @@
 using System.Linq;
 using EasyParse.Parsing.Formatting;
 using EasyParse.Parsing.Nodes;
+using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Text;
 
 namespace EasyParse.Parsing
@@ -35,10 +36,10 @@ namespace EasyParse.Parsing
         private object Compile(Node node, ICompiler nodeCompiler) =>
             node is TerminalNode terminal ? this.Compile(terminal, nodeCompiler)
             : node is NonTerminalNode nonTerminal ? this.Compile(nonTerminal, nodeCompiler)
-            : this.ThrowInternalError(node);
+            : this.InternalError(node);
 
-        private object ThrowInternalError(Node node) =>
-            throw new InvalidOperationException($"Internal error compiling {node}");
+        private object InternalError(Node node) =>
+            new CompileError(node.Location, node.GetType().Name, Enumerable.Empty<object>());
 
         private object Compile(TerminalNode terminal, ICompiler nodeCompiler) =>
             nodeCompiler.CompileTerminal(terminal.Label, terminal.Value);
