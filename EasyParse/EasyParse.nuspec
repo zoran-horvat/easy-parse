@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package >
+  <metadata>
+    <id>CodingHelmet.EasyParse</id>
+    <version>1.0.0.1</version>
+    <title>Plaintext Parser Generator</title>
+    <authors>Zoran Horvat</authors>
+    <owners>Zoran Horvat</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/zoran-horvat/easy-parse</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/zoran-horvat/easy-parse/master/Assets/Icon.png</iconUrl>
+    <description>Generates LR(1) parsing table and lexer from a grammar definition file. Includes parser and lexer classes which can be constructed from the generated parsing table and used to build a syntax tree for a given plaintext. Supports easy compilation of the syntax tree into a custom object graph, effectively allowing you to build a full plaintext-to-object-graph compiler in only a few lines of code.</description>
+    <releaseNotes>This is the first official release of the tool.</releaseNotes>
+    <copyright>Copyright 2020</copyright>
+    <tags>parser compiler lexer plaintext text compile lexical</tags>
+  </metadata>
+</package>
