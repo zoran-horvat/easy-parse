@@ -1,0 +1,1 @@
+Please refer to project location for full usage instructions: https://github.com/zoran-horvat/easy-parse
