@@ -59,7 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EasyParse\EasyParse.csproj">
-      <Project>{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}</Project>
+      <Project>{DC38E61E-D5F4-438A-906E-FD132AA5FC54}</Project>
       <Name>EasyParse</Name>
     </ProjectReference>
   </ItemGroup>

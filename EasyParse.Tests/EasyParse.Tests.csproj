@@ -65,16 +65,16 @@
     <Compile Include="StringCompilerTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EasyParse\EasyParse.csproj">
-      <Project>{4a11bd6a-0dda-42d9-8ebe-176f044810cf}</Project>
-      <Name>EasyParse</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EasyParse\EasyParse.csproj">
+      <Project>{DC38E61E-D5F4-438A-906E-FD132AA5FC54}</Project>
+      <Name>EasyParse</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

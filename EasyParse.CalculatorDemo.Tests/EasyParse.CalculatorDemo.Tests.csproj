@@ -65,7 +65,7 @@
       <Name>EasyParse.CalculatorDemo</Name>
     </ProjectReference>
     <ProjectReference Include="..\EasyParse\EasyParse.csproj">
-      <Project>{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}</Project>
+      <Project>{dc38e61e-d5f4-438a-906e-fd132aa5fc54}</Project>
       <Name>EasyParse</Name>
     </ProjectReference>
   </ItemGroup>

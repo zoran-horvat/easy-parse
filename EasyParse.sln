@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29519.181
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse", "EasyParse\EasyParse.csproj", "{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.CalculatorDemo", "EasyParse.CalculatorDemo\EasyParse.CalculatorDemo.csproj", "{69B02778-8AD9-436E-A7B0-2A3AA35FBC8F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.CalculatorDemo.Tests", "EasyParse.CalculatorDemo.Tests\EasyParse.CalculatorDemo.Tests.csproj", "{D1C6BF4B-871E-4281-92BA-FE23FA7C8755}"
@@ -15,16 +13,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.CommandLineTool",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyParse.WordAnalysisDemo", "EasyParse.WordAnalysisDemo\EasyParse.WordAnalysisDemo.csproj", "{A4B30705-2BB1-4000-9571-6178B017AC6E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse", "EasyParse\EasyParse.csproj", "{DC38E61E-D5F4-438A-906E-FD132AA5FC54}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4A11BD6A-0DDA-42D9-8EBE-176F044810CF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{69B02778-8AD9-436E-A7B0-2A3AA35FBC8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69B02778-8AD9-436E-A7B0-2A3AA35FBC8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69B02778-8AD9-436E-A7B0-2A3AA35FBC8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4B30705-2BB1-4000-9571-6178B017AC6E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC38E61E-D5F4-438A-906E-FD132AA5FC54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC38E61E-D5F4-438A-906E-FD132AA5FC54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC38E61E-D5F4-438A-906E-FD132AA5FC54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC38E61E-D5F4-438A-906E-FD132AA5FC54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
