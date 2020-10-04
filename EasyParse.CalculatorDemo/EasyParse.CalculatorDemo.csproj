@@ -63,7 +63,6 @@
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ParserDefinition.tt</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
     <Content Include="ParsingTable.tt">
       <Generator>TextTemplatingFileGenerator</Generator>

@@ -21,10 +21,10 @@
 
   <ItemGroup>
     <EmbeddedResource Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
     <EmbeddedResource Include="ParserGenerator\GrammarCompiler\StringParserDefinition.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
 
