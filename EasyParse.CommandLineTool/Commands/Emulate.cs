@@ -10,7 +10,12 @@ namespace EasyParse.CommandLineTool.Commands
 {
     class Emulate : GrammarCommand
     {
-        public Emulate(FileInfo grammar) : base(grammar) { }
+        private bool Multiline { get; }
+
+        public Emulate(FileInfo grammar, bool multiline) : base(grammar)
+        {
+            this.Multiline = multiline;
+        }
 
         protected override void Execute(FileInfo grammar) => 
             this.Execute(this.CreateParser(grammar));
@@ -26,8 +31,15 @@ namespace EasyParse.CommandLineTool.Commands
 
         private void Process(Parser parser)
         {
-            foreach (var result in this.Input().Select(parser.Parse))
+            foreach (ParsingResult result in this.ParseInputs(parser))
                 Console.WriteLine($"{result.ToDenseString()}{Environment.NewLine}");
+        }
+
+        private IEnumerable<ParsingResult> ParseInputs(Parser parser)
+        {
+            IEnumerable<string> input = this.Input();
+            if (this.Multiline) return new[] {parser.Parse(input)};
+            return input.Select(parser.Parse);
         }
         
         private Parser CreateParser(FileInfo grammar) =>

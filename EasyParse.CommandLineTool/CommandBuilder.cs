@@ -23,6 +23,7 @@ namespace EasyParse.CommandLineTool
         private static Func<Command> FromExistingGrammar(FileInfo grammar, string[] arguments) =>
             Compile(grammar, arguments)
                 .Concat(Construct(grammar, arguments))
+                .Concat(EmulateMultiline(grammar, arguments))
                 .Concat(Emulate(grammar, arguments))
                 .DefaultIfEmpty(ArgumentsError())
                 .First();
@@ -31,7 +32,8 @@ namespace EasyParse.CommandLineTool
         private static Func<Command> ArgumentsError() => () => new ArgumentsError();
         private static Func<Command> Compile(FileInfo grammar) => () => new Compile(grammar);
         private static Func<Command> Construct(FileInfo grammar) => () => new Construct(grammar);
-        private static Func<Command> Emulate(FileInfo grammar) => () => new Emulate(grammar);
+        private static Func<Command> Emulate(FileInfo grammar) => () => new Emulate(grammar, false);
+        private static Func<Command> EmulateMultiline(FileInfo grammar) => () => new Emulate(grammar, true);
 
         private static IEnumerable<FileInfo> GrammarFile(string[] arguments) =>
             arguments.SelectMany(GrammarFile).Take(1);
@@ -54,7 +56,10 @@ namespace EasyParse.CommandLineTool
         private static IEnumerable<Func<Command>> Emulate(FileInfo grammar, string[] arguments) =>
             CommandFlagFor(grammar, arguments, "-emulate").Select(Emulate);
 
-        private static IEnumerable<FileInfo> CommandFlagFor(FileInfo grammar, string[] arguments, string flag) =>
-            arguments.Where(arg => arg == flag).Select(_ => grammar);
+        private static IEnumerable<Func<Command>> EmulateMultiline(FileInfo grammar, string[] arguments) =>
+            CommandFlagFor(grammar, arguments, "-emulate", "-multiline").Select(EmulateMultiline);
+
+        private static IEnumerable<FileInfo> CommandFlagFor(FileInfo grammar, string[] arguments, params string[] flags) =>
+            flags.All(arguments.Contains) ? new[] {grammar} : Enumerable.Empty<FileInfo>();
     }
 }
