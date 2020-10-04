@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>CodingHelmet.EasyParse</id>
-    <version>1.0.0.2</version>
+    <version>1.0.0.4</version>
     <title>Plaintext Parser Generator</title>
     <authors>Zoran Horvat</authors>
     <owners>Zoran Horvat</owners>

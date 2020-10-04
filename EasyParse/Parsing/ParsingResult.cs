@@ -3,7 +3,6 @@ using System.Linq;
 using EasyParse.Parsing.Formatting;
 using EasyParse.Parsing.Nodes;
 using EasyParse.Parsing.Nodes.Errors;
-using EasyParse.Text;
 
 namespace EasyParse.Parsing
 {

@@ -165,7 +165,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ParserGenerator\GrammarCompiler\GrammarGrammar.txt" />
+    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Content Include="ParserGenerator\GrammarCompiler\StringGrammar.txt" />
+    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\StringParserDefinition.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
