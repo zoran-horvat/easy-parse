@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.Tests", "EasyPars
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.CommandLineTool", "EasyParse.CommandLineTool\EasyParse.CommandLineTool.csproj", "{F65F3D6E-0722-4406-8199-FDEFBCA5D28C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EasyParse.WordAnalysisDemo", "EasyParse.WordAnalysisDemo\EasyParse.WordAnalysisDemo.csproj", "{A4B30705-2BB1-4000-9571-6178B017AC6E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EasyParse.WordAnalysisDemo", "EasyParse.WordAnalysisDemo\EasyParse.WordAnalysisDemo.csproj", "{A4B30705-2BB1-4000-9571-6178B017AC6E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

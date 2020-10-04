@@ -41,10 +41,6 @@
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-      <HintPath>..\packages\EnvDTE.8.0.2\lib\net10\EnvDTE.dll</HintPath>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </Reference>
     <Reference Include="stdole, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>..\packages\stdole.7.0.3302\lib\net10\stdole.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -169,27 +165,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="ParserGenerator\GrammarCompiler\GrammarGrammar.txt" />
-    <Content Include="ParserGenerator\GrammarCompiler\StringParserDefinition.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>StringParserDefinition.xml</LastGenOutput>
-    </Content>
-    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\StringParserDefinition.xml">
-      <DependentUpon>StringParserDefinition.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DesignTime>True</DesignTime>
-    </EmbeddedResource>
-    <Content Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>GrammarParserDefinition.xml</LastGenOutput>
-    </Content>
     <Content Include="ParserGenerator\GrammarCompiler\StringGrammar.txt" />
-    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml">
-      <DependentUpon>GrammarParserDefinition.tt</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DesignTime>True</DesignTime>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
