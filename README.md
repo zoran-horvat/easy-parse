@@ -10,6 +10,20 @@ Grammar format is intuitive and simple. It mostly resembles what one would write
 Below is an example of a valid grammar which recognizes arithmetic expressions with addition and subtraction.
 Operators are applied from left to right.
 
+## Installing Easy Parse
+
+To add Easy Parse library from Package Manager, execute instruction:
+
+```
+Install-Package CodingHelmet.EasyParse
+```
+
+To add from .NET CLI, execute instruction:
+
+```
+dotnet add package CodingHelmet.EasyParse
+```
+
 ## Defining a Grammar
 [[Source: EasyParse.CalculatorDemo/AdditionGrammar.txt]](EasyParse.CalculatorDemo/AdditionGrammar.txt)
 
@@ -38,7 +52,7 @@ Some lexemes are ignored and do not appear in the grammar (e.g. whitespace in th
 The simplest way to build a parser definition is to compile it using the `parser.exe` tool (produced when [EasyParse.CommandLineTool](EasyParse.CommandLineTool) is built):
 
     parser -grammar=AdditionGrammar.txt -compile
-    
+
 This command will create `AdditionGrammar.xml` file, which should be included in the project as an embedded resource.
 
 When you wish to parse an input text, use the static [Parser.FromXmlResource method](EasyParse/Parsing/Parser.cs). Just supply the resource name and this method will return a valid instance of the `Parser` classs.
