@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net472;netcoreapp3.0</TargetFrameworks>
@@ -7,7 +7,11 @@
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
     <Version>1.1.2.0</Version>
     <AssemblyVersion>1.1.2.0</AssemblyVersion>
-    <AssemblyName>CodingHelmet.EasyParse</AssemblyName>
+    <AssemblyName>EasyParse</AssemblyName>
+    <PackageId>EasyParse</PackageId>
+    <Authors>Zoran Horvat</Authors>
+    <Company>Coding Helmet</Company>
+    <Product>CodingHelmet EasyParse</Product>
   </PropertyGroup>
 
   <ItemGroup>
