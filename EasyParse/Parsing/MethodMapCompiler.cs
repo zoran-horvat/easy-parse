@@ -23,13 +23,41 @@ namespace EasyParse.Parsing
                 .DefaultIfEmpty(value)
                 .First();
 
-        public object CompileNonTerminal(Location location, string label, object[] children) => 
-            this.Compile(location, label, children);
+        public object CompileNonTerminal(Location location, string label, object[] children)
+        {
+            try 
+            {
+                object result = this.Compile(location, label, children);
+                return result is Exception ex ? this.ToResult(location, ex) : result;
+            }
+            catch (Exception ex)
+            {
+                return this.ToResult(location, ex);
+            }
+        }
 
-        private object Compile(Location location, string methodName, params object[] children) =>
-            children.OfType<CompileError>().FirstOrDefault() is CompileError error ? error
-            : this.FindMethods(methodName, children).FirstOrDefault() is MethodInfo method ? method.Invoke(this, children)
-            : this.Fail(location, methodName, children);
+        private object Compile(Location location, string methodName, params object[] children)
+        {
+            try
+            {
+                return 
+                    children.OfType<CompileError>().FirstOrDefault() is CompileError error ? error
+                    : children.OfType<Exception>().FirstOrDefault() is Exception ex ? this.ToResult(location, ex)
+                    : this.FindMethods(methodName, children).FirstOrDefault() is MethodInfo method ? method.Invoke(this, children)
+                    : this.Fail(location, methodName, children);
+            }
+            catch (Exception ex)
+            {
+                return this.ToResult(location, ex);
+            }
+        }
+
+        private object ToResult(Location location, Exception ex)
+        {
+            string message = ex is TargetInvocationException invocation ? invocation.InnerException.Message
+                : ex.Message;
+            return new CompileError(location, message);
+        }
 
         private IEnumerable<MethodInfo> FindMethods(string name, object[] arguments) =>
             this.GetType()

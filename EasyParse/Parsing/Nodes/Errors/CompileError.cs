@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using EasyParse.Text;
 
 namespace EasyParse.Parsing.Nodes.Errors
@@ -11,7 +12,26 @@ namespace EasyParse.Parsing.Nodes.Errors
         {
         }
 
-        private static string FormatMapping(string label, IEnumerable<object> arguments) =>
-            string.Join(" ", arguments.Select(x => $"{x}").ToArray()) + $" -> {label}";
+        public CompileError(Location location, string label, params object[] arguments)
+            : this(location, label, (IEnumerable<object>)arguments)
+        {
+        }
+
+        private static string FormatMapping(string label, IEnumerable<object> arguments)
+        {
+            using (IEnumerator<object> enumerator = arguments.GetEnumerator())
+            {
+                if (!enumerator.MoveNext()) return label;
+
+                StringBuilder list = new StringBuilder(enumerator.Current.ToString());
+
+                while (enumerator.MoveNext())
+                {
+                    list.Append(" ").Append(enumerator.Current);
+                }
+
+                return $"{list} -> {label}";
+            }
+        }
     }
 }
