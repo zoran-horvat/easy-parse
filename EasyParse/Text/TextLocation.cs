@@ -2,8 +2,8 @@
 {
     public class TextLocation : InnerLocation
     {
-        private int LineIndex { get; }
-        private int LineOffset { get; }
+        public int LineIndex { get; }
+        public int LineOffset { get; }
         public TextLocation(int contentOffset, int lineIndex, int lineOffset) : base(contentOffset)
         {
             this.LineIndex = lineIndex;
