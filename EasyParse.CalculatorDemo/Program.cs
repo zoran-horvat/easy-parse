@@ -27,6 +27,7 @@ namespace EasyParse.CalculatorDemo
                 string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
                 Console.WriteLine(tokensReport);
                 Console.WriteLine(fluentParser.Parse(line));
+                Console.WriteLine(new string('=', 50));
 
                 ProcessAddition(addingParser, line);
                 Process(parser, line);

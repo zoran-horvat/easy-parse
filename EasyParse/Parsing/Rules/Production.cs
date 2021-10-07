@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EasyParse.ParserGenerator.Models.Rules;
 
@@ -27,9 +28,16 @@ namespace EasyParse.Parsing.Rules
         internal IEnumerable<TerminalSymbol> Terminals =>
             this.Body.OfType<TerminalSymbol>();
 
-        internal Grammar AppendToGrammarModel(Grammar grammar) => grammar
-            .Add(this.ToRuleDefinitionModel())
-            .AddRange(this.Terminals.Select(terminal => terminal.ToLexemeModel()));
+        internal IEnumerable<RegexSymbol> RegularExpressions =>
+            this.Body.OfType<RegexSymbol>();
+
+        internal Grammar AppendToGrammarModel(Grammar grammar)
+        {
+            Grammar grammar1 = grammar
+                .Add(this.ToRuleDefinitionModel())
+                .AddRange(this.RegularExpressions.Select(expr => expr.ToLexemeModel()));
+            return grammar1;
+        }
 
         private string BodyToString =>
             string.Join(" ", this.Body.Select(x => x.ToString()));

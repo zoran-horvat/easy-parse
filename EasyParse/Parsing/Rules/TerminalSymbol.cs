@@ -14,7 +14,5 @@ namespace EasyParse.Parsing.Rules
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new Terminal(this.Name);
-
-        public abstract Lexeme ToLexemeModel();
     }
 }
