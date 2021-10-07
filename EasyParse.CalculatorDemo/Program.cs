@@ -21,9 +21,9 @@ namespace EasyParse.CalculatorDemo
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
             {
+                Console.WriteLine(fluentParser.Parse(line));
                 ProcessAddition(addingParser, line);
                 Process(parser, line);
-                Process(fluentParser, line);
             }
         }
 

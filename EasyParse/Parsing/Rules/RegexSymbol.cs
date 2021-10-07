@@ -17,5 +17,8 @@ namespace EasyParse.Parsing.Rules
 
         public override Lexeme ToLexemeModel() =>
             new LexemePattern(base.Name, this.Expression.ToString());
+
+        public Lexeme ToIgnoreLexemeModel() =>
+            new IgnoreLexeme(this.Expression.ToString());
     }
 }

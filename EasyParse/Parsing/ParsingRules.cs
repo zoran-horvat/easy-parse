@@ -30,6 +30,6 @@ namespace EasyParse.Parsing
             new Grammar(this.Start.Head.ToNonTerminalModel(), Enumerable.Empty<RuleDefinition>());
 
         private IEnumerable<Lexeme> ToIgnoreLexemeModels() =>
-            this.Ignore.Select(pattern => pattern.ToLexemeModel());
+            this.Ignore.Select(pattern => pattern.ToIgnoreLexemeModel());
     }
 }
