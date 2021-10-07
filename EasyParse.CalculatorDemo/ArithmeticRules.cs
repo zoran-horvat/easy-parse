@@ -10,13 +10,11 @@ namespace EasyParse.CalculatorDemo
             .Match(Regex("number", @"\d+"));
 
         public Rule Multiplicative => Rule()
-            .Match(Number);
-
-        public Rule Multiplicative1 => Rule()
-            .Match(Number, "*", Number);
+            .Match(Number)
+            .Or(Number, "*", Number);
 
         public Rule Additive => Rule()
-            .Match(Multiplicative1);
+            .Match(Multiplicative);
 
         public Rule Expression => Rule()
             .Match(Additive);

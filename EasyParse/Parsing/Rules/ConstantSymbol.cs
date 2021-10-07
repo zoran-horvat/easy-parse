@@ -10,5 +10,8 @@
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new ParserGenerator.Models.Symbols.Constant(this.Value);
+
+        public override string ToString() =>
+            this.Value;
     }
 }

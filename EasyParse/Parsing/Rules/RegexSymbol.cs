@@ -12,13 +12,13 @@ namespace EasyParse.Parsing.Rules
 
         public Regex Expression { get; }
 
-        public override string ToString() => 
-            $"regex({this.Expression})";
-
         public Lexeme ToIgnoreLexemeModel() =>
             new IgnoreLexeme(this.Expression.ToString());
 
         public Lexeme ToLexemeModel() =>
             new LexemePattern(base.Name, this.Expression.ToString());
+
+        public override string ToString() =>
+            $"regex({this.Expression})";
     }
 }

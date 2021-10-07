@@ -14,5 +14,8 @@ namespace EasyParse.Parsing.Rules
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new ParserGenerator.Models.Symbols.NonTerminal(this.Rule.Head.Name);
+
+        public override string ToString() => 
+            this.Rule.Head.ToString();
     }
 }

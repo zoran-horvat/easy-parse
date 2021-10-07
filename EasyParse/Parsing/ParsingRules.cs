@@ -15,7 +15,7 @@ namespace EasyParse.Parsing
         protected RegexSymbol WhiteSpace() =>
             new RegexSymbol("white space", new Regex(@"\s+"));
 
-        protected Rule Rule([CallerMemberName] string nonTerminalName = "") =>
+        protected IEmptyRule Rule([CallerMemberName] string nonTerminalName = "") =>
             new Rule(new NonTerminal(nonTerminalName));
 
         protected abstract Rule Start { get; }

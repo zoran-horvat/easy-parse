@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EasyParse.Parsing.Rules
 {
-    public class Rule
+    public class Rule : IEmptyRule
     {
         public Rule(NonTerminal nonTerminal) 
             : this(nonTerminal, ImmutableList<Production>.Empty)
@@ -23,19 +23,28 @@ namespace EasyParse.Parsing.Rules
         private ImmutableList<Production> Lines { get; }
 
         public Rule Match(params Symbol[] symbols) =>
+            this.Or(symbols);
+
+        public Rule Or(params Symbol[] symbols) =>
             new Rule(this.Head, this.Lines.Add(new Production(this.Head, symbols)));
 
         internal IEnumerable<Production> Expand()
         {
-            HashSet<NonTerminal> produced = new();
+            HashSet<NonTerminal> produced = this.Lines.Select(line => line.Head).ToHashSet();
             Queue<Production> pending = this.Lines.ToQueue();
 
             while (pending.Count > 0)
             {
                 Production production = pending.Dequeue();
-                if (produced.Contains(production.Head)) continue;
-                pending.Enqueue(production.ChildLines);
-                produced.Add(production.Head);
+                IEnumerable<Production> children = production.Body
+                    .OfType<NonTerminalSymbol>()
+                    .Where(symbol => !produced.Contains(symbol.Rule.Head))
+                    .SelectMany(symbol => symbol.Rule.Lines);
+                foreach (Production child in children)
+                {
+                    if (!produced.Contains(child.Head)) produced.Add(child.Head);
+                    pending.Enqueue(child);
+                }
                 yield return production;
             }
         }
