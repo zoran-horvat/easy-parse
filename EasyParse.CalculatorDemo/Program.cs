@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.ParserGenerator.Models;
 using EasyParse.Parsing;
 using EasyParse.Text;
 
@@ -12,6 +13,8 @@ namespace EasyParse.CalculatorDemo
     {
         public static void Main(string[] args)
         {
+            Parser fluentParser = Parser.From(new ArithmeticRules().ToGrammarModel().BuildParser());
+
             Parser parser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.ParserDefinition.xml");
             Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
@@ -20,6 +23,7 @@ namespace EasyParse.CalculatorDemo
             {
                 ProcessAddition(addingParser, line);
                 Process(parser, line);
+                Process(fluentParser, line);
             }
         }
 

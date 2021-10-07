@@ -50,7 +50,7 @@ namespace EasyParse.LexicalAnalysis
             definition.Root
                 ?.Element("LexicalRules")
                 ?.Elements("Ignore")
-                .Select(ignore => ignore.Attribute("Pattern")?.Value ?? string.Empty)
+                .Select(ignore => ignore.Attribute("Symbol")?.Value ?? string.Empty)
                 .Where(pattern => !string.IsNullOrEmpty(pattern))
             ?? Enumerable.Empty<string>();
 
@@ -58,7 +58,7 @@ namespace EasyParse.LexicalAnalysis
             definition.Root
                 ?.Element("LexicalRules")
                 ?.Elements("Lexeme")
-                .Select(lexeme => (pattern: lexeme.Attribute("Pattern")?.Value ?? string.Empty, name: lexeme.Attribute("Name")?.Value ?? string.Empty))
+                .Select(lexeme => (pattern: lexeme.Attribute("Symbol")?.Value ?? string.Empty, name: lexeme.Attribute("Name")?.Value ?? string.Empty))
                 .Where(tuple => !string.IsNullOrEmpty(tuple.pattern) && !string.IsNullOrEmpty(tuple.name))
             ?? Enumerable.Empty<(string, string)>();
                 

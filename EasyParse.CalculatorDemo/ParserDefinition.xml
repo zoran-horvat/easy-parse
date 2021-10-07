@@ -1,13 +1,13 @@
 ﻿<ParserDefinition>
   <LexicalRules>
-    <Ignore Pattern="\s+" />
+    <Ignore Symbol="\s+" />
     <Constant Value="+" />
     <Constant Value="-" />
     <Constant Value="*" />
     <Constant Value="/" />
     <Constant Value="(" />
     <Constant Value=")" />
-    <Lexeme Pattern="\d+" Name="number" />
+    <Lexeme Symbol="\d+" Name="number" />
   </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">

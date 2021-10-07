@@ -1,7 +1,7 @@
 ﻿<ParserDefinition>
   <LexicalRules>
-    <Ignore Pattern="\s+" />
-    <Ignore Pattern="#[^\n]*" />
+    <Ignore Symbol="\s+" />
+    <Ignore Symbol="#[^\n]*" />
     <Constant Value="start" />
     <Constant Value=":" />
     <Constant Value=";" />
@@ -10,10 +10,10 @@
     <Constant Value="matches" />
     <Constant Value="rules" />
     <Constant Value="-&gt;" />
-    <Lexeme Pattern="[A-Z][a-zA-Z0-9_]*" Name="nonTerminal" />
-    <Lexeme Pattern="[a-z_][a-zA-Z0-9_]*" Name="terminal" />
-    <Lexeme Pattern="'((\\[\\'nrt])|[^\\'])*'" Name="quotedString" />
-    <Lexeme Pattern="@'[^']*'" Name="verbatimString" />
+    <Lexeme Symbol="[A-Z][a-zA-Z0-9_]*" Name="nonTerminal" />
+    <Lexeme Symbol="[a-z_][a-zA-Z0-9_]*" Name="terminal" />
+    <Lexeme Symbol="'((\\[\\'nrt])|[^\\'])*'" Name="quotedString" />
+    <Lexeme Symbol="@'[^']*'" Name="verbatimString" />
   </LexicalRules>
   <Grammar>
     <Rule Ordinal="0">

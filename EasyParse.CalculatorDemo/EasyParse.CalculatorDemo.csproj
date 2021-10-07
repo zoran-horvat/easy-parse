@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdditiveCompiler.cs" />
+    <Compile Include="ArithmeticRules.cs" />
     <Compile Include="Calculator.cs" />
     <Compile Include="FullAdditiveParenthesizer.cs" />
     <Compile Include="Program.cs" />
