@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis.Tokens;
-using EasyParse.ParserGenerator.Models;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing;
 using EasyParse.Text;
@@ -24,6 +23,9 @@ namespace EasyParse.CalculatorDemo
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
             {
+                List<Token> tokens = fluentParser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
+                string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
+                Console.WriteLine(tokensReport);
                 Console.WriteLine(fluentParser.Parse(line));
 
                 ProcessAddition(addingParser, line);

@@ -4,15 +4,15 @@ namespace EasyParse.Parsing.Rules
 {
     class NonTerminalSymbol : Symbol
     {
-        public NonTerminalSymbol(Productions productions)
+        public NonTerminalSymbol(Rule rule)
         {
-            this.Productions = productions;
+            this.Rule = rule;
         }
 
-        public Productions Productions { get; }
-        public IEnumerable<Production> Lines => this.Productions.ProductionLines;
+        public Rule Rule { get; }
+        public IEnumerable<Production> Lines => this.Rule.ProductionLines;
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
-            new ParserGenerator.Models.Symbols.NonTerminal(this.Productions.Head.Name);
+            new ParserGenerator.Models.Symbols.NonTerminal(this.Rule.Head.Name);
     }
 }

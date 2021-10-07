@@ -30,7 +30,7 @@ namespace EasyParse.ParserGenerator.Collections
             this.Representation.All(other.Representation.Contains);
 
         public override int GetHashCode() => 
-            this.Representation.Aggregate(0, (acc, item) => acc ^ item.GetHashCode());
+            this.Representation.Select(item => item.GetHashCode()).Aggregate(0, HashCode.Combine);
 
         public IEnumerator<TValue> GetEnumerator() =>
             this.Representation.GetEnumerator();

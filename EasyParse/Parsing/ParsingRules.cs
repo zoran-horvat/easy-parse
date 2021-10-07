@@ -15,10 +15,10 @@ namespace EasyParse.Parsing
         protected RegexSymbol WhiteSpace() =>
             new RegexSymbol("white space", new Regex(@"\s+"));
 
-        protected Productions Rule([CallerMemberName] string nonTerminalName = "") =>
-            new Productions(new NonTerminal(nonTerminalName));
+        protected Rule Rule([CallerMemberName] string nonTerminalName = "") =>
+            new Rule(new NonTerminal(nonTerminalName));
 
-        protected abstract Productions Start { get; }
+        protected abstract Rule Start { get; }
         protected abstract IEnumerable<RegexSymbol> Ignore { get; }
 
         public Grammar ToGrammarModel() =>

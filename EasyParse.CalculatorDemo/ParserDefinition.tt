@@ -2,6 +2,7 @@
 <#@ output extension=".xml" #>
 <#@ assembly name="System.Core" #>
 <#@ assembly name="System.Xml.Linq" #>
+<#@ assembly name="System.Runtime" #>
 <#@ assembly name="System" #>
 <#@ assembly name="EnvDte" #>
 <#@ assembly name="$(TargetDir)\EasyParse.dll" #>

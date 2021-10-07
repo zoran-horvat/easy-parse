@@ -16,8 +16,7 @@ namespace EasyParse.ParserGenerator.Models.Rules
             this.Equals(obj as ConstantLexeme);
 
         public bool Equals(ConstantLexeme other) =>
-            other is ConstantLexeme constant &&
-            constant.ConstantValue.Equals(this.ConstantValue);
+            other?.ConstantValue.Equals(this.ConstantValue) ?? false;
 
         public override int GetHashCode() =>
             this.ConstantValue.GetHashCode();
