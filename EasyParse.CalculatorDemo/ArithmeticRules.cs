@@ -9,7 +9,10 @@ namespace EasyParse.CalculatorDemo
         public Productions Number => Rule()
             .Match(Regex("number", @"\d+"));
 
-        protected override Productions Start => this.Number;
+        public Productions Multiplicative => Rule()
+            .Match(Number);
+
+        protected override Productions Start => this.Multiplicative;
         protected override IEnumerable<RegexSymbol> Ignore => new[] { WhiteSpace() };
     }
 }

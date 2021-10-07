@@ -19,12 +19,29 @@ namespace EasyParse.Parsing.Rules
         }
 
         public NonTerminal Head { get; }
+        internal IEnumerable<Production> ProductionLines => Lines;
         private ImmutableList<Production> Lines { get; }
 
         public Productions Match(params Symbol[] symbols) =>
             new Productions(this.Head, this.Lines.Add(new Production(this.Head, symbols)));
 
-        internal IEnumerable<Production> Expand() => this.Lines;
+        internal IEnumerable<Production> Expand()
+        {
+            HashSet<NonTerminal> produced = new();
+            Queue<Production> pending = this.Lines.ToQueue();
+
+            while (pending.Count > 0)
+            {
+                Production production = pending.Dequeue();
+                if (produced.Contains(production.Head)) continue;
+                pending.Enqueue(production.ChildLines);
+                produced.Add(production.Head);
+                yield return production;
+            }
+        }
+
+        public static implicit operator Symbol(Productions productions) =>
+            new NonTerminalSymbol(productions);
 
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
