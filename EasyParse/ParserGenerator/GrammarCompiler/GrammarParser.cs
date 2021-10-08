@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
-using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing;
 using Grammar = EasyParse.ParserGenerator.Models.Rules.Grammar;
 

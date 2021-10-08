@@ -10,8 +10,8 @@ namespace EasyParse.Parsing
         protected RegexSymbol WhiteSpace() =>
             new("white space", new Regex(@"\s+"));
 
-        protected IEmptyRule Rule([CallerMemberName] string nonTerminalName = "") =>
-            new EmptyRule(new NonTerminal(nonTerminalName));
+        protected IEmptyRule<T> Rule<T>([CallerMemberName] string nonTerminalName = "") =>
+            new EmptyRule<T>(new NonTerminal(nonTerminalName));
 
     }
 }

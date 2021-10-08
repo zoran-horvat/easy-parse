@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using EasyParse.LexicalAnalysis.Tokens;
-using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing;
 using EasyParse.Text;
 

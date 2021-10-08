@@ -1,12 +1,11 @@
-﻿using EasyParse.Parsing.Rules.Symbols;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
 namespace EasyParse.Parsing.Rules
 {
-    public class CompletedRule : IRule
+    public class CompletedRule<T> : IRule<T>
     {
         internal CompletedRule(NonTerminal head, ImmutableList<Production> lines)
         {
@@ -36,16 +35,16 @@ namespace EasyParse.Parsing.Rules
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
 
-        public IPendingMapping Literal(string value) =>
+        public IPendingMapping<T> Literal(string value) =>
             this.BeginLine().Literal(value);
 
-        public IPendingMapping Regex(string name, string pattern) =>
+        public IPendingMapping<T> Regex(string name, string pattern) =>
             this.BeginLine().Regex(name, pattern);
 
-        public IPendingMapping Symbol(Func<IRule> factory) =>
+        public IPendingMapping<T> Symbol(Func<IRule<T>> factory) =>
             this.BeginLine().Symbol(factory);
 
-        private IPendingMapping BeginLine() =>
-            new IncompleteProductionBuilder(this.Lines, new Production(this.Head));
+        private IPendingMapping<T> BeginLine() =>
+            new IncompleteProductionBuilder<T>(this.Lines, new Production(this.Head));
     }
 }

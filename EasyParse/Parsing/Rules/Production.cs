@@ -34,8 +34,8 @@ namespace EasyParse.Parsing.Rules
             this.Body
                 .Select(this.ResolveRecursion)
                 .OfType<NonTerminalSymbol>()
-                .Where(symbol => !notIn.Contains(symbol.Rule.Head))
-                .SelectMany(symbol => symbol.Rule.Productions);
+                .Where(symbol => !notIn.Contains(symbol.Head))
+                .SelectMany(symbol => symbol.Productions);
 
         private Symbol ResolveRecursion(Symbol symbol) =>
             symbol is RecursiveNonTerminalSymbol recursive ? recursive.Materialize()

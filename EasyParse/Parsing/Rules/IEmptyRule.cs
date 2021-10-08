@@ -1,6 +1,6 @@
 ﻿namespace EasyParse.Parsing.Rules
 {
-    public interface IEmptyRule : IProductionBuilder
+    public interface IEmptyRule<T> : IProductionBuilder<T>
     {
     }
 }

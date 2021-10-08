@@ -2,10 +2,10 @@
 
 namespace EasyParse.Parsing.Rules
 {
-    public interface IProductionBuilder
+    public interface IProductionBuilder<T>
     {
-        IPendingMapping Literal(string value);
-        IPendingMapping Regex(string name, string pattern);
-        IPendingMapping Symbol(Func<IRule> factory);
+        IPendingMapping<T> Literal(string value);
+        IPendingMapping<T> Regex(string name, string pattern);
+        IPendingMapping<T> Symbol(Func<IRule<T>> factory);
     }
 }
