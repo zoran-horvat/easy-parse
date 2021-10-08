@@ -29,16 +29,16 @@ namespace EasyParse.Parsing.Rules
         private IPendingMapping Append(Symbol symbol) =>
             new IncompleteProductionBuilder(this.CompletedLines, this.CurrentLine.Append(symbol));
 
-        public IRule Map<T1, TResult>(Func<T1, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1));
-        public IRule Map<T1, T2, TResult>(Func<T1, T2, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2));
-        public IRule Map<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3));
-        public IRule Map<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
-        public IRule Map<T1, T2, T3, T4, T5, TResult>(Func<T1, T2, T3, T4, T5, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5));
-        public IRule Map<T1, T2, T3, T4, T5, T6, TResult>(Func<T1, T2, T3, T4, T5, T6, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6));
-        public IRule Map<T1, T2, T3, T4, T5, T6, T7, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7));
-        public IRule Map<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8));
-        public IRule Map<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8), typeof(T9));
-        public IRule Map<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8), typeof(T9), typeof(T10));
+        public IRule To<T1, TResult>(Func<T1, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1));
+        public IRule To<T1, T2, TResult>(Func<T1, T2, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2));
+        public IRule To<T1, T2, T3, TResult>(Func<T1, T2, T3, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3));
+        public IRule To<T1, T2, T3, T4, TResult>(Func<T1, T2, T3, T4, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4));
+        public IRule To<T1, T2, T3, T4, T5, TResult>(Func<T1, T2, T3, T4, T5, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5));
+        public IRule To<T1, T2, T3, T4, T5, T6, TResult>(Func<T1, T2, T3, T4, T5, T6, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6));
+        public IRule To<T1, T2, T3, T4, T5, T6, T7, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7));
+        public IRule To<T1, T2, T3, T4, T5, T6, T7, T8, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8));
+        public IRule To<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8), typeof(T9));
+        public IRule To<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult> transform) => this.Map(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8), typeof(T9), typeof(T10));
         
         private IRule Map(Func<object[], object> transform, params Type[] argumentTypes) =>
             argumentTypes.Length != this.CurrentLine.Body.Count() ? throw new ArgumentException($"Mapping function receives {argumentTypes.Length} arguments when expecting {this.CurrentLine.Body.Count()} in rule {this.CurrentLine}")
