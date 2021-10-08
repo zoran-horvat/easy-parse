@@ -8,18 +8,18 @@ namespace EasyParse.CalculatorDemo
     class ArithmeticGrammar : Grammar
     {
         public IRule Value() => Rule()
-            .Regex("number", @"\d+").End()
-            .Literal("(").Symbol(Additive).Literal(")").End();
+            .Regex("number", @"\d+").Map<string, int>(int.Parse)
+            .Literal("(").Symbol(Additive).Literal(")").Map((string _, int additive, string _) => additive);
 
         public IRule Multiplicative() => Rule()
-            .Symbol(Value).End()
-            .Symbol(Multiplicative).Literal("*").Symbol(Value).End();
+            .Symbol(Value).MapIdentity<int>()
+            .Symbol(Multiplicative).Literal("*").Symbol(Value).Map((int a, string _, int b) => a * b);
 
         public IRule Additive() => Rule()
-            .Symbol(Multiplicative).End()
-            .Symbol(Additive).Literal("+").Symbol(Multiplicative).End();
+            .Symbol(Multiplicative).MapIdentity<int>()
+            .Symbol(Additive).Literal("+").Symbol(Multiplicative).Map((int a, string _, int b) => a + b);
 
-        public IRule Expression() => Rule().Symbol(Additive).End();
+        public IRule Expression() => Rule().Symbol(Additive).MapIdentity<int>();
 
         protected override IRule Start => this.Expression();
         protected override IEnumerable<RegexSymbol> Ignore => new[] { WhiteSpace() };
