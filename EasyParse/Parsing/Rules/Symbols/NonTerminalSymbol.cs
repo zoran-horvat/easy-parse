@@ -2,22 +2,17 @@
 
 namespace EasyParse.Parsing.Rules.Symbols
 {
-    abstract class NonTerminalSymbol : Symbol
-    {
-        public abstract NonTerminal Head { get; }
-        public abstract IEnumerable<Production> Productions { get; }
-    }
 
-    class NonTerminalSymbol<T> : NonTerminalSymbol
+    class NonTerminalSymbol : Symbol
     {
-        public NonTerminalSymbol(IRule<T> rule)
+        public NonTerminalSymbol(IRule rule)
         {
             this.Rule = rule;
         }
 
-        public IRule<T> Rule { get; }
-        public override NonTerminal Head => this.Rule.Head;
-        public override IEnumerable<Production> Productions => this.Rule.Productions;
+        public IRule Rule { get; }
+        public NonTerminal Head => this.Rule.Head;
+        public IEnumerable<Production> Productions => this.Rule.Productions;
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new ParserGenerator.Models.Symbols.NonTerminal(this.Rule.Head.Name);

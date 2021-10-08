@@ -2,7 +2,7 @@
 
 namespace EasyParse.Parsing.Rules
 {
-    public interface IRule<T> : IProductionBuilder<T>
+    public interface IRule : IProductionBuilder
     {
         NonTerminal Head { get; }
         IEnumerable<Production> Productions { get; }

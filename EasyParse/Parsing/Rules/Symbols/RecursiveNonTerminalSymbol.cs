@@ -2,22 +2,17 @@
 
 namespace EasyParse.Parsing.Rules.Symbols
 {
-    abstract class RecursiveNonTerminalSymbol : Symbol
+    class RecursiveNonTerminalSymbol : Symbol
     {
-        public abstract NonTerminalSymbol Materialize();
-    }
-
-    class RecursiveNonTerminalSymbol<T> : RecursiveNonTerminalSymbol
-    {
-        public RecursiveNonTerminalSymbol(Func<IRule<T>> factory)
+        public RecursiveNonTerminalSymbol(Func<IRule> factory)
         {
             this.Factory = factory;
         }
 
-        private Func<IRule<T>> Factory { get; }
+        private Func<IRule> Factory { get; }
 
-        public override NonTerminalSymbol Materialize() =>
-            new NonTerminalSymbol<T>(this.Factory());
+        public NonTerminalSymbol Materialize() =>
+            new NonTerminalSymbol(this.Factory());
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             this.Materialize().ToSymbolModel();

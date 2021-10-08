@@ -5,7 +5,7 @@ using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing.Rules
 {
-    internal class EmptyRule<T> : IEmptyRule<T>
+    internal class EmptyRule : IEmptyRule
     {
         public EmptyRule(NonTerminal head)
         {
@@ -14,16 +14,16 @@ namespace EasyParse.Parsing.Rules
 
         private Production EmptyProduction { get; }
 
-        public IPendingMapping<T> Literal(string value) =>
+        public IPendingMapping Literal(string value) =>
             this.BeginProduction(new LiteralSymbol(value));
 
-        public IPendingMapping<T> Regex(string name, string pattern) =>
+        public IPendingMapping Regex(string name, string pattern) =>
             this.BeginProduction(new RegexSymbol(name, new Regex(pattern)));
 
-        public IPendingMapping<T> Symbol(Func<IRule<T>> factory) =>
-            this.BeginProduction(new RecursiveNonTerminalSymbol<T>(factory));
+        public IPendingMapping Symbol(Func<IRule> factory) =>
+            this.BeginProduction(new RecursiveNonTerminalSymbol(factory));
 
-        private IPendingMapping<T> BeginProduction(Symbol symbol) =>
-            new IncompleteProductionBuilder<T>(ImmutableList<Production>.Empty, this.EmptyProduction.Append(symbol));
+        private IPendingMapping BeginProduction(Symbol symbol) =>
+            new IncompleteProductionBuilder(ImmutableList<Production>.Empty, this.EmptyProduction.Append(symbol));
     }
 }

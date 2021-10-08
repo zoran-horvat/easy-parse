@@ -6,9 +6,9 @@ using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing
 {
-    public abstract class Grammar<T> : PartialGrammar
+    public abstract class Grammar : PartialGrammar
     {
-        protected abstract IRule<T> Start { get; }
+        protected abstract IRule Start { get; }
         protected abstract IEnumerable<RegexSymbol> Ignore { get; }
 
         public Parser BuildParser() =>

@@ -53,8 +53,8 @@ namespace EasyParse.Parsing
         public ParsingResult Parse(IEnumerable<string> lines) =>
             this.Parse(this.Lexer.Tokenize(Plaintext.Text(lines)));
 
-        public Compiler<T> ToCompiler<T>(ISymbolCompiler symbolCompiler) =>
-            new Compiler<T>(this, symbolCompiler);
+        public Compiler ToCompiler(ISymbolCompiler symbolCompiler) =>
+            new Compiler(this, symbolCompiler);
 
         private ParsingResult Parse(IEnumerable<Token> input)
         {

@@ -1,7 +1,7 @@
 ﻿namespace EasyParse.Parsing.Rules
 {
-    public interface IPendingMapping<T> : IProductionBuilder<T>
+    public interface IPendingMapping : IProductionBuilder
     {
-        IRule<T> End();
+        IRule End();
     }
 }

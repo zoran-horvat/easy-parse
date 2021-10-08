@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EasyParse.Parsing.Rules
 {
-    public class CompletedRule<T> : IRule<T>
+    public class CompletedRule : IRule
     {
         internal CompletedRule(NonTerminal head, ImmutableList<Production> lines)
         {
@@ -35,16 +35,16 @@ namespace EasyParse.Parsing.Rules
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
 
-        public IPendingMapping<T> Literal(string value) =>
+        public IPendingMapping Literal(string value) =>
             this.BeginLine().Literal(value);
 
-        public IPendingMapping<T> Regex(string name, string pattern) =>
+        public IPendingMapping Regex(string name, string pattern) =>
             this.BeginLine().Regex(name, pattern);
 
-        public IPendingMapping<T> Symbol(Func<IRule<T>> factory) =>
+        public IPendingMapping Symbol(Func<IRule> factory) =>
             this.BeginLine().Symbol(factory);
 
-        private IPendingMapping<T> BeginLine() =>
-            new IncompleteProductionBuilder<T>(this.Lines, new Production(this.Head));
+        private IPendingMapping BeginLine() =>
+            new IncompleteProductionBuilder(this.Lines, new Production(this.Head));
     }
 }

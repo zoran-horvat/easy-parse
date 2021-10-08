@@ -13,7 +13,7 @@ namespace EasyParse.CalculatorDemo
         public static void Main(string[] args)
         {
             Parser parser = new ArithmeticGrammar().BuildParser();
-            Compiler<int> compiler = parser.ToCompiler<int>(Calculator);
+            Compiler compiler = parser.ToCompiler(Calculator);
 
             Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
@@ -33,7 +33,7 @@ namespace EasyParse.CalculatorDemo
                 : $"Not an additive expression: {result.ErrorMessage}");
         }
 
-        private static void Process(Parser parser, Compiler<int> compiler, string line)
+        private static void Process(Parser parser, Compiler compiler, string line)
         {
             List<Token> tokens = parser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));

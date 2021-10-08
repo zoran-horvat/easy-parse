@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EasyParse.Parsing
 {
-    public class Compiler<T>
+    public class Compiler
     {
         internal Compiler(Parser parser, ISymbolCompiler symbolCompiler)
         {
@@ -14,13 +14,13 @@ namespace EasyParse.Parsing
         private Parser Parser { get; }
         private ISymbolCompiler SymbolCompiler { get; }
 
-        public CompilationResult<T> Compile(string line) =>
+        public CompilationResult<object> Compile(string line) =>
             this.Compile(this.Parser.Parse(line));
 
-        public CompilationResult<T> Compile(IEnumerable<string> lines) =>
+        public CompilationResult<object> Compile(IEnumerable<string> lines) =>
             this.Compile(this.Parser.Parse(lines));
 
-        private CompilationResult<T> Compile(ParsingResult parsingResult)
+        private CompilationResult<object> Compile(ParsingResult parsingResult)
         {
             try
             {
@@ -29,14 +29,14 @@ namespace EasyParse.Parsing
             }
             catch (Exception ex)
             {
-                return CompilationResult<T>.Error(ex.Message);
+                return CompilationResult<object>.Error(ex.Message);
             }
         }
 
-        private CompilationResult<T> OnParsed(ParsingResult parsingResult) =>
-            CompilationResult<T>.Success((T)parsingResult.Compile(this.SymbolCompiler));
+        private CompilationResult<object> OnParsed(ParsingResult parsingResult) =>
+            CompilationResult<object>.Success((object)parsingResult.Compile(this.SymbolCompiler));
 
-        private CompilationResult<T> OnParsingFailed(ParsingResult parsingResult) =>
-            CompilationResult<T>.Error(parsingResult.ErrorMessage);
+        private CompilationResult<object> OnParsingFailed(ParsingResult parsingResult) =>
+            CompilationResult<object>.Error(parsingResult.ErrorMessage);
     }
 }
