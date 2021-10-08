@@ -33,7 +33,7 @@ namespace EasyParse.Parsing.Collections
         private static RulePattern[] ExtractRules(XDocument definition) =>
             definition.Root
                 ?.Elements("Grammar")
-                .Elements("Rule")
+                .Elements("IRule")
                 .Select(rule => (
                     head: rule.Element("Head")?.Element("NonTerminal")?.Attribute("Name")?.Value ?? string.Empty,
                     count: rule.Element("Body")?.Elements().Count() ?? 0))

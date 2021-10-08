@@ -7,23 +7,23 @@
     <Lexeme Symbol="\d+" Name="number" />
   </LexicalRules>
   <Grammar>
-    <Rule Ordinal="0">
+    <IRule Ordinal="0">
       <Head>
         <NonTerminal Name="S'" />
       </Head>
       <Body>
         <NonTerminal Name="Expr" />
       </Body>
-    </Rule>
-    <Rule Ordinal="1">
+    </IRule>
+    <IRule Ordinal="1">
       <Head>
         <NonTerminal Name="Expr" />
       </Head>
       <Body>
         <Terminal Name="number" />
       </Body>
-    </Rule>
-    <Rule Ordinal="2">
+    </IRule>
+    <IRule Ordinal="2">
       <Head>
         <NonTerminal Name="Expr" />
       </Head>
@@ -32,8 +32,8 @@
         <Constant Value="+" />
         <Terminal Name="number" />
       </Body>
-    </Rule>
-    <Rule Ordinal="3">
+    </IRule>
+    <IRule Ordinal="3">
       <Head>
         <NonTerminal Name="Expr" />
       </Head>
@@ -42,7 +42,7 @@
         <Constant Value="-" />
         <Terminal Name="number" />
       </Body>
-    </Rule>
+    </IRule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="number" TransitionTo="2" />

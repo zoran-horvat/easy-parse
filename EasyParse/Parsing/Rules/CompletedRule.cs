@@ -6,30 +6,19 @@ using System.Linq;
 
 namespace EasyParse.Parsing.Rules
 {
-    public class Rule : IEmptyRule
+    public class CompletedRule : IRule
     {
-        public Rule(NonTerminal nonTerminal) 
-            : this(nonTerminal, ImmutableList<Production>.Empty)
-        {
-        }
-
-        private Rule(NonTerminal head, ImmutableList<Production> lines)
+        internal CompletedRule(NonTerminal head, ImmutableList<Production> lines)
         {
             this.Head = head;
             this.Lines = lines;
         }
 
         public NonTerminal Head { get; }
-        internal IEnumerable<Production> ProductionLines => Lines;
+        public IEnumerable<Production> Productions => Lines;
         private ImmutableList<Production> Lines { get; }
 
-        public Rule Match(params Symbol[] symbols) =>
-            this.Or(symbols);
-
-        public Rule Or(params Symbol[] symbols) =>
-            new Rule(this.Head, this.Lines.Add(new Production(this.Head, symbols)));
-
-        internal IEnumerable<Production> Expand()
+        public IEnumerable<Production> Expand()
         {
             HashSet<NonTerminal> produced = this.Lines.Select(line => line.Head).ToHashSet();
             Queue<Production> pending = this.Lines.ToQueue();
@@ -38,16 +27,25 @@ namespace EasyParse.Parsing.Rules
             {
                 Production production = pending.Dequeue();
                 IEnumerable<Production> children = production.ChildLines(produced).ToList();
-                produced.Add(children.Select(production => production.Head).Distinct());
+                produced.Add(children.Select(child => child.Head).Distinct());
                 pending.Enqueue(children);
                 yield return production;
             }
         }
 
-        public static implicit operator Symbol(Rule rule) =>
-            new NonTerminalSymbol(rule);
-
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
+
+        public IPendingProductionEnd Literal(string value) =>
+            this.BeginLine().Literal(value);
+
+        public IPendingProductionEnd Regex(string name, string pattern) =>
+            this.BeginLine().Regex(name, pattern);
+
+        public IPendingProductionEnd Symbol(Func<IRule> factory) =>
+            this.BeginLine().Symbol(factory);
+
+        private IPendingProductionEnd BeginLine() =>
+            new IncompleteProductionBuilder(this.Lines, new Production(this.Head));
     }
 }

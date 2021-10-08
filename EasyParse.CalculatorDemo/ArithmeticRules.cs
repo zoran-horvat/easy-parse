@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EasyParse.Parsing;
 using EasyParse.Parsing.Rules;
 using EasyParse.Parsing.Rules.Symbols;
@@ -7,20 +8,23 @@ namespace EasyParse.CalculatorDemo
 {
     class ArithmeticRules : ParsingRules
     {
-        public Rule Number => Rule()
-            .Match(Regex("number", @"\d+"));
+        private Symbol Number => Regex("number", @"\d+");
 
-        public Rule Multiplicative => Rule()
-            .Match(Number)
-            .Or(Number, "*", Number);
+        public IRule Value() => Rule()
+            .Regex("number", @"\d+").End()
+            .Literal("(").Symbol(Additive).Literal(")").End();
 
-        public Rule Additive => Rule()
-            .Match(Multiplicative);
+        public IRule Multiplicative() => Rule()
+            .Symbol(Value).End()
+            .Symbol(Multiplicative).Literal("*").Symbol(Value).End();
 
-        public Rule Expression => Rule()
-            .Match(Additive);
+        public IRule Additive() => Rule()
+            .Symbol(Multiplicative).End()
+            .Symbol(Additive).Literal("+").Symbol(Multiplicative).End();
 
-        protected override Rule Start => this.Expression;
+        public IRule Expression() => Rule().Symbol(Additive).End();
+
+        protected override IRule Start => this.Expression();
         protected override IEnumerable<RegexSymbol> Ignore => new[] { WhiteSpace() };
     }
 }

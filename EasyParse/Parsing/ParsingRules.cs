@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -13,13 +14,16 @@ namespace EasyParse.Parsing
         protected RegexSymbol Regex(string name, string expression) =>
             new RegexSymbol(name, new Regex(expression));
 
+        protected Symbol Recursive(Func<IRule> factory) =>
+            new RecursiveNonTerminalSymbol(factory);
+
         protected RegexSymbol WhiteSpace() =>
             new RegexSymbol("white space", new Regex(@"\s+"));
 
         protected IEmptyRule Rule([CallerMemberName] string nonTerminalName = "") =>
-            new Rule(new NonTerminal(nonTerminalName));
+            new EmptyRule(new NonTerminal(nonTerminalName));
 
-        protected abstract Rule Start { get; }
+        protected abstract IRule Start { get; }
         protected abstract IEnumerable<RegexSymbol> Ignore { get; }
 
         public Grammar ToGrammarModel() =>

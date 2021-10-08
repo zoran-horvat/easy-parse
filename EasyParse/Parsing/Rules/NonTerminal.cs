@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyParse.Parsing.Rules.Symbols
+namespace EasyParse.Parsing.Rules
 {
     public sealed class NonTerminal : IEquatable<NonTerminal>
     {

@@ -61,7 +61,7 @@ namespace EasyParse.ParserGenerator.Models
             new XElement("Grammar", this.Grammar.Rules.Select(this.RuleToXml));
 
         private XElement RuleToXml(RuleDefinition rule, int index) =>
-            new XElement("Rule", new XAttribute("Ordinal", index),
+            new XElement("IRule", new XAttribute("Ordinal", index),
                 new XElement("Head", this.SymbolsToXml(rule.Head)),
                 new XElement("Body", this.SymbolsToXml(rule.Body)));
 

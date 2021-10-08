@@ -11,23 +11,23 @@
 		<Lexeme Symbol="\d+" Name="number" />
 	</LexicalRules>
 	<Grammar>
-		<Rule Ordinal="0">
+		<IRule Ordinal="0">
 			<Head>
 				<NonTerminal Name="S'" />
 			</Head>
 			<Body>
 				<NonTerminal Name="Add" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="1">
+		</IRule>
+		<IRule Ordinal="1">
 			<Head>
 				<NonTerminal Name="Add" />
 			</Head>
 			<Body>
 				<NonTerminal Name="Mul" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="2">
+		</IRule>
+		<IRule Ordinal="2">
 			<Head>
 				<NonTerminal Name="Add" />
 			</Head>
@@ -36,8 +36,8 @@
 				<Constant Value="+" />
 				<NonTerminal Name="Mul" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="3">
+		</IRule>
+		<IRule Ordinal="3">
 			<Head>
 				<NonTerminal Name="Add" />
 			</Head>
@@ -46,16 +46,16 @@
 				<Constant Value="-" />
 				<NonTerminal Name="Mul" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="4">
+		</IRule>
+		<IRule Ordinal="4">
 			<Head>
 				<NonTerminal Name="Mul" />
 			</Head>
 			<Body>
 				<NonTerminal Name="Unit" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="5">
+		</IRule>
+		<IRule Ordinal="5">
 			<Head>
 				<NonTerminal Name="Mul" />
 			</Head>
@@ -64,8 +64,8 @@
 				<Constant Value="*" />
 				<NonTerminal Name="Unit" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="6">
+		</IRule>
+		<IRule Ordinal="6">
 			<Head>
 				<NonTerminal Name="Mul" />
 			</Head>
@@ -74,16 +74,16 @@
 				<Constant Value="/" />
 				<NonTerminal Name="Unit" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="7">
+		</IRule>
+		<IRule Ordinal="7">
 			<Head>
 				<NonTerminal Name="Unit" />
 			</Head>
 			<Body>
 				<Terminal Name="number" />
 			</Body>
-		</Rule>
-		<Rule Ordinal="8">
+		</IRule>
+		<IRule Ordinal="8">
 			<Head>
 				<NonTerminal Name="Unit" />
 			</Head>
@@ -92,7 +92,7 @@
 				<NonTerminal Name="Add" />
 				<Constant Value=")" />
 			</Body>
-		</Rule>
+		</IRule>
 	</Grammar>
 	<ParsingTable>
 		<Shift State="0" Terminal="(" TransitionTo="1" />

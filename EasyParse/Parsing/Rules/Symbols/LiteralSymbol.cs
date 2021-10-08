@@ -1,8 +1,8 @@
 ﻿namespace EasyParse.Parsing.Rules.Symbols
 {
-    class ConstantSymbol : TerminalSymbol
+    class LiteralSymbol : TerminalSymbol
     {
-        public ConstantSymbol(string value) : base(value)
+        public LiteralSymbol(string value) : base(value)
         {
         }
 

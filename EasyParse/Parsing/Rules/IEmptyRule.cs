@@ -1,7 +1,6 @@
 ﻿namespace EasyParse.Parsing.Rules
 {
-    public interface IEmptyRule
+    public interface IEmptyRule : IProductionBuilder
     {
-        Rule Match(params Symbol[] symbols);
     }
 }

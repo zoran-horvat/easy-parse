@@ -13,22 +13,13 @@ namespace EasyParse.CalculatorDemo
     {
         public static void Main(string[] args)
         {
-            Grammar grammar = new ArithmeticRules().ToGrammarModel();
-            Console.WriteLine($"Grammar:\n{grammar}");
-            Parser fluentParser = Parser.From(grammar.BuildParser());
+            Parser parser = Parser.From(new ArithmeticRules().ToGrammarModel().BuildParser());
 
-            Parser parser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.ParserDefinition.xml");
             Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
             Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
             {
-                List<Token> tokens = fluentParser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
-                string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
-                Console.WriteLine(tokensReport);
-                Console.WriteLine(fluentParser.Parse(line));
-                Console.WriteLine(new string('=', 50));
-
                 ProcessAddition(addingParser, line);
                 Process(parser, line);
             }

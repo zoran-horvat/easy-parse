@@ -6,23 +6,23 @@
     <Lexeme Symbol="[\p{L}-]+" Name="word" />
   </LexicalRules>
   <Grammar>
-    <Rule Ordinal="0">
+    <IRule Ordinal="0">
       <Head>
         <NonTerminal Name="S'" />
       </Head>
       <Body>
         <NonTerminal Name="Text" />
       </Body>
-    </Rule>
-    <Rule Ordinal="1">
+    </IRule>
+    <IRule Ordinal="1">
       <Head>
         <NonTerminal Name="Text" />
       </Head>
       <Body>
         <NonTerminal Name="Line" />
       </Body>
-    </Rule>
-    <Rule Ordinal="2">
+    </IRule>
+    <IRule Ordinal="2">
       <Head>
         <NonTerminal Name="Text" />
       </Head>
@@ -30,16 +30,16 @@
         <NonTerminal Name="Text" />
         <NonTerminal Name="Line" />
       </Body>
-    </Rule>
-    <Rule Ordinal="3">
+    </IRule>
+    <IRule Ordinal="3">
       <Head>
         <NonTerminal Name="Line" />
       </Head>
       <Body>
         <Constant Value="&#xA;" />
       </Body>
-    </Rule>
-    <Rule Ordinal="4">
+    </IRule>
+    <IRule Ordinal="4">
       <Head>
         <NonTerminal Name="Line" />
       </Head>
@@ -47,16 +47,16 @@
         <NonTerminal Name="Words" />
         <Constant Value="&#xA;" />
       </Body>
-    </Rule>
-    <Rule Ordinal="5">
+    </IRule>
+    <IRule Ordinal="5">
       <Head>
         <NonTerminal Name="Words" />
       </Head>
       <Body>
         <Terminal Name="word" />
       </Body>
-    </Rule>
-    <Rule Ordinal="6">
+    </IRule>
+    <IRule Ordinal="6">
       <Head>
         <NonTerminal Name="Words" />
       </Head>
@@ -64,7 +64,7 @@
         <NonTerminal Name="Words" />
         <Terminal Name="word" />
       </Body>
-    </Rule>
+    </IRule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="&#xA;" TransitionTo="5" />

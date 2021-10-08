@@ -8,23 +8,23 @@
     <Lexeme Symbol="\\'" Name="quote" />
   </LexicalRules>
   <Grammar>
-    <Rule Ordinal="0">
+    <IRule Ordinal="0">
       <Head>
         <NonTerminal Name="S'" />
       </Head>
       <Body>
         <NonTerminal Name="String" />
       </Body>
-    </Rule>
-    <Rule Ordinal="1">
+    </IRule>
+    <IRule Ordinal="1">
       <Head>
         <NonTerminal Name="String" />
       </Head>
       <Body>
         <NonTerminal Name="Segment" />
       </Body>
-    </Rule>
-    <Rule Ordinal="2">
+    </IRule>
+    <IRule Ordinal="2">
       <Head>
         <NonTerminal Name="String" />
       </Head>
@@ -32,55 +32,55 @@
         <NonTerminal Name="String" />
         <NonTerminal Name="Segment" />
       </Body>
-    </Rule>
-    <Rule Ordinal="3">
+    </IRule>
+    <IRule Ordinal="3">
       <Head>
         <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="plaintext" />
       </Body>
-    </Rule>
-    <Rule Ordinal="4">
+    </IRule>
+    <IRule Ordinal="4">
       <Head>
         <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="newLine" />
       </Body>
-    </Rule>
-    <Rule Ordinal="5">
+    </IRule>
+    <IRule Ordinal="5">
       <Head>
         <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="carriageReturn" />
       </Body>
-    </Rule>
-    <Rule Ordinal="6">
+    </IRule>
+    <IRule Ordinal="6">
       <Head>
         <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="tab" />
       </Body>
-    </Rule>
-    <Rule Ordinal="7">
+    </IRule>
+    <IRule Ordinal="7">
       <Head>
         <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="backslash" />
       </Body>
-    </Rule>
-    <Rule Ordinal="8">
+    </IRule>
+    <IRule Ordinal="8">
       <Head>
         <NonTerminal Name="Segment" />
       </Head>
       <Body>
         <Terminal Name="quote" />
       </Body>
-    </Rule>
+    </IRule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="backslash" TransitionTo="7" />

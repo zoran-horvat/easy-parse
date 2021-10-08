@@ -16,15 +16,15 @@
     <Lexeme Symbol="@'[^']*'" Name="verbatimString" />
   </LexicalRules>
   <Grammar>
-    <Rule Ordinal="0">
+    <IRule Ordinal="0">
       <Head>
         <NonTerminal Name="S'" />
       </Head>
       <Body>
         <NonTerminal Name="Grammar" />
       </Body>
-    </Rule>
-    <Rule Ordinal="1">
+    </IRule>
+    <IRule Ordinal="1">
       <Head>
         <NonTerminal Name="Grammar" />
       </Head>
@@ -33,8 +33,8 @@
         <NonTerminal Name="Start" />
         <NonTerminal Name="Rules" />
       </Body>
-    </Rule>
-    <Rule Ordinal="2">
+    </IRule>
+    <IRule Ordinal="2">
       <Head>
         <NonTerminal Name="Start" />
       </Head>
@@ -44,8 +44,8 @@
         <Terminal Name="nonTerminal" />
         <Constant Value=";" />
       </Body>
-    </Rule>
-    <Rule Ordinal="3">
+    </IRule>
+    <IRule Ordinal="3">
       <Head>
         <NonTerminal Name="Lexemes" />
       </Head>
@@ -53,8 +53,8 @@
         <Constant Value="lexemes" />
         <Constant Value=":" />
       </Body>
-    </Rule>
-    <Rule Ordinal="4">
+    </IRule>
+    <IRule Ordinal="4">
       <Head>
         <NonTerminal Name="Lexemes" />
       </Head>
@@ -62,8 +62,8 @@
         <NonTerminal Name="Lexemes" />
         <NonTerminal Name="Lexeme" />
       </Body>
-    </Rule>
-    <Rule Ordinal="5">
+    </IRule>
+    <IRule Ordinal="5">
       <Head>
         <NonTerminal Name="Lexeme" />
       </Head>
@@ -72,8 +72,8 @@
         <NonTerminal Name="String" />
         <Constant Value=";" />
       </Body>
-    </Rule>
-    <Rule Ordinal="6">
+    </IRule>
+    <IRule Ordinal="6">
       <Head>
         <NonTerminal Name="Lexeme" />
       </Head>
@@ -83,29 +83,29 @@
         <NonTerminal Name="String" />
         <Constant Value=";" />
       </Body>
-    </Rule>
-    <Rule Ordinal="7">
+    </IRule>
+    <IRule Ordinal="7">
       <Head>
         <NonTerminal Name="Rules" />
       </Head>
       <Body>
         <Constant Value="rules" />
         <Constant Value=":" />
-        <NonTerminal Name="Rule" />
+        <NonTerminal Name="IRule" />
       </Body>
-    </Rule>
-    <Rule Ordinal="8">
+    </IRule>
+    <IRule Ordinal="8">
       <Head>
         <NonTerminal Name="Rules" />
       </Head>
       <Body>
         <NonTerminal Name="Rules" />
-        <NonTerminal Name="Rule" />
+        <NonTerminal Name="IRule" />
       </Body>
-    </Rule>
-    <Rule Ordinal="9">
+    </IRule>
+    <IRule Ordinal="9">
       <Head>
-        <NonTerminal Name="Rule" />
+        <NonTerminal Name="IRule" />
       </Head>
       <Body>
         <Terminal Name="nonTerminal" />
@@ -113,16 +113,16 @@
         <NonTerminal Name="RuleBody" />
         <Constant Value=";" />
       </Body>
-    </Rule>
-    <Rule Ordinal="10">
+    </IRule>
+    <IRule Ordinal="10">
       <Head>
         <NonTerminal Name="RuleBody" />
       </Head>
       <Body>
         <NonTerminal Name="Symbol" />
       </Body>
-    </Rule>
-    <Rule Ordinal="11">
+    </IRule>
+    <IRule Ordinal="11">
       <Head>
         <NonTerminal Name="RuleBody" />
       </Head>
@@ -130,47 +130,47 @@
         <NonTerminal Name="RuleBody" />
         <NonTerminal Name="Symbol" />
       </Body>
-    </Rule>
-    <Rule Ordinal="12">
+    </IRule>
+    <IRule Ordinal="12">
       <Head>
         <NonTerminal Name="Symbol" />
       </Head>
       <Body>
         <Terminal Name="terminal" />
       </Body>
-    </Rule>
-    <Rule Ordinal="13">
+    </IRule>
+    <IRule Ordinal="13">
       <Head>
         <NonTerminal Name="Symbol" />
       </Head>
       <Body>
         <Terminal Name="nonTerminal" />
       </Body>
-    </Rule>
-    <Rule Ordinal="14">
+    </IRule>
+    <IRule Ordinal="14">
       <Head>
         <NonTerminal Name="Symbol" />
       </Head>
       <Body>
         <NonTerminal Name="String" />
       </Body>
-    </Rule>
-    <Rule Ordinal="15">
+    </IRule>
+    <IRule Ordinal="15">
       <Head>
         <NonTerminal Name="String" />
       </Head>
       <Body>
         <Terminal Name="quotedString" />
       </Body>
-    </Rule>
-    <Rule Ordinal="16">
+    </IRule>
+    <IRule Ordinal="16">
       <Head>
         <NonTerminal Name="String" />
       </Head>
       <Body>
         <Terminal Name="verbatimString" />
       </Body>
-    </Rule>
+    </IRule>
   </Grammar>
   <ParsingTable>
     <Shift State="0" Terminal="ignore" TransitionTo="9" />
@@ -293,14 +293,14 @@
     <Goto State="6" NonTerminal="String" TransitionTo="14" />
     <Goto State="6" NonTerminal="Symbol" TransitionTo="22" />
     <Goto State="9" NonTerminal="String" TransitionTo="25" />
-    <Goto State="11" NonTerminal="Rule" TransitionTo="27" />
+    <Goto State="11" NonTerminal="IRule" TransitionTo="27" />
     <Goto State="15" NonTerminal="Rules" TransitionTo="29" />
     <Goto State="18" NonTerminal="RuleBody" TransitionTo="30" />
     <Goto State="18" NonTerminal="String" TransitionTo="14" />
     <Goto State="18" NonTerminal="Symbol" TransitionTo="13" />
     <Goto State="20" NonTerminal="String" TransitionTo="31" />
-    <Goto State="28" NonTerminal="Rule" TransitionTo="34" />
-    <Goto State="29" NonTerminal="Rule" TransitionTo="27" />
+    <Goto State="28" NonTerminal="IRule" TransitionTo="34" />
+    <Goto State="29" NonTerminal="IRule" TransitionTo="27" />
     <Goto State="30" NonTerminal="String" TransitionTo="14" />
     <Goto State="30" NonTerminal="Symbol" TransitionTo="22" />
   </ParsingTable>

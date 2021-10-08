@@ -1,16 +1,16 @@
 ﻿using System.Collections.Generic;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Parsing.Rules.Symbols
 {
     class NonTerminalSymbol : Symbol
     {
-        public NonTerminalSymbol(Rule rule)
+        public NonTerminalSymbol(IRule rule)
         {
             this.Rule = rule;
         }
 
-        public Rule Rule { get; }
-        public IEnumerable<Production> Lines => this.Rule.ProductionLines;
+        public IRule Rule { get; }
+        public IEnumerable<Production> Lines => this.Rule.Productions;
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new ParserGenerator.Models.Symbols.NonTerminal(this.Rule.Head.Name);
