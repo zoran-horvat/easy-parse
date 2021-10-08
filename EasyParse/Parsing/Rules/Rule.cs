@@ -36,15 +36,9 @@ namespace EasyParse.Parsing.Rules
             while (pending.Count > 0)
             {
                 Production production = pending.Dequeue();
-                IEnumerable<Production> children = production.Body
-                    .OfType<NonTerminalSymbol>()
-                    .Where(symbol => !produced.Contains(symbol.Rule.Head))
-                    .SelectMany(symbol => symbol.Rule.Lines);
-                foreach (Production child in children)
-                {
-                    if (!produced.Contains(child.Head)) produced.Add(child.Head);
-                    pending.Enqueue(child);
-                }
+                IEnumerable<Production> children = production.ChildLines(produced).ToList();
+                produced.Add(children.Select(production => production.Head).Distinct());
+                pending.Enqueue(children);
                 yield return production;
             }
         }

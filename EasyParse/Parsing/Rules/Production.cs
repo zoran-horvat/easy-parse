@@ -16,8 +16,11 @@ namespace EasyParse.Parsing.Rules
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
 
-        public IEnumerable<Production> ChildLines =>
-            this.Body.OfType<NonTerminalSymbol>().SelectMany(symbol => symbol.Lines);
+        public IEnumerable<Production> ChildLines(HashSet<NonTerminal> notIn) =>
+            this.Body
+                .OfType<NonTerminalSymbol>()
+                .Where(symbol => !notIn.Contains(symbol.Rule.Head))
+                .SelectMany(symbol => symbol.Rule.ProductionLines);
 
         public override string ToString() =>
             $"{this.Head} -> {this.BodyToString}";
