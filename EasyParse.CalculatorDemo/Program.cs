@@ -13,7 +13,7 @@ namespace EasyParse.CalculatorDemo
     {
         public static void Main(string[] args)
         {
-            Parser parser = Parser.From(new ArithmeticRules().ToGrammarModel().BuildParser());
+            Parser parser = new ArithmeticGrammar().BuildParser();
 
             Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 

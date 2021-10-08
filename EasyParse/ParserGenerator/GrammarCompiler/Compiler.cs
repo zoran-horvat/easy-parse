@@ -3,6 +3,7 @@ using System.Reflection;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing;
+using Grammar = EasyParse.ParserGenerator.Models.Rules.Grammar;
 
 namespace EasyParse.ParserGenerator.GrammarCompiler
 {

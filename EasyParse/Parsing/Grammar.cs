@@ -9,30 +9,21 @@ using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing
 {
-    public abstract class ParsingRules
+    public abstract class Grammar : PartialGrammar
     {
-        protected RegexSymbol Regex(string name, string expression) =>
-            new RegexSymbol(name, new Regex(expression));
-
-        protected Symbol Recursive(Func<IRule> factory) =>
-            new RecursiveNonTerminalSymbol(factory);
-
-        protected RegexSymbol WhiteSpace() =>
-            new RegexSymbol("white space", new Regex(@"\s+"));
-
-        protected IEmptyRule Rule([CallerMemberName] string nonTerminalName = "") =>
-            new EmptyRule(new NonTerminal(nonTerminalName));
-
         protected abstract IRule Start { get; }
         protected abstract IEnumerable<RegexSymbol> Ignore { get; }
 
-        public Grammar ToGrammarModel() =>
+        public Parser BuildParser() =>
+            Parser.From(this.ToGrammarModel().BuildParser());
+
+        internal ParserGenerator.Models.Rules.Grammar ToGrammarModel() =>
             this.Start.Expand().Aggregate(
                 this.ToEmptyGrammarModel().AddRange(this.ToIgnoreLexemeModels()),
                 (grammar, production) => production.AppendToGrammarModel(grammar));
 
-        private Grammar ToEmptyGrammarModel() =>
-            new Grammar(this.Start.Head.ToNonTerminalModel(), Enumerable.Empty<RuleDefinition>());
+        internal ParserGenerator.Models.Rules.Grammar ToEmptyGrammarModel() =>
+            new(this.Start.Head.ToNonTerminalModel(), Enumerable.Empty<RuleDefinition>());
 
         private IEnumerable<Lexeme> ToIgnoreLexemeModels() =>
             this.Ignore.Select(pattern => pattern.ToIgnoreLexemeModel());

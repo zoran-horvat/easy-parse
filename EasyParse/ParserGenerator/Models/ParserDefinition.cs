@@ -6,6 +6,7 @@ using EasyParse.ParserGenerator.Formatting;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.ParserGenerator.Models.Symbols;
 using EasyParse.Parsing;
+using Grammar = EasyParse.ParserGenerator.Models.Rules.Grammar;
 
 namespace EasyParse.ParserGenerator.Models
 {

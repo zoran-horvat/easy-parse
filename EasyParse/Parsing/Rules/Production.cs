@@ -53,7 +53,7 @@ namespace EasyParse.Parsing.Rules
         internal IEnumerable<RegexSymbol> RegularExpressions =>
             this.Body.OfType<RegexSymbol>();
 
-        internal Grammar AppendToGrammarModel(Grammar grammar) =>
+        internal ParserGenerator.Models.Rules.Grammar AppendToGrammarModel(ParserGenerator.Models.Rules.Grammar grammar) =>
             grammar
                 .Add(this.ToRuleDefinitionModel())
                 .AddRange(this.RegularExpressions.Select(expr => expr.ToLexemeModel()));

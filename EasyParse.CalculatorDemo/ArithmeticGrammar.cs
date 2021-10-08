@@ -6,10 +6,8 @@ using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.CalculatorDemo
 {
-    class ArithmeticRules : ParsingRules
+    class ArithmeticGrammar : Grammar
     {
-        private Symbol Number => Regex("number", @"\d+");
-
         public IRule Value() => Rule()
             .Regex("number", @"\d+").End()
             .Literal("(").Symbol(Additive).Literal(")").End();
