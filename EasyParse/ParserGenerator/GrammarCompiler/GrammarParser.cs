@@ -9,7 +9,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
     public class GrammarParser
     {
         public Grammar Parse(IEnumerable<string> text) => 
-            (Grammar)this.CreateParser().Parse(text).Compile(new Compiler());
+            (Grammar)this.CreateParser().Parse(text).Compile(new SymbolCompiler());
 
         private Parser CreateParser() => Parser.FromXmlResource(
             Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.GrammarParserDefinition.xml");

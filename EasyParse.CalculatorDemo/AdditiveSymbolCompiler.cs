@@ -2,7 +2,7 @@
 
 namespace EasyParse.CalculatorDemo
 {
-    class AdditiveCompiler : MethodMapCompiler
+    class AdditiveSymbolCompiler : MethodMapSymbolCompiler
     {
         // Corresponds to grammar line: number matches @'\d+';
         private int TerminalNumber(string value) => int.Parse(value);

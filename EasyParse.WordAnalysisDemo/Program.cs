@@ -15,7 +15,7 @@ namespace EasyParse.WordAnalysisDemo
             Console.WriteLine();
 
             Parser parser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.WordAnalysisDemo.Grammar.xml");
-            ICompiler compiler = new LongestWordsSelector();
+            ISymbolCompiler compiler = new LongestWordsSelector();
 
             foreach (List<string> text in ReadTexts())
             {

@@ -14,6 +14,7 @@ namespace EasyParse.CalculatorDemo
         public static void Main(string[] args)
         {
             Parser parser = new ArithmeticGrammar().BuildParser();
+            Compiler<int> compiler = parser.ToCompiler<int>(Calculator);
 
             Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
@@ -21,7 +22,7 @@ namespace EasyParse.CalculatorDemo
             foreach (string line in Console.In.ReadLinesUntil(string.Empty))
             {
                 ProcessAddition(addingParser, line);
-                Process(parser, line);
+                Process(parser, compiler, line);
             }
         }
 
@@ -29,11 +30,11 @@ namespace EasyParse.CalculatorDemo
         {
             ParsingResult result = parser.Parse(line);
             Console.WriteLine(result.IsSuccess
-                ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveCompiler())}"
+                ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveSymbolCompiler())}"
                 : $"Not an additive expression: {result.ErrorMessage}");
         }
 
-        private static void Process(Parser parser, string line)
+        private static void Process(Parser parser, Compiler<int> compiler, string line)
         {
             List<Token> tokens = parser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
@@ -46,10 +47,10 @@ namespace EasyParse.CalculatorDemo
             Console.WriteLine($"Syntax tree:{Environment.NewLine}{result}");
 
             Console.WriteLine();
-            Console.WriteLine($"{line} = {(result.IsSuccess ? result.Compile(Calculator) : result.ErrorMessage)}");
+            Console.WriteLine($"{line} = {compiler.Compile(line)}");
             Console.WriteLine(new string('-', 50));
         }
 
-        private static ICompiler Calculator => new Calculator();
+        private static ISymbolCompiler Calculator => new Calculator();
     }
 }

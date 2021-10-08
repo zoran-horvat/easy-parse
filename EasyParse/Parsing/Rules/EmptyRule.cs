@@ -14,16 +14,16 @@ namespace EasyParse.Parsing.Rules
 
         private Production EmptyProduction { get; }
 
-        public IPendingProductionEnd Literal(string value) =>
+        public IPendingMapping Literal(string value) =>
             this.BeginProduction(new LiteralSymbol(value));
 
-        public IPendingProductionEnd Regex(string name, string pattern) =>
+        public IPendingMapping Regex(string name, string pattern) =>
             this.BeginProduction(new RegexSymbol(name, new Regex(pattern)));
 
-        public IPendingProductionEnd Symbol(Func<IRule> factory) =>
+        public IPendingMapping Symbol(Func<IRule> factory) =>
             this.BeginProduction(new RecursiveNonTerminalSymbol(factory));
 
-        private IPendingProductionEnd BeginProduction(Symbol symbol) =>
+        private IPendingMapping BeginProduction(Symbol symbol) =>
             new IncompleteProductionBuilder(ImmutableList<Production>.Empty, this.EmptyProduction.Append(symbol));
     }
 }

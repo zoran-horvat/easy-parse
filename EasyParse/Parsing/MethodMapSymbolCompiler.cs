@@ -7,11 +7,11 @@ using EasyParse.Text;
 
 namespace EasyParse.Parsing
 {
-    public abstract class MethodMapCompiler : ICompiler
+    public abstract class MethodMapSymbolCompiler : ISymbolCompiler
     {
         private IEnumerable<(string terminal, Func<string, object> map)> TerminalMap { get; }
 
-        protected MethodMapCompiler()
+        protected MethodMapSymbolCompiler()
         {
             this.TerminalMap = this.FindTerminalMethods().ToList();
         }
@@ -62,16 +62,16 @@ namespace EasyParse.Parsing
         private IEnumerable<MethodInfo> FindMethods(string name, object[] arguments) =>
             this.GetType()
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
+                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapSymbolCompiler)) ?? false)
                 .Where(method => string.Equals(name, method.Name, StringComparison.InvariantCultureIgnoreCase))
                 .Where(method => !method.ContainsGenericParameters)
-                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
+                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapSymbolCompiler)) ?? false)
                 .Where(method => this.CanBind(method, arguments));
 
         private IEnumerable<(string label, Func<string, object> method)> FindTerminalMethods() =>
             this.GetType()
                 .GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)
-                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapCompiler)) ?? false)
+                .Where(method => method.DeclaringType?.IsSubclassOf(typeof(MethodMapSymbolCompiler)) ?? false)
                 .Where(method => method.GetParameters() is ParameterInfo[] parameters && parameters.Length == 1 && parameters[0].ParameterType == typeof(string))
                 .Where(method => typeof(object).IsAssignableFrom(method.ReturnType))
                 .Where(method => method.Name.StartsWith("Terminal", StringComparison.OrdinalIgnoreCase))

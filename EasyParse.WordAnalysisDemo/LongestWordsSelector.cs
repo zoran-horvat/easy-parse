@@ -2,7 +2,7 @@
 
 namespace EasyParse.WordAnalysisDemo
 {
-    class LongestWordsSelector : MethodMapCompiler
+    class LongestWordsSelector : MethodMapSymbolCompiler
     {
         private string TerminalWord(string value) => value;
 

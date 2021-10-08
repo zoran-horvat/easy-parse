@@ -29,7 +29,7 @@ namespace EasyParse.Parsing
             this.Reduce = reduce;
             this.Goto = @goto;
         }
-
+    
         public static Parser FromXmlResource(Assembly assembly, string resourceName, Func<Lexer, Lexer> lexicalRules) =>
             From(new XmlResource(assembly, resourceName).Load(), lexicalRules);
 
@@ -52,6 +52,9 @@ namespace EasyParse.Parsing
 
         public ParsingResult Parse(IEnumerable<string> lines) =>
             this.Parse(this.Lexer.Tokenize(Plaintext.Text(lines)));
+
+        public Compiler<T> ToCompiler<T>(ISymbolCompiler symbolCompiler) =>
+            new Compiler<T>(this, symbolCompiler);
 
         private ParsingResult Parse(IEnumerable<Token> input)
         {

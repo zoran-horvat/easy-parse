@@ -3,7 +3,7 @@ using EasyParse.Parsing;
 
 namespace EasyParse.CalculatorDemo
 {
-    public class Calculator : MethodMapCompiler
+    public class Calculator : MethodMapSymbolCompiler
     {
         private object TerminalNumber(string value) =>
             int.TryParse(value, out int result) ? (object)result : new OverflowException();

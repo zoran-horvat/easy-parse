@@ -2,7 +2,7 @@
 
 namespace EasyParse.ParserGenerator.GrammarCompiler
 {
-    public class StringCompiler : MethodMapCompiler
+    public class StringSymbolCompiler : MethodMapSymbolCompiler
     {
         private string TerminalNewLine(string value) => "\n";
 

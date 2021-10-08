@@ -19,22 +19,22 @@ namespace EasyParse.Testing
         protected bool Recognized(params string[] lines) =>
             this.Parsed(lines).IsSuccess;
 
-        protected object Compiled(ICompiler compiler, string input) =>
+        protected object Compiled(ISymbolCompiler compiler, string input) =>
             this.Parsed(input).Compile(compiler);
 
-        protected object Compiled(ICompiler compiler, params string[] lines) =>
+        protected object Compiled(ISymbolCompiler compiler, params string[] lines) =>
             this.Parsed(lines).Compile(compiler);
 
-        protected object CompiledLine(ICompiler compiler, string input) =>
+        protected object CompiledLine(ISymbolCompiler compiler, string input) =>
             this.Parsed(input).Compile(compiler);
 
-        protected T Compiled<T>(ICompiler compiler, params string[] lines) where T : class =>
+        protected T Compiled<T>(ISymbolCompiler compiler, params string[] lines) where T : class =>
             (T) this.Compiled(compiler, lines);
 
-        protected T Compiled<T>(ICompiler compiler, Action<object> orElse, params string[] lines) where T : class => 
+        protected T Compiled<T>(ISymbolCompiler compiler, Action<object> orElse, params string[] lines) where T : class => 
             this.Compiled<T>(this.Compiled(compiler, lines), orElse);
 
-        protected T CompiledLine<T>(ICompiler compiler, Action<object> orElse, string input) where T : class =>
+        protected T CompiledLine<T>(ISymbolCompiler compiler, Action<object> orElse, string input) where T : class =>
             this.Compiled<T>(this.Compiled(compiler, input), orElse);
 
         private T Compiled<T>(object result, Action<object> orElse) where T : class

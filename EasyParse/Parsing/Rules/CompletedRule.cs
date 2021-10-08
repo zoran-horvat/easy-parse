@@ -36,16 +36,16 @@ namespace EasyParse.Parsing.Rules
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
 
-        public IPendingProductionEnd Literal(string value) =>
+        public IPendingMapping Literal(string value) =>
             this.BeginLine().Literal(value);
 
-        public IPendingProductionEnd Regex(string name, string pattern) =>
+        public IPendingMapping Regex(string name, string pattern) =>
             this.BeginLine().Regex(name, pattern);
 
-        public IPendingProductionEnd Symbol(Func<IRule> factory) =>
+        public IPendingMapping Symbol(Func<IRule> factory) =>
             this.BeginLine().Symbol(factory);
 
-        private IPendingProductionEnd BeginLine() =>
+        private IPendingMapping BeginLine() =>
             new IncompleteProductionBuilder(this.Lines, new Production(this.Head));
     }
 }

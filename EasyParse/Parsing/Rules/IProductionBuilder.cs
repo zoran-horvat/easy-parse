@@ -4,8 +4,8 @@ namespace EasyParse.Parsing.Rules
 {
     public interface IProductionBuilder
     {
-        IPendingProductionEnd Literal(string value);
-        IPendingProductionEnd Regex(string name, string pattern);
-        IPendingProductionEnd Symbol(Func<IRule> factory);
+        IPendingMapping Literal(string value);
+        IPendingMapping Regex(string name, string pattern);
+        IPendingMapping Symbol(Func<IRule> factory);
     }
 }

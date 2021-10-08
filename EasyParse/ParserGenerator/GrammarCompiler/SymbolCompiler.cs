@@ -7,12 +7,12 @@ using Grammar = EasyParse.ParserGenerator.Models.Rules.Grammar;
 
 namespace EasyParse.ParserGenerator.GrammarCompiler
 {
-    public class Compiler : MethodMapCompiler
+    public class SymbolCompiler : MethodMapSymbolCompiler
     {
         private Parser StringParser { get; } = Parser.FromXmlResource(
             Assembly.GetExecutingAssembly(), "EasyParse.ParserGenerator.GrammarCompiler.StringParserDefinition.xml");
 
-        private StringCompiler StringCompiler { get; } = new StringCompiler();
+        private StringSymbolCompiler StringSymbolCompiler { get; } = new StringSymbolCompiler();
 
         private string TerminalQuotedString(string value) =>
             this.CompileString(value.Substring(1, value.Length - 2));
@@ -28,7 +28,7 @@ namespace EasyParse.ParserGenerator.GrammarCompiler
 
         private string CompileString(string content) =>
             string.IsNullOrEmpty(content) ? string.Empty
-            : (string)this.StringParser.Parse(content).Compile(this.StringCompiler);
+            : (string)this.StringParser.Parse(content).Compile(this.StringSymbolCompiler);
 
         private Grammar Grammar(ImmutableList<Lexeme> lexemes, NonTerminal start, ImmutableList<RuleDefinition> rules) => new Grammar(start, rules).AddRange(lexemes);
         

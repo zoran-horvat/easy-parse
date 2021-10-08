@@ -24,7 +24,7 @@ namespace EasyParse.Parsing
         public bool IsSuccess =>
             this.Content is Node;
 
-        public object Compile(ICompiler nodeCompiler) =>
+        public object Compile(ISymbolCompiler nodeCompiler) =>
             this.Content is Error error ? error
             : this.Content is Node node ? this.Compile(node, nodeCompiler)
             : this.Throw(this.Content);
@@ -32,7 +32,7 @@ namespace EasyParse.Parsing
         private object Throw(object result) =>
             throw new InvalidOperationException(result is Error error ? error.Message : "Cannot compile failed parse result.");
 
-        private object Compile(Node node, ICompiler nodeCompiler) =>
+        private object Compile(Node node, ISymbolCompiler nodeCompiler) =>
             node is TerminalNode terminal ? this.Compile(terminal, nodeCompiler)
             : node is NonTerminalNode nonTerminal ? this.Compile(nonTerminal, nodeCompiler)
             : this.InternalError(node);
@@ -40,10 +40,10 @@ namespace EasyParse.Parsing
         private object InternalError(Node node) =>
             new CompileError(node.Location, node.GetType().Name, Enumerable.Empty<object>());
 
-        private object Compile(TerminalNode terminal, ICompiler nodeCompiler) =>
+        private object Compile(TerminalNode terminal, ISymbolCompiler nodeCompiler) =>
             nodeCompiler.CompileTerminal(terminal.Label, terminal.Value);
 
-        private object Compile(NonTerminalNode nonTerminal, ICompiler nodeCompiler) =>
+        private object Compile(NonTerminalNode nonTerminal, ISymbolCompiler nodeCompiler) =>
             nodeCompiler.CompileNonTerminal(
                 nonTerminal.Location,
                 nonTerminal.Label, 

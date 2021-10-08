@@ -2,7 +2,7 @@
 
 namespace EasyParse.CalculatorDemo
 {
-    class FullAdditiveParenthesizer : MethodMapCompiler
+    class FullAdditiveParenthesizer : MethodMapSymbolCompiler
     {
         private string TerminalNumber(string value) => value;
 
