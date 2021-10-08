@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using EasyParse.Parsing;
 using EasyParse.Parsing.Rules;
+using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.CalculatorDemo
 {

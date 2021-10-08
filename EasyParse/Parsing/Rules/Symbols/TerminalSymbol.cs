@@ -1,7 +1,6 @@
-﻿using EasyParse.ParserGenerator.Models.Rules;
-using EasyParse.ParserGenerator.Models.Symbols;
+﻿using EasyParse.ParserGenerator.Models.Symbols;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Parsing.Rules.Symbols
 {
     public abstract class TerminalSymbol : Symbol
     {

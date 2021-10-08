@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Parsing.Rules.Symbols
 {
     public sealed class NonTerminal : IEquatable<NonTerminal>
     {
@@ -20,7 +20,7 @@ namespace EasyParse.Parsing.Rules
         public override bool Equals(object obj) =>
             this.Equals(obj as NonTerminal);
 
-        public override int GetHashCode() => 
+        public override int GetHashCode() =>
             this.Name.GetHashCode();
 
         public static bool operator ==(NonTerminal a, NonTerminal b) =>

@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing.Rules;
+using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing
 {

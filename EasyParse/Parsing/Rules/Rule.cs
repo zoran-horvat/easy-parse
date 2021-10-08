@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EasyParse.Parsing.Rules.Symbols;
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;

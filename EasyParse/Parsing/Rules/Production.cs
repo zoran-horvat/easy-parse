@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using EasyParse.ParserGenerator.Models.Rules;
+using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing.Rules
 {

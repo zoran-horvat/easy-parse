@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using EasyParse.ParserGenerator.Models.Rules;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Parsing.Rules.Symbols
 {
     public class RegexSymbol : TerminalSymbol
     {
@@ -16,7 +16,7 @@ namespace EasyParse.Parsing.Rules
             new IgnoreLexeme(this.Expression.ToString());
 
         public Lexeme ToLexemeModel() =>
-            new LexemePattern(base.Name, this.Expression.ToString());
+            new LexemePattern(Name, this.Expression.ToString());
 
         public override string ToString() =>
             $"regex({this.Expression})";

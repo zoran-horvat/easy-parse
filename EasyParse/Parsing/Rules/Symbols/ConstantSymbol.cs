@@ -1,4 +1,4 @@
-﻿namespace EasyParse.Parsing.Rules
+﻿namespace EasyParse.Parsing.Rules.Symbols
 {
     class ConstantSymbol : TerminalSymbol
     {
@@ -6,7 +6,7 @@
         {
         }
 
-        public string Value => base.Name;
+        public string Value => Name;
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new ParserGenerator.Models.Symbols.Constant(this.Value);
