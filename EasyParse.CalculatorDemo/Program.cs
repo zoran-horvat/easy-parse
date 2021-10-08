@@ -12,16 +12,23 @@ namespace EasyParse.CalculatorDemo
     {
         public static void Main(string[] args)
         {
-            Parser parser = new ArithmeticGrammar().BuildParser();
-            Compiler compiler = parser.ToCompiler(Calculator);
-
-            Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
-
-            Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
-            foreach (string line in Console.In.ReadLinesUntil(string.Empty))
+            try
             {
-                ProcessAddition(addingParser, line);
-                Process(parser, compiler, line);
+                Parser parser = new ArithmeticGrammar().BuildParser();
+                Compiler compiler = parser.ToCompiler(Calculator);
+
+                Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
+
+                Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
+                foreach (string line in Console.In.ReadLinesUntil(string.Empty))
+                {
+                    ProcessAddition(addingParser, line);
+                    Process(parser, compiler, line);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
             }
         }
 
