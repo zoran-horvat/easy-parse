@@ -9,6 +9,7 @@ namespace EasyParse.Parsing.Rules.Symbols
             this.Factory = factory;
         }
 
+        public override Type Type => this.Materialize().Type;
         private Func<IRule> Factory { get; }
 
         public NonTerminalSymbol Materialize() =>

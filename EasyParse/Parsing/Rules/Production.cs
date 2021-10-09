@@ -41,9 +41,6 @@ namespace EasyParse.Parsing.Rules
             symbol is RecursiveNonTerminalSymbol recursive ? recursive.Materialize()
             : symbol;
 
-        public override string ToString() =>
-            $"{this.Head} -> {this.BodyToString}";
-
         internal RuleDefinition ToRuleDefinitionModel() =>
             new RuleDefinition(this.Head.ToNonTerminalModel(), this.Body.Select(symbol => symbol.ToSymbolModel()).ToArray());
 
@@ -58,7 +55,13 @@ namespace EasyParse.Parsing.Rules
                 .Add(this.ToRuleDefinitionModel())
                 .AddRange(this.RegularExpressions.Select(expr => expr.ToLexemeModel()));
 
-        private string BodyToString =>
-            string.Join(" ", this.Body.Select(x => x.ToString()));
+        public override string ToString() => 
+            ToString(this.Head, this.Body);
+
+        public static string ToString(NonTerminal head, IEnumerable<Symbol> body) =>
+            $"{head} -> {ToString(body)}";
+
+        public static string ToString(IEnumerable<Symbol> body) =>
+            string.Join(" ", body.Select(x => x.ToString()));
     }
 }

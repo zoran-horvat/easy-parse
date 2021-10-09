@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EasyParse.Parsing.Rules.Symbols
 {
@@ -11,6 +12,7 @@ namespace EasyParse.Parsing.Rules.Symbols
         }
 
         public IRule Rule { get; }
+        public override Type Type => this.Rule.Type;
         public NonTerminal Head => this.Rule.Head;
         public IEnumerable<Production> Productions => this.Rule.Productions;
 

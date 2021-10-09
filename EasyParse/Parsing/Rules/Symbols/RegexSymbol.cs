@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System;
+using System.Text.RegularExpressions;
 using EasyParse.ParserGenerator.Models.Rules;
 
 namespace EasyParse.Parsing.Rules.Symbols
@@ -11,6 +12,7 @@ namespace EasyParse.Parsing.Rules.Symbols
         }
 
         public Regex Expression { get; }
+        public override Type Type => typeof(string);
 
         public Lexeme ToIgnoreLexemeModel() =>
             new IgnoreLexeme(this.Expression.ToString());

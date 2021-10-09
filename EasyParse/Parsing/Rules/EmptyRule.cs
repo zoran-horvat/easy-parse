@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Text.RegularExpressions;
-using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing.Rules
 {
@@ -9,21 +7,21 @@ namespace EasyParse.Parsing.Rules
     {
         public EmptyRule(NonTerminal head)
         {
-            this.EmptyProduction = new Production(head);
+            this.Head = head;
         }
 
-        private Production EmptyProduction { get; }
+        private NonTerminal Head { get; }
 
         public IPendingMapping Literal(string value) =>
-            this.BeginProduction(new LiteralSymbol(value));
+            this.BeginProduction().Literal(value);
 
         public IPendingMapping Regex(string name, string pattern) =>
-            this.BeginProduction(new RegexSymbol(name, new Regex(pattern)));
+            this.BeginProduction().Regex(name, pattern);
 
         public IPendingMapping Symbol(Func<IRule> factory) =>
-            this.BeginProduction(new RecursiveNonTerminalSymbol(factory));
+            this.BeginProduction().Symbol(factory);
 
-        private IPendingMapping BeginProduction(Symbol symbol) =>
-            new IncompleteProductionBuilder(ImmutableList<Production>.Empty, this.EmptyProduction.Append(symbol));
+        private IPendingMapping BeginProduction() =>
+            new IncompleteProductionBuilder(ImmutableList<Production>.Empty, this.Head);
     }
 }

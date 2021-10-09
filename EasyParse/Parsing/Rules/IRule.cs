@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EasyParse.Parsing.Rules
 {
     public interface IRule : IProductionBuilder
     {
         NonTerminal Head { get; }
+        Type Type { get; }
         IEnumerable<Production> Productions { get; }
         IEnumerable<Production> Expand();
     }

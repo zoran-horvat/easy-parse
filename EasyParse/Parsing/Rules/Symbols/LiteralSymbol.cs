@@ -1,4 +1,6 @@
-﻿namespace EasyParse.Parsing.Rules.Symbols
+﻿using System;
+
+namespace EasyParse.Parsing.Rules.Symbols
 {
     class LiteralSymbol : TerminalSymbol
     {
@@ -7,6 +9,7 @@
         }
 
         public string Value => Name;
+        public override Type Type => typeof(string);
 
         public override ParserGenerator.Models.Symbols.Symbol ToSymbolModel() =>
             new ParserGenerator.Models.Symbols.Constant(this.Value);

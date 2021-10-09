@@ -7,13 +7,15 @@ namespace EasyParse.Parsing.Rules
 {
     public class CompletedRule : IRule
     {
-        internal CompletedRule(NonTerminal head, ImmutableList<Production> lines)
+        internal CompletedRule(NonTerminal head, Type type, ImmutableList<Production> lines)
         {
             this.Head = head;
+            this.Type = type;
             this.Lines = lines;
         }
 
         public NonTerminal Head { get; }
+        public Type Type { get; }
         public IEnumerable<Production> Productions => Lines;
         private ImmutableList<Production> Lines { get; }
 
@@ -45,6 +47,6 @@ namespace EasyParse.Parsing.Rules
             this.BeginLine().Symbol(factory);
 
         private IPendingMapping BeginLine() =>
-            new IncompleteProductionBuilder(this.Lines, new Production(this.Head));
+            new IncompleteProductionBuilder(this.Lines, this.Head);
     }
 }
