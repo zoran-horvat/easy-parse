@@ -14,6 +14,9 @@ namespace EasyParse.Parsing
         public Parser BuildParser() =>
             Parser.From(this.ToGrammarModel().BuildParser());
 
+        public Compiler BuildCompiler() =>
+            this.BuildParser().ToCompiler(new DynamicSymbolicCompiler(this.Start.Expand()));
+
         internal ParserGenerator.Models.Rules.Grammar ToGrammarModel() =>
             this.Start.Expand().Aggregate(
                 this.ToEmptyGrammarModel().AddRange(this.ToIgnoreLexemeModels()),

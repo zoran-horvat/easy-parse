@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace EasyParse.Parsing.Rules
 {
@@ -23,6 +24,18 @@ namespace EasyParse.Parsing.Rules
         {
             foreach (T item in items)
                 queue.Enqueue(item);
+        }
+
+        public static IEnumerable<T> DefaultIfEmpty<T>(this IEnumerable<T> sequence, Func<T> defaultFactory)
+        {
+            bool isEmpty = true;
+            foreach (T obj in sequence)
+            {
+                yield return obj;
+                isEmpty = false;
+            }
+
+            if (isEmpty) yield return defaultFactory();
         }
     }
 }

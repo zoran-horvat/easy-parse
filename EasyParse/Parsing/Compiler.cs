@@ -11,7 +11,7 @@ namespace EasyParse.Parsing
             this.SymbolCompiler = symbolCompiler;
         }
 
-        private Parser Parser { get; }
+        public Parser Parser { get; }
         private ISymbolCompiler SymbolCompiler { get; }
 
         public CompilationResult<object> Compile(string line) =>

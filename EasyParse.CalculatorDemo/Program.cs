@@ -14,8 +14,8 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                Parser parser = new ArithmeticGrammar().BuildParser();
-                Compiler compiler = parser.ToCompiler(Calculator);
+                Compiler compiler = new ArithmeticGrammar().BuildCompiler();
+                Parser parser = compiler.Parser;
 
                 Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 
