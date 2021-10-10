@@ -24,6 +24,7 @@ namespace EasyParse.Parsing.Rules
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
         public Transform Transform { get; }
+        public Type ReturnType => this.Transform.ReturnType;
 
         public Production WithReturnType(Type type) =>
             this.WithTransform(this.Transform.WithReturnType(type));

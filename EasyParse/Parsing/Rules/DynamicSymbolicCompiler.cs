@@ -12,13 +12,44 @@ namespace EasyParse.Parsing.Rules
     {
         public DynamicSymbolicCompiler(IEnumerable<Production> productions)
         {
-            this.Productions = productions.ToList();
+            this.Productions = WithValidTypes(productions.ToList());
             this.TerminalTransforms =
                 RegexSymbols(this.Productions).ToDictionary(symbol => symbol.Name, symbol => symbol.Transform);
         }
 
         private IEnumerable<Production> Productions { get; }
         private Dictionary<string, Func<string, object>> TerminalTransforms { get; }
+
+        private static List<Production> WithValidTypes(List<Production> productions)
+        {
+            Dictionary<NonTerminal, Type> nonTerminalTypes = NonTerminalTypes(productions);
+
+            productions.SelectMany(production => UnassignableTypes(production, nonTerminalTypes))
+                .ToList()
+                .ForEach(tuple => throw new ArgumentException(
+                    $"Cannot pass {tuple.argument.Name} as {tuple.transformParameter.Name} in rule {tuple.production}"));
+
+            return productions;
+        }
+
+        private static Dictionary<NonTerminal, Type> NonTerminalTypes(IEnumerable<Production> productions) =>
+            productions.Select(production => (symbol: production.Head, type: production.ReturnType))
+                .Distinct()
+                .ToDictionary(tuple => tuple.symbol, tuple => tuple.type);
+
+        private static IEnumerable<(Production production, Type argument, Type transformParameter)> UnassignableTypes(
+            Production production, Dictionary<NonTerminal, Type> nonTerminalTypes) =>
+            ComponentTypes(production, nonTerminalTypes)
+                .Zip(production.Transform.ArgumentTypes, (value, transform) => (production, value, transform))
+                .Where(tuple => !tuple.transform.IsAssignableFrom(tuple.value));
+
+        private static IEnumerable<Type> ComponentTypes(
+            Production production, Dictionary<NonTerminal, Type> nonTerminalTypes) =>
+            production.Body.Select(symbol => TypeOf(symbol, nonTerminalTypes));
+
+        private static Type TypeOf(Symbol symbol, Dictionary<NonTerminal, Type> nonTerminalTypes) =>
+            symbol is NonTerminalSymbol nonTerminal ? nonTerminalTypes[nonTerminal.Head] 
+            : symbol.Type;
 
         private static IEnumerable<RegexSymbol> RegexSymbols(IEnumerable<Production> productions) =>
             productions
