@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -54,7 +53,7 @@ namespace EasyParse.Parsing.Rules
             : throw new ArgumentException(this.IncorrectArgumentCountMessage(argumentTypes.Length));
 
         private IRule ToRule<TResult>(Func<object[], object> function, Type[] argumentTypes) =>
-            new CompletedRule(this.Head, typeof(TResult), this.AllProductions<TResult>(function, argumentTypes));
+            new CompletedRule(this.Head, this.AllProductions<TResult>(function, argumentTypes));
 
         private ImmutableList<Production> AllProductions<TResult>(Func<object[], object> function, Type[] argumentTypes) =>
             this.CompletedLines.Add(this.ToProduction<TResult>(function, argumentTypes));

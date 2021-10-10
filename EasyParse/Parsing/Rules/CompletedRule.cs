@@ -7,22 +7,34 @@ namespace EasyParse.Parsing.Rules
 {
     public class CompletedRule : IRule
     {
-        internal CompletedRule(NonTerminal head, Type type, ImmutableList<Production> lines)
+        internal CompletedRule(NonTerminal head, ImmutableList<Production> lines)
         {
             this.Head = head;
-            this.Type = type;
             this.Lines = lines;
         }
 
         public NonTerminal Head { get; }
-        public Type Type { get; }
-        public IEnumerable<Production> Productions => Lines;
+        public IEnumerable<Production> Productions => this.GetProductions(this.Type);
         private ImmutableList<Production> Lines { get; }
+
+        public Type Type =>
+            this.Lines
+                .Select(line => (type: line.Transform.ReturnType, production: line))
+                .Aggregate((a, b) =>
+                    a.type.IsAssignableFrom(b.type) ? a
+                    : b.type.IsAssignableFrom(a.type) ? b
+                    : throw new ArgumentException(
+                        $"Could not decide common return type for {a.type.Name} and {b.type.Name} " +
+                        $"in rule {b.production}"))
+                .type;
+
+        private IEnumerable<Production> GetProductions(Type returnType) =>
+            this.Lines.Select(line => line.WithReturnType(returnType));
 
         public IEnumerable<Production> Expand()
         {
-            HashSet<NonTerminal> produced = this.Lines.Select(line => line.Head).ToHashSet();
-            Queue<Production> pending = this.Lines.ToQueue();
+            HashSet<NonTerminal> produced = new HashSet<NonTerminal>() { this.Head };
+            Queue<Production> pending = this.Productions.ToQueue();
 
             while (pending.Count > 0)
             {

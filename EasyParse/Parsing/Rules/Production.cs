@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using EasyParse.ParserGenerator.Collections;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing.Rules.Symbols;
 
@@ -11,6 +10,11 @@ namespace EasyParse.Parsing.Rules
     public class Production
     {
         public Production(NonTerminal head, ImmutableList<Symbol> body, Transform transform)
+            : this(head, (IEnumerable<Symbol>)body, transform)
+        {
+        }
+
+        private Production(NonTerminal head, IEnumerable<Symbol> body, Transform transform)
         {
             this.Head = head;
             this.Body = body;
@@ -20,6 +24,13 @@ namespace EasyParse.Parsing.Rules
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
         public Transform Transform { get; }
+
+        public Production WithReturnType(Type type) =>
+            this.WithTransform(this.Transform.WithReturnType(type));
+
+        private Production WithTransform(Transform transform) =>
+            transform.Equals(this.Transform) ? this
+            : new Production(this.Head, this.Body, transform);
 
         public IEnumerable<Production> ChildLines(HashSet<NonTerminal> notIn) =>
             this.Body
