@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing.Rules;
@@ -14,8 +15,17 @@ namespace EasyParse.Parsing
         public Parser BuildParser() =>
             Parser.From(this.ToGrammarModel().BuildParser());
 
-        public Compiler BuildCompiler() =>
-            this.BuildParser().ToCompiler(new DynamicSymbolicCompiler(this.Start.Expand()));
+        public Compiler<T> BuildCompiler<T>() =>
+            typeof(T).IsAssignableFrom(this.Start.Type) ? this.CreateCompiler<T>()
+            : throw new ArgumentException(
+                $"Cannot create compiler for type {typeof(T).Name} " + 
+                $"from grammar which produces type {this.Start.Type.Name}");
+
+        private Compiler<T> CreateCompiler<T>() =>
+            this.BuildParser().ToCompiler<T>(this.CreateSymbolCompiler());
+
+        private ISymbolCompiler CreateSymbolCompiler() =>
+            new DynamicSymbolicCompiler(this.Start.Expand());
 
         internal ParserGenerator.Models.Rules.Grammar ToGrammarModel() =>
             this.Start.Expand().Aggregate(

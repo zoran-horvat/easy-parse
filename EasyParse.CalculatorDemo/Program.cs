@@ -14,7 +14,7 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                Compiler compiler = new ArithmeticGrammar().BuildCompiler();
+                Compiler<int> compiler = new ArithmeticGrammar().BuildCompiler<int>();
                 Parser parser = compiler.Parser;
 
                 Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
@@ -31,15 +31,7 @@ namespace EasyParse.CalculatorDemo
             }
         }
 
-        private static void ProcessAddition(Parser parser, string line)
-        {
-            ParsingResult result = parser.Parse(line);
-            Console.WriteLine(result.IsSuccess
-                ? $"{result.Compile(new FullAdditiveParenthesizer())} = {result.Compile(new AdditiveSymbolCompiler())}"
-                : $"Not an additive expression: {result.ErrorMessage}");
-        }
-
-        private static void Process(Parser parser, Compiler compiler, string line)
+        private static void Process<T>(Parser parser, Compiler<T> compiler, string line)
         {
             List<Token> tokens = parser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
@@ -52,7 +44,7 @@ namespace EasyParse.CalculatorDemo
             Console.WriteLine($"Syntax tree:{Environment.NewLine}{result}");
 
             Console.WriteLine();
-            CompilationResult<object> compiled = compiler.Compile(line);
+            CompilationResult<T> compiled = compiler.Compile(line);
             Console.WriteLine($"{line} = {compiled}");
             Console.WriteLine(new string('-', 50));
         }

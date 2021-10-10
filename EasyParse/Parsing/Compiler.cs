@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using EasyParse.Parsing.Formatting;
 using EasyParse.Parsing.Nodes.Errors;
 
 namespace EasyParse.Parsing
 {
-    public class Compiler
+    public class Compiler<T>
     {
         internal Compiler(Parser parser, ISymbolCompiler symbolCompiler)
         {
@@ -16,26 +15,25 @@ namespace EasyParse.Parsing
         public Parser Parser { get; }
         private ISymbolCompiler SymbolCompiler { get; }
 
-        public CompilationResult<object> Compile(string line) =>
+        public CompilationResult<T> Compile(string line) =>
             this.Compile(this.Parser.Parse(line));
 
-        public CompilationResult<object> Compile(IEnumerable<string> lines) =>
+        public CompilationResult<T> Compile(IEnumerable<string> lines) =>
             this.Compile(this.Parser.Parse(lines));
 
-        private CompilationResult<object> Compile(ParsingResult parsingResult)
+        private CompilationResult<T> Compile(ParsingResult parsingResult)
         {
             try
             {
-                return parsingResult.IsSuccess ? this.OnParsed(parsingResult)
-                    : this.OnParsingFailed(parsingResult);
+                return parsingResult.IsSuccess ? this.OnParsed(parsingResult) : this.OnParsingFailed(parsingResult);
             }
             catch (Exception ex)
             {
-                return CompilationResult<object>.Error(ex.Message);
+                return CompilationResult<T>.Error(ex.Message);
             }
         }
 
-        private CompilationResult<object> OnParsed(ParsingResult parsingResult)
+        private CompilationResult<T> OnParsed(ParsingResult parsingResult)
         {
             try
             {
@@ -43,15 +41,18 @@ namespace EasyParse.Parsing
             }
             catch (Exception ex)
             {
-                return CompilationResult<object>.Error(ex.Message);
+                return CompilationResult<T>.Error(ex.Message);
             }
         }
 
-        private CompilationResult<object> OnCompiled(object result) =>
-            result is CompileError error ? CompilationResult<object>.Error($"Error at {error.Location}: {error.Message}")
-            : CompilationResult<object>.Success(result);
+        private CompilationResult<T> OnCompiled(object result) =>
+            result is CompileError error ? CompilationResult<T>.Error($"Error at {error.Location}: {error.Message}")
+            : result is null ? CompilationResult<T>.Error("Compiler returned null")
+            : result is T compiled ? CompilationResult<T>.Success(compiled)
+            : CompilationResult<T>.Error(
+                $"Compiler returned object of type {result.GetType().Name} when expecting {typeof(T).Name}");
 
-        private CompilationResult<object> OnParsingFailed(ParsingResult parsingResult) =>
-            CompilationResult<object>.Error(parsingResult.ErrorMessage);
+        private CompilationResult<T> OnParsingFailed(ParsingResult parsingResult) =>
+            CompilationResult<T>.Error(parsingResult.ErrorMessage);
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Parsing.Rules.Symbols;
 using EasyParse.Text;
