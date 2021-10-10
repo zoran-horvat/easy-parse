@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using EasyParse.Parsing.Formatting;
+using EasyParse.Parsing.Nodes.Errors;
 
 namespace EasyParse.Parsing
 {
@@ -33,8 +35,21 @@ namespace EasyParse.Parsing
             }
         }
 
-        private CompilationResult<object> OnParsed(ParsingResult parsingResult) =>
-            CompilationResult<object>.Success((object)parsingResult.Compile(this.SymbolCompiler));
+        private CompilationResult<object> OnParsed(ParsingResult parsingResult)
+        {
+            try
+            {
+                return this.OnCompiled((object)parsingResult.Compile(this.SymbolCompiler));
+            }
+            catch (Exception ex)
+            {
+                return CompilationResult<object>.Error(ex.Message);
+            }
+        }
+
+        private CompilationResult<object> OnCompiled(object result) =>
+            result is CompileError error ? CompilationResult<object>.Error($"Error at {error.Location}: {error.Message}")
+            : CompilationResult<object>.Success(result);
 
         private CompilationResult<object> OnParsingFailed(ParsingResult parsingResult) =>
             CompilationResult<object>.Error(parsingResult.ErrorMessage);

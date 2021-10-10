@@ -8,7 +8,7 @@ namespace EasyParse.Parsing
     public abstract class PartialGrammar
     {
         protected RegexSymbol WhiteSpace() =>
-            new("white space", new Regex(@"\s+"));
+            RegexSymbol.Create("white space", new Regex(@"\s+"), x => x);
 
         protected IEmptyRule Rule([CallerMemberName] string nonTerminalName = "") =>
             new EmptyRule(new NonTerminal(nonTerminalName));

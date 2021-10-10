@@ -15,8 +15,8 @@ namespace EasyParse.Parsing.Rules
         public IPendingMapping Literal(string value) =>
             this.BeginProduction().Literal(value);
 
-        public IPendingMapping Regex(string name, string pattern) =>
-            this.BeginProduction().Regex(name, pattern);
+        public IPendingMapping Regex<T>(string name, string pattern, Func<string, T> transform) =>
+            this.BeginProduction().Regex(name, pattern, transform);
 
         public IPendingMapping Symbol(Func<IRule> factory) =>
             this.BeginProduction().Symbol(factory);

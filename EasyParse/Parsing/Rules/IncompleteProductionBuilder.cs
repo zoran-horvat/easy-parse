@@ -28,8 +28,8 @@ namespace EasyParse.Parsing.Rules
         public IPendingMapping Literal(string value) =>
             this.Append(new LiteralSymbol(value));
 
-        public IPendingMapping Regex(string name, string pattern) =>
-            this.Append(new RegexSymbol(name, new Regex(pattern)));
+        public IPendingMapping Regex<T>(string name, string pattern, Func<string, T> transform) =>
+            this.Append(RegexSymbol.Create(name, new Regex(pattern), transform));
 
         public IPendingMapping Symbol(Func<IRule> factory) =>
             this.Append(new RecursiveNonTerminalSymbol(factory));

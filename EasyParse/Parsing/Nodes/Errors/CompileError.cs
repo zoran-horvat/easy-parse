@@ -16,21 +16,7 @@ namespace EasyParse.Parsing.Nodes.Errors
         {
         }
 
-        private static string FormatMapping(string label, IEnumerable<object> arguments)
-        {
-            using (IEnumerator<object> enumerator = arguments.GetEnumerator())
-            {
-                if (!enumerator.MoveNext()) return label;
-
-                StringBuilder list = new StringBuilder(enumerator.Current.ToString());
-
-                while (enumerator.MoveNext())
-                {
-                    list.Append(" ").Append(enumerator.Current);
-                }
-
-                return $"{list} -> {label}";
-            }
-        }
+        private static string FormatMapping(string label, IEnumerable<object> arguments) =>
+            $"Could not transform {string.Join(" ", arguments)} to {label}";
     }
 }

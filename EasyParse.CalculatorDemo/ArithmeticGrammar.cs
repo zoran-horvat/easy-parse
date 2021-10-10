@@ -8,7 +8,7 @@ namespace EasyParse.CalculatorDemo
     class ArithmeticGrammar : Grammar
     {
         public IRule Value() => Rule()
-            .Regex("number", @"\d+").ToInt()
+            .Regex("number", @"\d+", int.Parse).ToIdentity<int>()
             .Literal("(").Symbol(Additive).Literal(")").To((string _, int additive, string _) => additive);
 
         public IRule Multiplicative() => Rule()

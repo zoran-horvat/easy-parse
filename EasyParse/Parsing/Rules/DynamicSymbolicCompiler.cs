@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using EasyParse.Parsing.Nodes.Errors;
+using EasyParse.Parsing.Rules.Symbols;
 using EasyParse.Text;
 
 namespace EasyParse.Parsing.Rules
@@ -11,11 +13,23 @@ namespace EasyParse.Parsing.Rules
         public DynamicSymbolicCompiler(IEnumerable<Production> productions)
         {
             this.Productions = productions.ToList();
+            this.TerminalTransforms =
+                RegexSymbols(this.Productions).ToDictionary(symbol => symbol.Name, symbol => symbol.Transform);
         }
 
         private IEnumerable<Production> Productions { get; }
+        private Dictionary<string, Func<string, object>> TerminalTransforms { get; }
 
-        public object CompileTerminal(string label, string value) => value;
+        private static IEnumerable<RegexSymbol> RegexSymbols(IEnumerable<Production> productions) =>
+            productions
+                .SelectMany(production => production.Body)
+                .OfType<RegexSymbol>()
+                .GroupBy(symbol => symbol.Name)
+                .Select(group => group.First());
+
+        public object CompileTerminal(string label, string value) => 
+            this.TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value) 
+            : (object)value;
 
         public object CompileNonTerminal(Location location, string label, object[] children) =>
             this.TransformsFor(label, this.TypesOf(children))

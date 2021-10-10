@@ -22,7 +22,6 @@ namespace EasyParse.CalculatorDemo
                 Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
                 foreach (string line in Console.In.ReadLinesUntil(string.Empty))
                 {
-                    ProcessAddition(addingParser, line);
                     Process(parser, compiler, line);
                 }
             }
@@ -53,7 +52,8 @@ namespace EasyParse.CalculatorDemo
             Console.WriteLine($"Syntax tree:{Environment.NewLine}{result}");
 
             Console.WriteLine();
-            Console.WriteLine($"{line} = {compiler.Compile(line)}");
+            CompilationResult<object> compiled = compiler.Compile(line);
+            Console.WriteLine($"{line} = {compiled}");
             Console.WriteLine(new string('-', 50));
         }
 
