@@ -1,14 +1,10 @@
-# Easy Parse: Parser Generator and Plaintext Compiler
+# Easy Parse: Grammar-based Plaintext Parser with Fluent Builder
 
-Library project which helps incorporate parsing and compiling plaintext into other projects. Basic feature include:
-* Compiling grammar into a reusable parser definition - Parser generation is an expensive operation, and hence it is done only once per grammar
-* Loading parser definition at run time - Building a parser from XML definition is cheap and it can be done over and over again with every execution of the program
-* Applying the parser to plaintext - Parser can be applied to a plaintext to build a parse tree for that text
-* Compiling the parse tree into an object - Caller can supply a custom compiler which will be applied to the parse tree
-
-Grammar format is intuitive and simple. It mostly resembles what one would write with pencil and paper.
-Below is an example of a valid grammar which recognizes arithmetic expressions with addition and subtraction.
-Operators are applied from left to right.
+Easy Parse is the library project which helps incorporate parsing and compiling plaintext into other projects. Basic feature include:
+* Defining grammar by combining literals and regular expressions into complex (possibly recursive) definitions
+* Associating functions that transform recognized text into objects
+* Generating a compiler object from the grammar and mapping functions
+* Applying the compiler to convert any text that satisfies grammar into a graph of objects
 
 ## Installing Easy Parse
 
@@ -24,7 +20,45 @@ To add from .NET CLI, execute instruction:
 dotnet add package CodingHelmet.EasyParse
 ```
 
+## Use Case 1: Defining Grammar and Compilation Rules via Fluent API
+
+Parsing grammar can be defined by deriving a class from the [`EasyParse.Parsing.Grammar`](EasyParse/Parsing/Grammar.cs) abstract base class.
+
+```c#
+public abstract class Grammar
+{
+    protected abstract IRule Start { get; }
+    protected abstract IEnumerable<RegexSymbol> Ignore { get; }
+
+    public Parser BuildParser();
+    public Compiler<T> BuildCompiler<T>();
+}
+```
+
+Implementer must provide the two abstract property getters:
+
+* `Start` - Returns the grammar's start nonterminal symbol
+* `Ignore` - Returns a sequence of regular expressions that define lexemes that should be ignored in the input
+
+Once the grammar is defined, the caller can call its `BuildCompiler` method to obtain an instance of `Compiler<T>` class, which can be used to transform any text into strongly-typed object of type `T` by applying the rules defined in the grammar file.
+
+### Building Grammar Rules Using Fluent API
+
+Every grammar class can build rules by first calling the `Rule()` protected method inherited from the [`PartialGrammar`](EasyParse/Parsing/PartialGrammar.cs) base class, and then following its fluent rule building interface.
+
+## Use Case 2: Writing Grammar File and Compiler Class
+
+* Compiling grammar into a reusable parser definition - Parser generation is an expensive operation, and hence it is done only once per grammar
+* Loading parser definition at run time - Building a parser from XML definition is cheap and it can be done over and over again with every execution of the program
+* Applying the parser to plaintext - Parser can be applied to a plaintext to build a parse tree for that text
+* Compiling the parse tree into an object - Caller can supply a custom compiler which will be applied to the parse tree
+
+Grammar format is intuitive and simple. It mostly resembles what one would write with pencil and paper.
+Below is an example of a valid grammar which recognizes arithmetic expressions with addition and subtraction.
+Operators are applied from left to right.
+
 ## Defining a Grammar
+
 [[Source: EasyParse.CalculatorDemo/AdditionGrammar.txt]](EasyParse.CalculatorDemo/AdditionGrammar.txt)
 
     lexemes:                   # Mandatory block defining lexical analysis
