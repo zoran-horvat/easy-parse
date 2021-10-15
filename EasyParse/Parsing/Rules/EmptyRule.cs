@@ -12,8 +12,8 @@ namespace EasyParse.Parsing.Rules
 
         private NonTerminalName Head { get; }
 
-        public IPendingMapping Match(params Symbol[] symbols) =>
-            this.BeginProduction().Match(symbols);
+        public IPendingMapping Match(Symbol first, params Symbol[] others) =>
+            this.BeginProduction().Match(first, others);
 
         public IPendingMapping Literal(string value) =>
             this.BeginProduction().Literal(value);

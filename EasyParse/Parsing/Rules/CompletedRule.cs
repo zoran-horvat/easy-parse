@@ -51,8 +51,8 @@ namespace EasyParse.Parsing.Rules
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
 
-        public IPendingMapping Match(params Symbol[] symbols) =>
-            this.BeginLine().Match(symbols);
+        public IPendingMapping Match(Symbol first, params Symbol[] others) =>
+            this.BeginLine().Match(first, others);
 
         public IPendingMapping Literal(string value) =>
             this.BeginLine().Literal(value);

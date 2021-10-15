@@ -25,8 +25,8 @@ namespace EasyParse.Parsing.Rules
         private NonTerminalName Head { get; }
         private ImmutableList<Symbol> Body { get; }
 
-        public IPendingMapping Match(params Symbol[] symbols) =>
-            symbols.Aggregate(this, (rule, symbol) => rule.Append(symbol));
+        public IPendingMapping Match(Symbol first, params Symbol[] others) =>
+            others.Aggregate(this.Append(first), (rule, symbol) => rule.Append(symbol));
 
         public IPendingMapping Literal(string value) =>
             this.Append(new LiteralSymbol(value));
