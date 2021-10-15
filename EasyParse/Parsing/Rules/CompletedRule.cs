@@ -52,18 +52,6 @@ namespace EasyParse.Parsing.Rules
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
 
         public IPendingMapping Match(Symbol first, params Symbol[] others) =>
-            this.BeginLine().Match(first, others);
-
-        public IPendingMapping Literal(string value) =>
-            this.BeginLine().Literal(value);
-
-        public IPendingMapping Regex<T>(string name, string pattern, Func<string, T> transform) =>
-            this.BeginLine().Regex(name, pattern, transform);
-
-        public IPendingMapping Symbol(Func<IRule> factory) =>
-            this.BeginLine().Symbol(factory);
-
-        private IPendingMapping BeginLine() =>
-            new IncompleteProductionBuilder(this.Lines, this.Head);
+            new IncompleteProductionBuilder(this.Lines, this.Head).Match(first, others);
     }
 }
