@@ -9,14 +9,12 @@ namespace EasyParse.CalculatorDemo
     class ArithmeticGrammar : Grammar
     {
         private NonTerminal Unit => () => Rule()
-            .Match<int>(RegexSymbol.Create<int>("number", new Regex(@"\d+"), int.Parse))
-            .Match("-", Unit).To((string _, int value) => -value)
+            .Match<int>(RegexSymbol.Create("number", new Regex(@"\d+"), int.Parse))
+            .Match("-", Unit).To((string _, int x) => -x)
             .Match("(", Additive, ")").To((string _, int additive, string _) => additive);
-
+        
         private NonTerminal Multiplicative => () => Rule()
-            .Match<int>(Unit)
-            .Match<int>(Multiplied)
-            .Match<int>(Divided);
+            .MatchOne<int>(Unit, Multiplied, Divided);
 
         private NonTerminal Multiplied => () => Rule()
             .Match(Multiplicative, "*", Unit).To((int a, string _, int b) => a * b);
@@ -25,9 +23,7 @@ namespace EasyParse.CalculatorDemo
             .Match(Multiplicative, "/", Unit).To((int a, string _, int b) => a / b);
 
         public NonTerminal Additive => () => Rule()
-            .Match<int>(Multiplicative)
-            .Match<int>(Added)
-            .Match<int>(Subtracted);
+            .MatchOne<int>(Multiplicative, Added, Subtracted);
 
         public NonTerminal Added => () => Rule()
             .Match(Additive, "+", Multiplicative).To((int a, string _, int b) => a + b);
