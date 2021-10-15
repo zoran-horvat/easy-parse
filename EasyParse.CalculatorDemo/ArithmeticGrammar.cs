@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using EasyParse.Parsing;
 using EasyParse.Parsing.Rules;
 using EasyParse.Parsing.Rules.Symbols;
@@ -9,7 +8,7 @@ namespace EasyParse.CalculatorDemo
     class ArithmeticGrammar : Grammar
     {
         private NonTerminal Unit => () => Rule()
-            .Match<int>(RegexSymbol.Create("number", new Regex(@"\d+"), int.Parse))
+            .Match<int>(Pattern.Int)
             .Match("-", Unit).To((string _, int x) => -x)
             .Match("(", Additive, ")").To((string _, int additive, string _) => additive);
         
@@ -35,6 +34,6 @@ namespace EasyParse.CalculatorDemo
             Rule().Match(Additive).ToIdentity<int>();
 
         protected override IRule Start => this.Expression();
-        protected override IEnumerable<RegexSymbol> Ignore => new[] { WhiteSpace() };
+        protected override IEnumerable<RegexSymbol> Ignore => new[] { Pattern.WhiteSpace };
     }
 }
