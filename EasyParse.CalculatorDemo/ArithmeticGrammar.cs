@@ -9,30 +9,30 @@ namespace EasyParse.CalculatorDemo
     class ArithmeticGrammar : Grammar
     {
         private NonTerminal Unit => () => Rule()
-            .Match(RegexSymbol.Create<int>("number", new Regex(@"\d+"), int.Parse)).ToIdentity<int>()
+            .Match<int>(RegexSymbol.Create<int>("number", new Regex(@"\d+"), int.Parse))
             .Match("-", Unit).To((string _, int value) => -value)
-            .Match("(", Additive, ")").To((string _, int additive, string _) => additive);      
+            .Match("(", Additive, ")").To((string _, int additive, string _) => additive);
 
         private NonTerminal Multiplicative => () => Rule()
-            .Match(Unit).ToIdentity<int>()
-            .Match(Multiply).ToIdentity<int>()
-            .Match(Divide).ToIdentity<int>();
+            .Match<int>(Unit)
+            .Match<int>(Multiplied)
+            .Match<int>(Divided);
 
-        private NonTerminal Multiply => () => Rule()
+        private NonTerminal Multiplied => () => Rule()
             .Match(Multiplicative, "*", Unit).To((int a, string _, int b) => a * b);
 
-        private NonTerminal Divide => () => Rule()
+        private NonTerminal Divided => () => Rule()
             .Match(Multiplicative, "/", Unit).To((int a, string _, int b) => a / b);
 
         public NonTerminal Additive => () => Rule()
-            .Match(Multiplicative).ToIdentity<int>()
-            .Match(Add).ToIdentity<int>()
-            .Match(Subtract).ToIdentity<int>();
+            .Match<int>(Multiplicative)
+            .Match<int>(Added)
+            .Match<int>(Subtracted);
 
-        public NonTerminal Add => () => Rule()
+        public NonTerminal Added => () => Rule()
             .Match(Additive, "+", Multiplicative).To((int a, string _, int b) => a + b);
 
-        public NonTerminal Subtract => () => Rule()
+        public NonTerminal Subtracted => () => Rule()
             .Match(Additive, "-", Multiplicative).To((int a, string _, int b) => a - b);
 
         public IRule Expression() => 
