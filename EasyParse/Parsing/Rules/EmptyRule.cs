@@ -5,12 +5,12 @@ namespace EasyParse.Parsing.Rules
 {
     internal class EmptyRule : IEmptyRule
     {
-        public EmptyRule(NonTerminal head)
+        public EmptyRule(NonTerminalName head)
         {
             this.Head = head;
         }
 
-        private NonTerminal Head { get; }
+        private NonTerminalName Head { get; }
 
         public IPendingMapping Match(params Symbol[] symbols) =>
             this.BeginProduction().Match(symbols);

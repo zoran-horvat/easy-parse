@@ -2,9 +2,9 @@
 
 namespace EasyParse.Parsing.Rules
 {
-    public sealed class NonTerminal : IEquatable<NonTerminal>
+    public sealed class NonTerminalName : IEquatable<NonTerminalName>
     {
-        public NonTerminal(string name)
+        public NonTerminalName(string name)
         {
             this.Name = name;
         }
@@ -14,19 +14,19 @@ namespace EasyParse.Parsing.Rules
         public ParserGenerator.Models.Symbols.NonTerminal ToNonTerminalModel() =>
             new ParserGenerator.Models.Symbols.NonTerminal(this.Name);
 
-        public bool Equals(NonTerminal other) =>
+        public bool Equals(NonTerminalName other) =>
             other?.Name == this.Name;
 
         public override bool Equals(object obj) =>
-            this.Equals(obj as NonTerminal);
+            this.Equals(obj as NonTerminalName);
 
         public override int GetHashCode() =>
             this.Name.GetHashCode();
 
-        public static bool operator ==(NonTerminal a, NonTerminal b) =>
+        public static bool operator ==(NonTerminalName a, NonTerminalName b) =>
             a?.Equals(b) ?? b is null;
 
-        public static bool operator !=(NonTerminal a, NonTerminal b) =>
+        public static bool operator !=(NonTerminalName a, NonTerminalName b) =>
             !(a == b);
 
         public override string ToString() => this.Name;

@@ -9,19 +9,19 @@ namespace EasyParse.Parsing.Rules
 {
     public class Production
     {
-        public Production(NonTerminal head, ImmutableList<Symbol> body, Transform transform)
+        public Production(NonTerminalName head, ImmutableList<Symbol> body, Transform transform)
             : this(head, (IEnumerable<Symbol>)body, transform)
         {
         }
 
-        private Production(NonTerminal head, IEnumerable<Symbol> body, Transform transform)
+        private Production(NonTerminalName head, IEnumerable<Symbol> body, Transform transform)
         {
             this.Head = head;
             this.Body = body;
             this.Transform = transform;
         }
 
-        public NonTerminal Head { get; }
+        public NonTerminalName Head { get; }
         public IEnumerable<Symbol> Body { get; }
         public Transform Transform { get; }
         public Type ReturnType => this.Transform.ReturnType;
@@ -33,7 +33,7 @@ namespace EasyParse.Parsing.Rules
             transform.Equals(this.Transform) ? this
             : new Production(this.Head, this.Body, transform);
 
-        public IEnumerable<Production> ChildLines(HashSet<NonTerminal> notIn) =>
+        public IEnumerable<Production> ChildLines(HashSet<NonTerminalName> notIn) =>
             this.Body
                 .Select(this.ResolveRecursion)
                 .OfType<NonTerminalSymbol>()
@@ -61,7 +61,7 @@ namespace EasyParse.Parsing.Rules
         public override string ToString() => 
             ToString(this.Head, this.Body);
 
-        public static string ToString(NonTerminal head, IEnumerable<Symbol> body) =>
+        public static string ToString(NonTerminalName head, IEnumerable<Symbol> body) =>
             $"{head} -> {ToString(body)}";
 
         public static string ToString(IEnumerable<Symbol> body) =>

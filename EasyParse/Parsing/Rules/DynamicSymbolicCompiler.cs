@@ -21,7 +21,7 @@ namespace EasyParse.Parsing.Rules
 
         private static List<Production> WithValidTypes(List<Production> productions)
         {
-            Dictionary<NonTerminal, Type> nonTerminalTypes = NonTerminalTypes(productions);
+            Dictionary<NonTerminalName, Type> nonTerminalTypes = NonTerminalTypes(productions);
 
             productions.SelectMany(production => UnassignableTypes(production, nonTerminalTypes))
                 .ToList()
@@ -31,22 +31,22 @@ namespace EasyParse.Parsing.Rules
             return productions;
         }
 
-        private static Dictionary<NonTerminal, Type> NonTerminalTypes(IEnumerable<Production> productions) =>
+        private static Dictionary<NonTerminalName, Type> NonTerminalTypes(IEnumerable<Production> productions) =>
             productions.Select(production => (symbol: production.Head, type: production.ReturnType))
                 .Distinct()
                 .ToDictionary(tuple => tuple.symbol, tuple => tuple.type);
 
         private static IEnumerable<(Production production, Type argument, Type transformParameter)> UnassignableTypes(
-            Production production, Dictionary<NonTerminal, Type> nonTerminalTypes) =>
+            Production production, Dictionary<NonTerminalName, Type> nonTerminalTypes) =>
             ComponentTypes(production, nonTerminalTypes)
                 .Zip(production.Transform.ArgumentTypes, (value, transform) => (production, value, transform))
                 .Where(tuple => !tuple.transform.IsAssignableFrom(tuple.value));
 
         private static IEnumerable<Type> ComponentTypes(
-            Production production, Dictionary<NonTerminal, Type> nonTerminalTypes) =>
+            Production production, Dictionary<NonTerminalName, Type> nonTerminalTypes) =>
             production.Body.Select(symbol => TypeOf(symbol, nonTerminalTypes));
 
-        private static Type TypeOf(Symbol symbol, Dictionary<NonTerminal, Type> nonTerminalTypes) =>
+        private static Type TypeOf(Symbol symbol, Dictionary<NonTerminalName, Type> nonTerminalTypes) =>
             symbol is NonTerminalSymbol nonTerminal ? nonTerminalTypes[nonTerminal.Head] 
             : symbol.Type;
 

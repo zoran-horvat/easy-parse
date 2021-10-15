@@ -10,5 +10,8 @@ namespace EasyParse.Parsing.Rules
 
         public static implicit operator Symbol(string value) =>
             new LiteralSymbol(value);
+
+        public static implicit operator Symbol(NonTerminal nonTerminal) =>
+            new RecursiveNonTerminalSymbol(nonTerminal.Invoke);
     }
 }

@@ -12,7 +12,7 @@ namespace EasyParse.Parsing
             RegexSymbol.Create("white space", new Regex(@"\s+"), x => x);
 
         protected IEmptyRule Rule([CallerMemberName] string nonTerminalName = "") =>
-            new EmptyRule(new NonTerminal(nonTerminalName));
+            new EmptyRule(new NonTerminalName(nonTerminalName));
 
         protected Symbol Symbol(Func<IRule> nonTerminal) => 
             new RecursiveNonTerminalSymbol(nonTerminal);

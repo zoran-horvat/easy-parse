@@ -8,13 +8,13 @@ namespace EasyParse.Parsing.Rules
 {
     internal class IncompleteProductionBuilder : IPendingMapping
     {
-        public IncompleteProductionBuilder(ImmutableList<Production> completedLines, NonTerminal head)
+        public IncompleteProductionBuilder(ImmutableList<Production> completedLines, NonTerminalName head)
             : this(completedLines, head, ImmutableList<Symbol>.Empty)
         {
         }
 
         private IncompleteProductionBuilder(
-            ImmutableList<Production> completedLines, NonTerminal head, ImmutableList<Symbol> body)
+            ImmutableList<Production> completedLines, NonTerminalName head, ImmutableList<Symbol> body)
         {
             this.CompletedLines = completedLines;
             this.Head = head;
@@ -22,7 +22,7 @@ namespace EasyParse.Parsing.Rules
         }
 
         protected ImmutableList<Production> CompletedLines { get; }
-        private NonTerminal Head { get; }
+        private NonTerminalName Head { get; }
         private ImmutableList<Symbol> Body { get; }
 
         public IPendingMapping Match(params Symbol[] symbols) =>

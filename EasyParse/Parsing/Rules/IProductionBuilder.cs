@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using EasyParse.Parsing.Rules.Symbols;
 
 namespace EasyParse.Parsing.Rules
 {

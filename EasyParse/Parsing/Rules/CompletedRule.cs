@@ -7,7 +7,7 @@ namespace EasyParse.Parsing.Rules
 {
     public class CompletedRule : IRule
     {
-        internal CompletedRule(NonTerminal head, ImmutableList<Production> lines)
+        internal CompletedRule(NonTerminalName head, ImmutableList<Production> lines)
         {
             this.Head = head;
             this.Lines = lines;
@@ -15,7 +15,7 @@ namespace EasyParse.Parsing.Rules
 
         private IRule RuleFactory() => this;
 
-        public NonTerminal Head { get; }
+        public NonTerminalName Head { get; }
         public IEnumerable<Production> Productions => this.GetProductions(this.Type);
         private ImmutableList<Production> Lines { get; }
 
@@ -35,7 +35,7 @@ namespace EasyParse.Parsing.Rules
 
         public IEnumerable<Production> Expand()
         {
-            HashSet<NonTerminal> produced = new HashSet<NonTerminal>() { this.Head };
+            HashSet<NonTerminalName> produced = new HashSet<NonTerminalName>() { this.Head };
             Queue<Production> pending = this.Productions.ToQueue();
 
             while (pending.Count > 0)
