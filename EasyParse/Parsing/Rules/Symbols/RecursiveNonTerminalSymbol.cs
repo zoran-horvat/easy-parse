@@ -2,7 +2,7 @@
 
 namespace EasyParse.Parsing.Rules.Symbols
 {
-    class RecursiveNonTerminalSymbol : Symbol
+    public class RecursiveNonTerminalSymbol : Symbol
     {
         public RecursiveNonTerminalSymbol(Func<IRule> factory)
         {

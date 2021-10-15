@@ -25,6 +25,9 @@ namespace EasyParse.Parsing.Rules
         private NonTerminal Head { get; }
         private ImmutableList<Symbol> Body { get; }
 
+        public IPendingMapping Match(params Symbol[] symbols) =>
+            symbols.Aggregate(this, (rule, symbol) => rule.Append(symbol));
+
         public IPendingMapping Literal(string value) =>
             this.Append(new LiteralSymbol(value));
 
@@ -34,8 +37,8 @@ namespace EasyParse.Parsing.Rules
         public IPendingMapping Symbol(Func<IRule> factory) =>
             this.Append(new RecursiveNonTerminalSymbol(factory));
 
-        private IPendingMapping Append(Symbol symbol) =>
-            new IncompleteProductionBuilder(this.CompletedLines, this.Head, this.Body.Add(symbol));
+        private IncompleteProductionBuilder Append(Symbol symbol) =>
+            new(this.CompletedLines, this.Head, this.Body.Add(symbol));
 
         public IRule To<T1, TResult>(Func<T1, TResult> transform) => this.To<TResult>(transform.DynamicInvoke, typeof(T1));
         public IRule To<T1, T2, TResult>(Func<T1, T2, TResult> transform) => this.To<TResult>(transform.DynamicInvoke, typeof(T1), typeof(T2));

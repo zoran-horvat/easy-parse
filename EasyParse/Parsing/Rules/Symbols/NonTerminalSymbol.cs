@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace EasyParse.Parsing.Rules.Symbols
 {
 
-    class NonTerminalSymbol : Symbol
+    public class NonTerminalSymbol : Symbol
     {
         public NonTerminalSymbol(IRule rule)
         {

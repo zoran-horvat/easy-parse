@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using EasyParse.Parsing;
 using EasyParse.Parsing.Rules;
 using EasyParse.Parsing.Rules.Symbols;
@@ -7,34 +8,35 @@ namespace EasyParse.CalculatorDemo
 {
     class ArithmeticGrammar : Grammar
     {
-        public IRule Unit() => Rule()
-            .Regex("number", @"\d+", int.Parse).ToIdentity<int>()
-            .Literal("-").Symbol(Unit).To((string _, int value) => -value)
-            .Literal("(").Symbol(Additive).Literal(")").To((string _, int additive, string _) => additive);
+        private Symbol Unit => Symbol(() => Rule()
+            .Match(RegexSymbol.Create<int>("number", new Regex(@"\d+"), int.Parse)).ToIdentity<int>()
+            .Match("-", Unit).To((string _, int value) => -value)
+            .Match("(", Symbol(Additive), ")").To((string _, int additive, string _) => additive));
 
-        public IRule Multiplicative() => Rule()
-            .Symbol(Unit).ToIdentity<int>()
-            .Symbol(Multiply).ToIdentity<int>()
-            .Symbol(Divide).ToIdentity<int>();
+        private IRule Multiplicative() => Rule()
+            .Match(Unit).ToIdentity<int>()
+            .Match(Symbol(Multiply)).ToIdentity<int>()
+            .Match(Symbol(Divide)).ToIdentity<int>();
 
         public IRule Multiply() => Rule()
-            .Symbol(Multiplicative).Literal("*").Symbol(Unit).To((int a, string _, int b) => a * b);
+            .Match(Symbol(Multiplicative), "*", Unit).To((int a, string _, int b) => a * b);
 
         public IRule Divide() => Rule()
-            .Symbol(Multiplicative).Literal("/").Symbol(Unit).To((int a, string _, int b) => a / b);
+            .Match(Symbol(Multiplicative), "/", Unit).To((int a, string _, int b) => a / b);
 
         public IRule Additive() => Rule()
-            .Symbol(Multiplicative).ToIdentity<int>()
-            .Symbol(Add).ToIdentity<int>()
-            .Symbol(Subtract).ToIdentity<int>();
+            .Match(Symbol(Multiplicative)).ToIdentity<int>()
+            .Match(Symbol(Add)).ToIdentity<int>()
+            .Match(Symbol(Subtract)).ToIdentity<int>();
 
         public IRule Add() => Rule()
-            .Symbol(Additive).Literal("+").Symbol(Multiplicative).To((int a, string _, int b) => a + b);
+            .Match(Symbol(Additive), "+", Symbol(Multiplicative)).To((int a, string _, int b) => a + b);
 
         public IRule Subtract() => Rule()
-            .Symbol(Additive).Literal("-").Symbol(Multiplicative).To((int a, string _, int b) => a - b);
+            .Match(Symbol(Additive), "-", Symbol(Multiplicative)).To((int a, string _, int b) => a - b);
 
-        public IRule Expression() => Rule().Symbol(Additive).ToIdentity<int>();
+        public IRule Expression() => 
+            Rule().Match(Symbol(Additive)).ToIdentity<int>();
 
         protected override IRule Start => this.Expression();
         protected override IEnumerable<RegexSymbol> Ignore => new[] { WhiteSpace() };

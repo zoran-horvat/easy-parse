@@ -13,6 +13,8 @@ namespace EasyParse.Parsing.Rules
             this.Lines = lines;
         }
 
+        private IRule RuleFactory() => this;
+
         public NonTerminal Head { get; }
         public IEnumerable<Production> Productions => this.GetProductions(this.Type);
         private ImmutableList<Production> Lines { get; }
@@ -48,6 +50,9 @@ namespace EasyParse.Parsing.Rules
 
         public override string ToString() =>
             string.Join(Environment.NewLine, this.Lines.Select(x => x.ToString()));
+
+        public IPendingMapping Match(params Symbol[] symbols) =>
+            this.BeginLine().Match(symbols);
 
         public IPendingMapping Literal(string value) =>
             this.BeginLine().Literal(value);
