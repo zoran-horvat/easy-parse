@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using EasyParse.Parsing.Rules;
 using EasyParse.Parsing.Rules.Symbols;
 

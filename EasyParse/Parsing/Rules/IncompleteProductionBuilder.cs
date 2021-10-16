@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -52,8 +53,55 @@ namespace EasyParse.Parsing.Rules
         public IRule To<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult> transform) => this.To<TResult>(transform.DynamicInvoke, typeof(T1), typeof(T2), typeof(T3), typeof(T4), typeof(T5), typeof(T6), typeof(T7), typeof(T8), typeof(T9), typeof(T10));
 
         private IRule To<TResult>(Func<object[], object> transform, params Type[] argumentTypes) =>
-            this.Body.Count == argumentTypes.Length ? this.ToRule<TResult>(transform, argumentTypes)
-            : throw new ArgumentException(this.IncorrectArgumentCountMessage(argumentTypes.Length));
+            this.NonLiteralsCount != argumentTypes.Length ? this.ThrowIncorrectArgumentsCount<IRule>(argumentTypes.Length)
+            : this.ContainsLiterals ? this.NonLiteralsTo<TResult>(transform, argumentTypes)
+            : this.ToRule<TResult>(transform, argumentTypes);
+
+        private IRule NonLiteralsTo<TResult>(Func<object[], object> transform, Type[] argumentTypes) =>
+            this.NonLiteralsTo<TResult>(transform, this.InjectLiteralsTo(argumentTypes).ToArray(), this.NonLiteralIndices);
+
+        private IRule NonLiteralsTo<TResult>(
+            Func<object[], object> nonLiteralsTransform, Type[] argumentTypesWithLiterals, int[] argumentsMap)
+        {
+            object[] ArgumentsPurge(object[] arguments) => 
+                argumentsMap.Select(index => arguments[index]).ToArray();
+
+            object AugmentedTransform(object[] arguments) =>
+                nonLiteralsTransform(ArgumentsPurge(arguments));
+
+            return this.ToRule<TResult>(AugmentedTransform, argumentTypesWithLiterals);
+        }
+
+        private IEnumerable<Type> InjectLiteralsTo(IEnumerable<Type> argumentTypes)
+        {
+            using IEnumerator<Type> argumentType = argumentTypes.GetEnumerator();
+
+            foreach (Symbol symbol in this.Body)
+            {
+                if (symbol is LiteralSymbol)
+                {
+                    yield return typeof(string);
+                }
+                else
+                {
+                    argumentType.MoveNext();
+                    yield return argumentType.Current;
+                }
+            }
+        }
+
+        private int[] NonLiteralIndices =>
+            this.Body
+                .Select((symbol, index) => (symbol, index))
+                .Where(tuple => tuple.symbol is not LiteralSymbol)
+                .Select(tuple => tuple.index)
+                .ToArray();
+
+        private int NonLiteralsCount =>
+            this.Body.Count(symbol => symbol is not LiteralSymbol);
+
+        private bool ContainsLiterals =>
+            this.Body.Any(symbol => symbol is LiteralSymbol);
 
         private IRule ToRule<TResult>(Func<object[], object> function, Type[] argumentTypes) =>
             new CompletedRule(this.Head, this.AllProductions<TResult>(function, argumentTypes));
@@ -67,6 +115,9 @@ namespace EasyParse.Parsing.Rules
         private Transform ToTransform<TResult>(Func<object[], object> function, Type[] argumentTypes) =>
             this.Body.Count == argumentTypes.Length ? new Transform(typeof(TResult), argumentTypes, function)
             : throw new ArgumentException(this.IncorrectArgumentCountMessage(argumentTypes.Length));
+
+        private T ThrowIncorrectArgumentsCount<T>(int count) =>
+            throw new ArgumentException(this.IncorrectArgumentCountMessage(count));
 
         private string IncorrectArgumentCountMessage(int count) =>
             $"Mapping function receives {count} arguments when expecting " + 

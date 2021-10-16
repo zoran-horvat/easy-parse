@@ -9,26 +9,26 @@ namespace EasyParse.CalculatorDemo
     {
         private NonTerminal Unit => () => Rule()
             .Match<int>(Pattern.Int)
-            .Match("-", Unit).To((string _, int x) => -x)
-            .Match("(", Additive, ")").To((string _, int additive, string _) => additive);
+            .Match("-", Unit).To((int x) => -x)
+            .Match<int>("(", Additive, ")");
         
         private NonTerminal Multiplicative => () => Rule()
             .MatchOne<int>(Unit, Multiplied, Divided);
 
         private NonTerminal Multiplied => () => Rule()
-            .Match(Multiplicative, "*", Unit).To((int a, string _, int b) => a * b);
+            .Match(Multiplicative, "*", Unit).To((int a, int b) => a * b);
 
         private NonTerminal Divided => () => Rule()
-            .Match(Multiplicative, "/", Unit).To((int a, string _, int b) => a / b);
+            .Match(Multiplicative, "/", Unit).To((int a, int b) => a / b);
 
         public NonTerminal Additive => () => Rule()
             .MatchOne<int>(Multiplicative, Added, Subtracted);
 
         public NonTerminal Added => () => Rule()
-            .Match(Additive, "+", Multiplicative).To((int a, string _, int b) => a + b);
+            .Match(Additive, "+", Multiplicative).To((int a, int b) => a + b);
 
         public NonTerminal Subtracted => () => Rule()
-            .Match(Additive, "-", Multiplicative).To((int a, string _, int b) => a - b);
+            .Match(Additive, "-", Multiplicative).To((int a, int b) => a - b);
 
         public IRule Expression() => 
             Rule().Match(Additive).ToIdentity<int>();

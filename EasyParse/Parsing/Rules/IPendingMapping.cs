@@ -16,6 +16,5 @@ namespace EasyParse.Parsing.Rules
         IRule To<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult>(Func<T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, TResult> transform);
 
         IRule ToIdentity<T>() => To((T x) => x);
-        IRule ToInt() => To<string, int>(int.Parse);
     }
 }
