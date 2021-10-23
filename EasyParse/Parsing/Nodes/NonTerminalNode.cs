@@ -6,10 +6,12 @@ namespace EasyParse.Parsing.Nodes
 {
     public class NonTerminalNode : Node
     {
+        public string ProducedByRuleReference { get; }
         public Node[] Children { get; }
 
-        public NonTerminalNode(Location location, string label, IEnumerable<Node> children) : base(location, label)
+        public NonTerminalNode(Location location, string label, string productionReference, IEnumerable<Node> children) : base(location, label)
         {
+            this.ProducedByRuleReference = productionReference;
             this.Children = children.ToArray();
         }
 

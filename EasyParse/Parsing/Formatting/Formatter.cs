@@ -19,9 +19,16 @@ namespace EasyParse.Parsing.Formatting
             node is NonTerminalNode nonTerminal ? nonTerminal.PrintableLines(dense)
             : new[] {$" {node.Label}"};
 
+        private static string PrintableLabel(Node node) =>
+            node is NonTerminalNode nonTerminal ? $"{node.Label} {RuleReferenceLabel(nonTerminal)}"
+            : node.Label;
+
+        private static string RuleReferenceLabel(NonTerminalNode node) =>
+            $"[rule {(string.IsNullOrEmpty(node.ProducedByRuleReference) ? "N/A" : node.ProducedByRuleReference)}]";
+
         private static IEnumerable<string> PrintableLines(this NonTerminalNode nonTerminal, bool dense)
         {
-            yield return $" {nonTerminal.Label}";
+            yield return $" {PrintableLabel(nonTerminal)}";
             Stack<(NonTerminalNode node, int position)> stack = new Stack<(NonTerminalNode node, int position)>();
             stack.Push((nonTerminal, 0));
 
@@ -41,7 +48,7 @@ namespace EasyParse.Parsing.Formatting
                     if (!dense)
                         yield return $" {prefix}|";
 
-                    string nodeValue = node.Children[position] is TerminalNode terminal ? terminal.Value.Printable() : node.Children[position].Label;
+                    string nodeValue = node.Children[position] is TerminalNode terminal ? terminal.Value.Printable() : PrintableLabel(node.Children[position]);
                     yield return $" {prefix}{line} {nodeValue}";
                     
                     stack.Push((node, position + 1));

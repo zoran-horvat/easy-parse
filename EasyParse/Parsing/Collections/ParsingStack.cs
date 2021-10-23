@@ -36,7 +36,7 @@ namespace EasyParse.Parsing.Collections
             }
 
             int stateIndex = (int) this.Content.Peek();
-            this.Content.Push(new NonTerminalNode(children.First().Location, rule.NonTerminal, children));
+            this.Content.Push(new NonTerminalNode(children.First().Location, rule.NonTerminal, rule.Reference, children));
             return stateIndex;
         }
 

@@ -35,9 +35,10 @@ namespace EasyParse.Parsing.Collections
                 ?.Elements("Grammar")
                 .Elements("IRule")
                 .Select(rule => (
+                    reference: rule.Attribute("Reference")?.Value ?? string.Empty,
                     head: rule.Element("Head")?.Element("NonTerminal")?.Attribute("Name")?.Value ?? string.Empty,
                     count: rule.Element("Body")?.Elements().Count() ?? 0))
-                .Select(tuple => new RulePattern(tuple.head, tuple.count))
+                .Select(tuple => new RulePattern(tuple.reference, tuple.head, tuple.count))
                 .ToArray();
 
         private static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition, RulePattern[] rules) =>
