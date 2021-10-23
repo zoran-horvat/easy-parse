@@ -20,11 +20,8 @@ namespace EasyParse.Parsing.Formatting
             : new[] {$" {node.Label}"};
 
         private static string PrintableLabel(Node node) =>
-            node is NonTerminalNode nonTerminal ? $"{node.Label} {RuleReferenceLabel(nonTerminal)}"
+            node is NonTerminalNode nonTerminal ? $"{node.Label} [rule {nonTerminal.ProducedBy}]"
             : node.Label;
-
-        private static string RuleReferenceLabel(NonTerminalNode node) =>
-            $"[rule {(string.IsNullOrEmpty(node.ProducedByRuleReference) ? "N/A" : node.ProducedByRuleReference)}]";
 
         private static IEnumerable<string> PrintableLines(this NonTerminalNode nonTerminal, bool dense)
         {

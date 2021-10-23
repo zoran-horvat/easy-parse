@@ -6,11 +6,11 @@ namespace EasyParse.Parsing.Patterns
 {
     class RulePattern
     {
-        public string Reference { get; }
+        public RuleReference Reference { get; }
         public string NonTerminal { get; }
         public int BodyLength { get; }
 
-        public RulePattern(string reference, string nonTerminal, int bodyLength)
+        public RulePattern(RuleReference reference, string nonTerminal, int bodyLength)
         {
             this.Reference = reference;
             this.NonTerminal = nonTerminal;

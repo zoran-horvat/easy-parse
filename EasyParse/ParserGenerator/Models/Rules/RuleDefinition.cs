@@ -8,7 +8,7 @@ namespace EasyParse.ParserGenerator.Models.Rules
 {
     public class RuleDefinition : IEquatable<RuleDefinition>
     {
-        public string Reference { get; }
+        public RuleReference Reference { get; }
         public NonTerminal Head { get; }
         public IEnumerable<Symbol> Body { get; }
 
@@ -16,18 +16,18 @@ namespace EasyParse.ParserGenerator.Models.Rules
             this.Body.OfType<Constant>().Select(constant => new ConstantLexeme(constant.Value));
 
         public RuleDefinition(NonTerminal head, IEnumerable<Symbol> body)
-            : this(Guid.NewGuid().ToString(), head, body.ToList())
+            : this(RuleReference.CreateUnique(), head, body.ToList())
         {
         }
 
-        private RuleDefinition(string reference, NonTerminal head, IEnumerable<Symbol> body)
+        private RuleDefinition(RuleReference reference, NonTerminal head, IEnumerable<Symbol> body)
         {
             this.Reference = reference;
             this.Head = head;
             this.Body = body;
         }
 
-        public RuleDefinition WithReference(string value) =>
+        public RuleDefinition WithReference(RuleReference value) =>
             new RuleDefinition(value, this.Head, this.Body);
 
         public static string AugmentedRootNonTerminal => "S'";

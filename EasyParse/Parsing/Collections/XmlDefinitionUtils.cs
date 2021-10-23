@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
+using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing.Patterns;
 
 namespace EasyParse.Parsing.Collections
@@ -35,7 +36,7 @@ namespace EasyParse.Parsing.Collections
                 ?.Elements("Grammar")
                 .Elements("IRule")
                 .Select(rule => (
-                    reference: rule.Attribute("Reference")?.Value ?? string.Empty,
+                    reference: RuleReference.CreateCustomOrEmpty(rule.Attribute("Reference")?.Value ?? string.Empty),
                     head: rule.Element("Head")?.Element("NonTerminal")?.Attribute("Name")?.Value ?? string.Empty,
                     count: rule.Element("Body")?.Elements().Count() ?? 0))
                 .Select(tuple => new RulePattern(tuple.reference, tuple.head, tuple.count))
