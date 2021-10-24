@@ -12,12 +12,16 @@ namespace EasyParse.Parsing.Rules
     {
         public DynamicSymbolicCompiler(IEnumerable<Production> productions)
         {
-            this.Productions = WithValidTypes(productions.ToList());
+            List<Production> productionsList = productions.ToList();
+            this.ProductionsList = WithValidTypes(productionsList);
+            this.Productions = 
+                WithValidTypes(productionsList).ToDictionary(production => production.Reference, production => production);
             this.TerminalTransforms =
-                RegexSymbols(this.Productions).ToDictionary(symbol => symbol.Name, symbol => symbol.Transform);
+                RegexSymbols(this.ProductionsList).ToDictionary(symbol => symbol.Name, symbol => symbol.Transform);
         }
 
-        private IEnumerable<Production> Productions { get; }
+        private IEnumerable<Production> ProductionsList { get; }
+        private Dictionary<RuleReference, Production> Productions { get; }
         private Dictionary<string, Func<string, object>> TerminalTransforms { get; }
 
         private static List<Production> WithValidTypes(List<Production> productions)
@@ -62,25 +66,21 @@ namespace EasyParse.Parsing.Rules
             this.TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value) 
             : (object)value;
 
-        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children) =>
-            this.TransformsFor(label, this.TypesOf(children))
+        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children) => 
+            this.TryFindProduction(production)
+                .Select(production => production.Transform.Function(children))
                 .DefaultIfEmpty(() => this.CompileErrorTransform(location, label, children))
-                .Select(transform => transform(children))
                 .First();
 
-        private IEnumerable<Func<object[], object>> TransformsFor(string label, Type[] children) =>
-            this.Productions
-                .Where(production => production.Head.Name == label)
-                .Where(production => production.Transform.IsApplicableTo(children))
-                .Select(production => production.Transform.Function);
+        private IEnumerable<Production> TryFindProduction(RuleReference productionReference) =>
+            this.Productions.TryGetValue(productionReference, out Production production) ? new[] { production }
+            : Enumerable.Empty<Production>();
 
         private Func<object[], object> CompileErrorTransform(Location location, string label, object[] children) =>
             children.OfType<CompileError>()
                 .Select<CompileError, Func<object[], object>>(error => (object[] _) => (object)error)
                 .DefaultIfEmpty(() => (object[] arguments) => (object)new CompileError(location, label, arguments))
                 .First();
-                
-                
 
         private Type[] TypesOf(object[] values) =>
             values.Select(value => value?.GetType() ?? typeof(object)).ToArray();

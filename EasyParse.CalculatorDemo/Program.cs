@@ -10,11 +10,25 @@ namespace EasyParse.CalculatorDemo
 {
     public static class Program
     {
+
+        private static Compiler<int> BuildCompiler()
+        {
+            try
+            {
+                return new ArithmeticGrammar().BuildCompiler<int>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
         public static void Main(string[] args)
         {
             try
             {
-                Compiler<int> compiler = new ArithmeticGrammar().BuildCompiler<int>();
+                Compiler<int> compiler = BuildCompiler();
                 Parser parser = compiler.Parser;
 
                 Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");

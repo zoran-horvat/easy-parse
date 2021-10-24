@@ -13,24 +13,32 @@ namespace EasyParse.Parsing
         protected abstract IEnumerable<RegexSymbol> Ignore { get; }
 
         public Parser BuildParser() =>
-            Parser.From(this.ToGrammarModel().BuildParser());
+            this.BuildParser(this.ExpandedProductions);
 
         public Compiler<T> BuildCompiler<T>() =>
-            typeof(T).IsAssignableFrom(this.Start.Type) ? this.CreateCompiler<T>()
+            typeof(T).IsAssignableFrom(this.Start.Type) ? this.CreateCompiler<T>(this.ExpandedProductions)
             : throw new ArgumentException(
                 $"Cannot create compiler for type {typeof(T).Name} " + 
                 $"from grammar which produces type {this.Start.Type.Name}");
 
-        private Compiler<T> CreateCompiler<T>() =>
-            this.BuildParser().ToCompiler<T>(this.CreateSymbolCompiler());
+        private Parser BuildParser(IEnumerable<Production> productions) =>
+            Parser.From(this.ToGrammarModel(productions).BuildParser());
 
-        private ISymbolCompiler CreateSymbolCompiler() =>
-            new DynamicSymbolicCompiler(this.Start.Expand());
+        private Compiler<T> CreateCompiler<T>(IEnumerable<Production> productions) =>
+            this.BuildParser(productions).ToCompiler<T>(this.CreateSymbolCompiler(productions));
 
-        internal ParserGenerator.Models.Rules.Grammar ToGrammarModel() =>
-            this.Start.Expand().Aggregate(
+        private ISymbolCompiler CreateSymbolCompiler(IEnumerable<Production> productions) =>
+            new DynamicSymbolicCompiler(productions);
+
+        internal ParserGenerator.Models.Rules.Grammar ToGrammarModel(IEnumerable<Production> productions) =>
+            productions.Aggregate(
                 this.ToEmptyGrammarModel().AddRange(this.ToIgnoreLexemeModels()),
                 (grammar, production) => production.AppendToGrammarModel(grammar));
+
+        private IEnumerable<Production> ExpandedProductions => 
+            this.Start
+                .Expand()
+                .Select((production, offset) => production.WithReference(RuleReference.CreateOrdinal(offset + 1)));
 
         internal ParserGenerator.Models.Rules.Grammar ToEmptyGrammarModel() =>
             new(this.Start.Head.ToNonTerminalModel(), Enumerable.Empty<RuleDefinition>());

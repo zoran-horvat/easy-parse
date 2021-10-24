@@ -10,7 +10,7 @@ namespace EasyParse.Parsing.Rules
     public class Production
     {
         public Production(NonTerminalName head, ImmutableList<Symbol> body, Transform transform)
-            : this(RuleReference.CreateUnique(), head, (IEnumerable<Symbol>)body, transform)
+            : this(RuleReference.Empty(), head, (IEnumerable<Symbol>)body, transform)
         {
         }
 
@@ -30,6 +30,9 @@ namespace EasyParse.Parsing.Rules
 
         public Production WithReturnType(Type type) =>
             this.WithTransform(this.Transform.WithReturnType(type));
+
+        public Production WithReference(RuleReference reference) =>
+            new Production(reference, this.Head, this.Body, this.Transform);
 
         private Production WithTransform(Transform transform) =>
             transform.Equals(this.Transform) ? this
