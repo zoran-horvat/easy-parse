@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using EasyParse.Fluent.Rules;
 
-namespace EasyParse.Parsing.Rules.Symbols
+namespace EasyParse.Fluent.Symbols
 {
 
     public class NonTerminalSymbol : Symbol

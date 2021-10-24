@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent.Rules
 {
     public interface IPendingMapping : IProductionBuilder
     {

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using EasyParse.Fluent.Symbols;
 using EasyParse.ParserGenerator.Models.Rules;
-using EasyParse.Parsing.Rules.Symbols;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent.Rules
 {
     public class Production
     {

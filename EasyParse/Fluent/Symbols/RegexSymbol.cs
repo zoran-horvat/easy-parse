@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using EasyParse.ParserGenerator.Models.Rules;
 
-namespace EasyParse.Parsing.Rules.Symbols
+namespace EasyParse.Fluent.Symbols
 {
     public class RegexSymbol : TerminalSymbol
     {

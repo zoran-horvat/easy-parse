@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent
 {
     public sealed class NonTerminalName : IEquatable<NonTerminalName>
     {

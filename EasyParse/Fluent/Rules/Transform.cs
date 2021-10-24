@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent.Rules
 {
     public class Transform
     {

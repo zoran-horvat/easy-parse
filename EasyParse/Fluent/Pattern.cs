@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
-using EasyParse.Parsing.Rules.Symbols;
+using EasyParse.Fluent.Symbols;
 
-namespace EasyParse.Parsing
+namespace EasyParse.Fluent
 {
     public static class Pattern
     {

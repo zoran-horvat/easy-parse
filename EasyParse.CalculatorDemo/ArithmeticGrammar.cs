@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using EasyParse.Parsing;
-using EasyParse.Parsing.Rules;
-using EasyParse.Parsing.Rules.Symbols;
+using EasyParse.Fluent;
+using EasyParse.Fluent.Symbols;
 
 namespace EasyParse.CalculatorDemo
 {
-    class ArithmeticGrammar : Grammar
+    class ArithmeticGrammar : FluentGrammar
     {
         private NonTerminal Unit => () => Rule()
             .Match<int>(Pattern.Int)

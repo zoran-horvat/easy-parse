@@ -1,7 +1,7 @@
 ﻿using System;
-using EasyParse.Parsing.Rules.Symbols;
+using EasyParse.Fluent.Symbols;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent
 {
     public abstract class Symbol
     {

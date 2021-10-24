@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using EasyParse.Parsing.Rules;
-using EasyParse.Parsing.Rules.Symbols;
+using EasyParse.Fluent.Rules;
+using EasyParse.Fluent.Symbols;
 
-namespace EasyParse.Parsing
+namespace EasyParse.Fluent
 {
     internal class GrammarToGrammarFileFormatter
     {

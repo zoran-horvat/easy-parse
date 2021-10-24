@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using EasyParse.Fluent.Rules;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent
 {
     public interface IRule : IProductionBuilder
     {

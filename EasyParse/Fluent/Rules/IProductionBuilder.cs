@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent.Rules
 {
     public interface IProductionBuilder
     {

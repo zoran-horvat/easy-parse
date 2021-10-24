@@ -15,7 +15,7 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                Grammar grammar = new ArithmeticGrammar();
+                FluentGrammar grammar = new ArithmeticGrammar();
                 Console.WriteLine("Equivalent grammar:");
                 Console.WriteLine();
                 Console.WriteLine(string.Join(Environment.NewLine, grammar.ToGrammarFileContent()));

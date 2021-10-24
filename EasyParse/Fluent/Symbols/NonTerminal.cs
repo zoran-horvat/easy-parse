@@ -1,4 +1,4 @@
-﻿namespace EasyParse.Parsing.Rules.Symbols
+﻿namespace EasyParse.Fluent.Symbols
 {
     public delegate IRule NonTerminal();
 }

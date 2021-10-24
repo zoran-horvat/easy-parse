@@ -1,23 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EasyParse.Fluent.Rules;
+using EasyParse.Fluent.Symbols;
 using EasyParse.ParserGenerator.Models.Rules;
+using EasyParse.Parsing;
 using EasyParse.Parsing.Nodes.Errors;
-using EasyParse.Parsing.Rules.Symbols;
 using EasyParse.Text;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent
 {
     class DynamicSymbolicCompiler : ISymbolCompiler
     {
         public DynamicSymbolicCompiler(IEnumerable<Production> productions)
         {
             List<Production> productionsList = productions.ToList();
-            this.ProductionsList = WithValidTypes(productionsList);
-            this.Productions = 
+            ProductionsList = WithValidTypes(productionsList);
+            Productions =
                 WithValidTypes(productionsList).ToDictionary(production => production.Reference, production => production);
-            this.TerminalTransforms =
-                RegexSymbols(this.ProductionsList).ToDictionary(symbol => symbol.Name, symbol => symbol.Transform);
+            TerminalTransforms =
+                RegexSymbols(ProductionsList).ToDictionary(symbol => symbol.Name, symbol => symbol.Transform);
         }
 
         private IEnumerable<Production> ProductionsList { get; }
@@ -52,7 +54,7 @@ namespace EasyParse.Parsing.Rules
             production.Body.Select(symbol => TypeOf(symbol, nonTerminalTypes));
 
         private static Type TypeOf(Symbol symbol, Dictionary<NonTerminalName, Type> nonTerminalTypes) =>
-            symbol is NonTerminalSymbol nonTerminal ? nonTerminalTypes[nonTerminal.Head] 
+            symbol is NonTerminalSymbol nonTerminal ? nonTerminalTypes[nonTerminal.Head]
             : symbol.Type;
 
         private static IEnumerable<RegexSymbol> RegexSymbols(IEnumerable<Production> productions) =>
@@ -62,24 +64,24 @@ namespace EasyParse.Parsing.Rules
                 .GroupBy(symbol => symbol.Name)
                 .Select(group => group.First());
 
-        public object CompileTerminal(string label, string value) => 
-            this.TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value) 
-            : (object)value;
+        public object CompileTerminal(string label, string value) =>
+            TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value)
+            : value;
 
-        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children) => 
-            this.TryFindProduction(production)
+        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children) =>
+            TryFindProduction(production)
                 .Select(production => production.Transform.Function(children))
-                .DefaultIfEmpty(() => this.CompileErrorTransform(location, label, children))
+                .DefaultIfEmpty(() => CompileErrorTransform(location, label, children))
                 .First();
 
         private IEnumerable<Production> TryFindProduction(RuleReference productionReference) =>
-            this.Productions.TryGetValue(productionReference, out Production production) ? new[] { production }
+            Productions.TryGetValue(productionReference, out Production production) ? new[] { production }
             : Enumerable.Empty<Production>();
 
         private Func<object[], object> CompileErrorTransform(Location location, string label, object[] children) =>
             children.OfType<CompileError>()
-                .Select<CompileError, Func<object[], object>>(error => (object[] _) => (object)error)
-                .DefaultIfEmpty(() => (object[] arguments) => (object)new CompileError(location, label, arguments))
+                .Select(error => (Func<object[], object>)((object[] _) => (object)error))
+                .DefaultIfEmpty((object[] arguments) => new CompileError(location, label, arguments))
                 .First();
 
         private Type[] TypesOf(object[] values) =>

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EasyParse.Parsing.Rules
+namespace EasyParse.Fluent.Rules
 {
     static class CollectionExtensions
     {
