@@ -35,12 +35,13 @@ namespace EasyParse.CalculatorDemo
             }
         }
 
-        private static void BuildReflectionCompiler()
+        private static Compiler<int> BuildReflectionCompiler()
         {
             try
             {
                 ReflectionGrammar grammar = new ReflectionArithmeticGrammar();
                 PrintGrammarFile("Reflection-based", grammar.ToGrammarFileContent());
+                return grammar.BuildCompiler<int>();
             }
             catch (Exception ex)
             {
@@ -53,17 +54,15 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                Compiler<int> compiler = BuildFluentCompiler();
-                Parser parser = compiler.Parser;
+                Compiler<int> fluentCompiler = BuildFluentCompiler();
 
-                BuildReflectionCompiler();
-
-                Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
+                Compiler<int> reflectionCompiler = BuildReflectionCompiler();
 
                 Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
                 foreach (string line in Console.In.ReadLinesUntil(string.Empty))
                 {
-                    Process(parser, compiler, line);
+                    Process("Fluent compiler", fluentCompiler, line);
+                    Process("Reflection-based compiler", reflectionCompiler, line);
                 }
             }
             catch (Exception ex)
@@ -72,8 +71,10 @@ namespace EasyParse.CalculatorDemo
             }
         }
 
-        private static void Process<T>(Parser parser, Compiler<T> compiler, string line)
+        private static void Process<T>(string label, Compiler<T> compiler, string line)
         {
+            Parser parser = compiler.Parser;
+            Console.WriteLine($"Using {label}:");
             List<Token> tokens = parser.Lexer.Tokenize(Plaintext.Line(line)).ToList();
             string tokensReport = string.Join(" ", tokens.Select(x => $"{x}"));
             

@@ -18,10 +18,22 @@ namespace EasyParse.Native
         private IEnumerable<RegexSymbol> IgnoreSymbols =>
             this.IgnorePatterns.Select(pattern => new RegexSymbol(pattern.ToString(), pattern, typeof(string), x => x));
 
-        public Parser BuildParser() => null;
+        public Parser BuildParser() =>
+            FluentGrammar.BuildParser(this.IgnoreSymbols, this.StartSymbol, this.GetProductions());
 
         public IEnumerable<string> ToGrammarFileContent() =>
             new GrammarToGrammarFileFormatter().Convert(this.IgnoreSymbols, this.StartSymbol, this.GetProductions());
+
+        public Compiler<T> BuildCompiler<T>() =>
+            this.BuildCompiler<T>(this.StartSymbolMethod.ReturnType);
+
+        public Compiler<T> BuildCompiler<T>(Type startSymbolType) =>
+            typeof(T).IsAssignableFrom(startSymbolType) ? this.BuildParser().ToCompiler<T>(this.Compiler)
+            : throw new InvalidOperationException(
+                $"Cannot create compiler for type {typeof(T).Name} from grammar which produces type {startSymbolType.Name}");
+
+        private ISymbolCompiler Compiler => 
+            new DynamicSymbolicCompiler(this.GetProductions());
 
         private IEnumerable<Production> GetProductions() =>
             this.GetProductions(this.GetNonTerminals(), this.GetNonTerminalTypes());
@@ -41,10 +53,12 @@ namespace EasyParse.Native
             new NonTerminalName(method.Name);
 
         private NonTerminalName StartSymbol =>
+            new NonTerminalName(this.StartSymbolMethod.Name);
+
+        private MethodInfo StartSymbolMethod =>
             this.SelectMethods<StartAttribute>()
                 .Select(this.AsNonTerminal)
                 .DefaultIfEmpty<MethodInfo>(() => throw new InvalidOperationException("Start symbol not defined on grammar"))
-                .Select(method => new NonTerminalName(method.Name))
                 .First();
 
         private IEnumerable<Production> ToProductions(MethodInfo method, HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes)

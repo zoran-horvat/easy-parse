@@ -25,11 +25,11 @@ namespace EasyParse.Fluent
         internal static Parser BuildParser(IEnumerable<RegexSymbol> ignore, NonTerminalName start, IEnumerable<Production> productions) =>
             Parser.From(ToGrammarModel(ignore, start, productions).BuildParser());
 
-        private Parser BuildParser(IEnumerable<Production> productions) =>
-            BuildParser(this.Ignore, this.Start.Head, productions);
-
         private Compiler<T> CreateCompiler<T>(IEnumerable<Production> productions) =>
             BuildParser(productions).ToCompiler<T>(CreateSymbolCompiler(productions));
+
+        private Parser BuildParser(IEnumerable<Production> productions) =>
+            BuildParser(this.Ignore, this.Start.Head, productions);
 
         private ISymbolCompiler CreateSymbolCompiler(IEnumerable<Production> productions) =>
             new DynamicSymbolicCompiler(productions);
