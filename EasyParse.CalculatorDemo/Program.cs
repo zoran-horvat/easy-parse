@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using EasyParse.Fluent;
 using EasyParse.LexicalAnalysis.Tokens;
+using EasyParse.Native;
 using EasyParse.Parsing;
 using EasyParse.Text;
 
@@ -11,18 +12,35 @@ namespace EasyParse.CalculatorDemo
 {
     public static class Program
     {
+        private static void PrintGrammarFile(string label, IEnumerable<string> content)
+        {
+            Console.WriteLine($"{label} grammar:");
+            Console.WriteLine();
+            Console.WriteLine(string.Join(Environment.NewLine, content));
+            Console.WriteLine(new string('-', 80));
+        }
 
-        private static Compiler<int> BuildCompiler()
+        private static Compiler<int> BuildFluentCompiler()
         {
             try
             {
                 FluentGrammar grammar = new ArithmeticGrammar();
-                Console.WriteLine("Equivalent grammar:");
-                Console.WriteLine();
-                Console.WriteLine(string.Join(Environment.NewLine, grammar.ToGrammarFileContent()));
-                Console.WriteLine(new string('-', 80));
-                
+                PrintGrammarFile("Fluent", grammar.ToGrammarFileContent());
                 return grammar.BuildCompiler<int>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
+        private static void BuildReflectionCompiler()
+        {
+            try
+            {
+                ReflectionGrammar grammar = new ReflectionArithmeticGrammar();
+                PrintGrammarFile("Reflection-based", grammar.ToGrammarFileContent());
             }
             catch (Exception ex)
             {
@@ -35,8 +53,10 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                Compiler<int> compiler = BuildCompiler();
+                Compiler<int> compiler = BuildFluentCompiler();
                 Parser parser = compiler.Parser;
+
+                BuildReflectionCompiler();
 
                 Parser addingParser = Parser.FromXmlResource(Assembly.GetExecutingAssembly(), "EasyParse.CalculatorDemo.AdditionGrammar.xml");
 

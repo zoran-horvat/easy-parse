@@ -22,8 +22,11 @@ namespace EasyParse.Fluent
                 $"Cannot create compiler for type {typeof(T).Name} " +
                 $"from grammar which produces type {Start.Type.Name}");
 
+        internal static Parser BuildParser(IEnumerable<RegexSymbol> ignore, NonTerminalName start, IEnumerable<Production> productions) =>
+            Parser.From(ToGrammarModel(ignore, start, productions).BuildParser());
+
         private Parser BuildParser(IEnumerable<Production> productions) =>
-            Parser.From(ToGrammarModel(productions).BuildParser());
+            BuildParser(this.Ignore, this.Start.Head, productions);
 
         private Compiler<T> CreateCompiler<T>(IEnumerable<Production> productions) =>
             BuildParser(productions).ToCompiler<T>(CreateSymbolCompiler(productions));
@@ -31,9 +34,9 @@ namespace EasyParse.Fluent
         private ISymbolCompiler CreateSymbolCompiler(IEnumerable<Production> productions) =>
             new DynamicSymbolicCompiler(productions);
 
-        internal Grammar ToGrammarModel(IEnumerable<Production> productions) =>
+        internal static Grammar ToGrammarModel(IEnumerable<RegexSymbol> ignore, NonTerminalName start, IEnumerable<Production> productions) =>
             productions.Aggregate(
-                ToEmptyGrammarModel().AddRange(ToIgnoreLexemeModels()),
+                ToEmptyGrammarModel(start).AddRange(ToIgnoreLexemeModels(ignore)),
                 (grammar, production) => production.AppendToGrammarModel(grammar));
 
         public IEnumerable<string> ToGrammarFileContent() =>
@@ -44,10 +47,10 @@ namespace EasyParse.Fluent
                 .Expand()
                 .Select((production, offset) => production.WithReference(RuleReference.CreateOrdinal(offset + 1)));
 
-        internal Grammar ToEmptyGrammarModel() =>
-            new(Start.Head.ToNonTerminalModel(), Enumerable.Empty<RuleDefinition>());
+        private static Grammar ToEmptyGrammarModel(NonTerminalName start) =>
+            new(start.ToNonTerminalModel(), Enumerable.Empty<RuleDefinition>());
 
-        private IEnumerable<Lexeme> ToIgnoreLexemeModels() =>
-            Ignore.Select(pattern => pattern.ToIgnoreLexemeModel());
+        private static IEnumerable<Lexeme> ToIgnoreLexemeModels(IEnumerable<RegexSymbol> ignore) =>
+            ignore.Select(pattern => pattern.ToIgnoreLexemeModel());
     }
 }
