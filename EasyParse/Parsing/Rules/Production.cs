@@ -10,17 +10,19 @@ namespace EasyParse.Parsing.Rules
     public class Production
     {
         public Production(NonTerminalName head, ImmutableList<Symbol> body, Transform transform)
-            : this(head, (IEnumerable<Symbol>)body, transform)
+            : this(RuleReference.CreateUnique(), head, (IEnumerable<Symbol>)body, transform)
         {
         }
 
-        private Production(NonTerminalName head, IEnumerable<Symbol> body, Transform transform)
+        private Production(RuleReference reference, NonTerminalName head, IEnumerable<Symbol> body, Transform transform)
         {
+            this.Reference = reference;
             this.Head = head;
             this.Body = body;
             this.Transform = transform;
         }
 
+        public RuleReference Reference { get; }
         public NonTerminalName Head { get; }
         public IEnumerable<Symbol> Body { get; }
         public Transform Transform { get; }
@@ -31,7 +33,7 @@ namespace EasyParse.Parsing.Rules
 
         private Production WithTransform(Transform transform) =>
             transform.Equals(this.Transform) ? this
-            : new Production(this.Head, this.Body, transform);
+            : new Production(this.Reference, this.Head, this.Body, transform);
 
         public IEnumerable<Production> ChildLines(HashSet<NonTerminalName> notIn) =>
             this.Body
@@ -45,7 +47,11 @@ namespace EasyParse.Parsing.Rules
             : symbol;
 
         internal RuleDefinition ToRuleDefinitionModel() =>
-            new RuleDefinition(this.Head.ToNonTerminalModel(), this.Body.Select(symbol => symbol.ToSymbolModel()).ToArray());
+            new RuleDefinition(this.Head.ToNonTerminalModel(), this.ToSymbolModels().ToArray())
+                .WithReference(this.Reference);
+
+        private IEnumerable<EasyParse.ParserGenerator.Models.Symbols.Symbol> ToSymbolModels() =>
+            this.Body.Select(symbol => symbol.ToSymbolModel());
 
         internal IEnumerable<TerminalSymbol> Terminals =>
             this.Body.OfType<TerminalSymbol>();
