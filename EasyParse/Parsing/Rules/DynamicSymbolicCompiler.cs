@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Parsing.Rules.Symbols;
 using EasyParse.Text;
@@ -61,7 +62,7 @@ namespace EasyParse.Parsing.Rules
             this.TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value) 
             : (object)value;
 
-        public object CompileNonTerminal(Location location, string label, object[] children) =>
+        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children) =>
             this.TransformsFor(label, this.TypesOf(children))
                 .DefaultIfEmpty(() => this.CompileErrorTransform(location, label, children))
                 .Select(transform => transform(children))

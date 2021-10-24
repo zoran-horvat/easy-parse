@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing.Nodes.Errors;
 using EasyParse.Text;
 
@@ -23,11 +24,11 @@ namespace EasyParse.Parsing
                 .DefaultIfEmpty(value)
                 .First();
 
-        public object CompileNonTerminal(Location location, string label, object[] children)
+        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children)
         {
             try 
             {
-                object result = this.Compile(location, label, children);
+                object result = this.Compile(location, label, production, children);
                 return result is Exception ex ? this.ToResult(location, ex) : result;
             }
             catch (Exception ex)
@@ -36,7 +37,7 @@ namespace EasyParse.Parsing
             }
         }
 
-        private object Compile(Location location, string methodName, params object[] children)
+        private object Compile(Location location, string methodName, RuleReference production, params object[] children)
         {
             try
             {

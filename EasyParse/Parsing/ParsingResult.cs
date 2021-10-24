@@ -47,6 +47,7 @@ namespace EasyParse.Parsing
             nodeCompiler.CompileNonTerminal(
                 nonTerminal.Location,
                 nonTerminal.Label, 
+                nonTerminal.ProducedBy,
                 nonTerminal.Children.Select(child => this.Compile(child, nodeCompiler)).ToArray());
 
         public override string ToString() => 
