@@ -39,11 +39,19 @@ namespace EasyParse.Fluent
         private string ToLiteral(Regex pattern) =>
             $"'{pattern.ToString().Replace("'", "\\'")}'";
 
-        private IEnumerable<string> ConvertProductions(IEnumerable<Production> productions) =>
+        private IEnumerable<string> ConvertProductions(IEnumerable<Production> productions) 
+        {
+            List<(string representation, Production production)> block = this.PrepareProductions(productions).ToList();
+            int textWidth = block.Select(pair => pair.representation.Length).DefaultIfEmpty(0).Max();
+
+            return block.Select(pair => $"{pair.representation.PadRight(textWidth + 2)} # rule {pair.production.Reference}");
+        }
+
+        private IEnumerable<(string representation, Production production)> PrepareProductions(IEnumerable<Production> productions) =>
             productions.Select(this.ConvertProduction);
 
-        private string ConvertProduction(Production production) =>
-            $"{production.Head.Name} -> {this.ConvertSymbols(production.Body)};";
+        private (string representation, Production Production) ConvertProduction(Production production) =>
+            ($"{production.Head.Name} -> {this.ConvertSymbols(production.Body)};", production);
 
         private string ConvertSymbols(IEnumerable<Symbol> symbols) => 
             string.Join(" ", symbols.Select(this.ConvertSymbol));

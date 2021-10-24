@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using EasyParse.Fluent;
 using EasyParse.Fluent.Rules;
 using EasyParse.Fluent.Symbols;
 using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing;
 
-namespace EasyParse
+namespace EasyParse.Fluent
 {
     public abstract class FluentGrammar : PartialFluentGrammar
     {

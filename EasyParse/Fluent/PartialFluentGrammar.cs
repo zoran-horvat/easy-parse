@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-using EasyParse.Fluent;
 using EasyParse.Fluent.Rules;
 using EasyParse.Fluent.Symbols;
 
-namespace EasyParse
+namespace EasyParse.Fluent
 {
     public abstract class PartialFluentGrammar
     {
