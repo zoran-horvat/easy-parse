@@ -8,6 +8,7 @@ using System;
 using EasyParse.Fluent.Symbols;
 using EasyParse.Fluent.Rules;
 using System.Collections.Immutable;
+using EasyParse.ParserGenerator.Models.Rules;
 
 namespace EasyParse.Native
 {
@@ -39,7 +40,9 @@ namespace EasyParse.Native
             this.GetProductions(this.GetNonTerminals(), this.GetNonTerminalTypes());
 
         private IEnumerable<Production> GetProductions(HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes) =>
-            this.SelectMethods<NonTerminalAttribute>().SelectMany(method => this.ToProductions(method, nonTerminals, nonTerminalTypes));
+            this.SelectMethods<NonTerminalAttribute>()
+                .SelectMany(method => this.ToProductions(method, nonTerminals, nonTerminalTypes))
+                .Select((production, offset) => production.WithReference(RuleReference.CreateOrdinal(offset + 1)));
 
         private IDictionary<Type, List<NonTerminalName>> GetNonTerminalTypes() =>
             this.SelectMethods<NonTerminalAttribute>()

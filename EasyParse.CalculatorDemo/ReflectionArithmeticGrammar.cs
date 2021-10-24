@@ -9,5 +9,7 @@ namespace EasyParse.CalculatorDemo
         protected override IEnumerable<Regex> IgnorePatterns => new[] {new Regex(@"\s+")};
 
         [Start] [NonTerminal] protected int Number([Regex("number", @"\d+")]string number) => int.Parse(number);
+
+        [NonTerminal] protected int Number([Literal("-")]string minus, [Regex("number", @"\d+")]string number) => -int.Parse(number);
     }
 }
