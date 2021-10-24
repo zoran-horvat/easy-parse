@@ -15,7 +15,13 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                return new ArithmeticGrammar().BuildCompiler<int>();
+                Grammar grammar = new ArithmeticGrammar();
+                Console.WriteLine("Equivalent grammar:");
+                Console.WriteLine();
+                Console.WriteLine(string.Join(Environment.NewLine, grammar.ToGrammarFileContent()));
+                Console.WriteLine(new string('-', 80));
+                
+                return grammar.BuildCompiler<int>();
             }
             catch (Exception ex)
             {

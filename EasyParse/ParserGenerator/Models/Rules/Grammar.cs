@@ -56,6 +56,9 @@ namespace EasyParse.ParserGenerator.Models.Rules
         public ParserDefinition BuildParser() =>
             ParserBuilder.For(this).Build();
 
+        public IEnumerable<string> ToGrammarFileContent() =>
+            Enumerable.Empty<string>(); 
+
         public override string ToString() => Formatter.ToString(this);
     }
 }

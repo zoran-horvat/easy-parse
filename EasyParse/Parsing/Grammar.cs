@@ -35,6 +35,9 @@ namespace EasyParse.Parsing
                 this.ToEmptyGrammarModel().AddRange(this.ToIgnoreLexemeModels()),
                 (grammar, production) => production.AppendToGrammarModel(grammar));
 
+        public IEnumerable<string> ToGrammarFileContent() =>
+            new GrammarToGrammarFileFormatter().Convert(this.Ignore, this.Start.Head, this.ExpandedProductions);
+
         private IEnumerable<Production> ExpandedProductions => 
             this.Start
                 .Expand()
