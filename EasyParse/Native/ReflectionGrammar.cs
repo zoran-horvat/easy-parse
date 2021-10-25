@@ -37,14 +37,31 @@ namespace EasyParse.Native
             new DynamicSymbolicCompiler(this.GetProductions());
 
         private IEnumerable<Production> GetProductions() =>
-            this.GetProductions(this.GetNonTerminals(), this.GetNonTerminalTypes());
+            this.GetProductions(this.GetNonTerminals(), this.GetTypesToNonTerminals(), this.GetNonTerminalsTypes());
 
-        private IEnumerable<Production> GetProductions(HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes) =>
+        private IEnumerable<Production> GetProductions(
+            HashSet<NonTerminalName> nonTerminals, 
+            IDictionary<Type, List<NonTerminalName>> typeToNonTerminals,
+            IDictionary<NonTerminalName, Type> nonTerminalToType) =>
             this.SelectMethods<NonTerminalAttribute>()
-                .SelectMany(method => this.ToProductions(method, nonTerminals, nonTerminalTypes))
+                .SelectMany(method => this.ToProductions(method, nonTerminals, typeToNonTerminals, nonTerminalToType))
                 .Select((production, offset) => production.WithReference(RuleReference.CreateOrdinal(offset + 1)));
 
-        private IDictionary<Type, List<NonTerminalName>> GetNonTerminalTypes() =>
+        private IDictionary<NonTerminalName, Type> GetNonTerminalsTypes() =>
+            this.SelectMethods<NonTerminalAttribute>()
+                .Select(method => (name: new NonTerminalName(method.Name), type: method.ReturnType))
+                .GroupBy(pair => pair.name)
+                .ToDictionary(
+                    group => group.Key,
+                    group => group.Select(pair => pair.type).Aggregate((a, b) => this.CommonType(group.Key, a, b)));
+
+        private Type CommonType(NonTerminalName nonTerminal, Type a, Type b) =>
+            a.IsAssignableFrom(b) ? a
+            : b.IsAssignableFrom(a) ? b
+            : throw new InvalidOperationException(
+                $"Nonterminal symbol {nonTerminal.Name} is declared with types {a.Name} and {b.Name} which cannot be assigned to one another");
+
+        private IDictionary<Type, List<NonTerminalName>> GetTypesToNonTerminals() =>
             this.SelectMethods<NonTerminalAttribute>()
                 .GroupBy(method => method.ReturnType)
                 .ToDictionary(group => group.Key, group => group.Select(this.ToNonTerminal).ToList());
@@ -64,14 +81,18 @@ namespace EasyParse.Native
                 .DefaultIfEmpty<MethodInfo>(() => throw new InvalidOperationException("Start symbol not defined on grammar"))
                 .First();
 
-        private IEnumerable<Production> ToProductions(MethodInfo method, HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes)
+        private IEnumerable<Production> ToProductions(
+            MethodInfo method, 
+            HashSet<NonTerminalName> nonTerminals, 
+            IDictionary<Type, List<NonTerminalName>> typeToNonTerminals,
+            IDictionary<NonTerminalName, Type> nonTerminalToType)
         {
             List<ImmutableList<Symbol>> bodies = new List<ImmutableList<Symbol>>() { ImmutableList<Symbol>.Empty };
 
             foreach (ParameterInfo parameter in method.GetParameters())
             {
                 bodies = this
-                    .ToSymbols(nonTerminals, nonTerminalTypes, parameter)
+                    .ToSymbols(nonTerminals, typeToNonTerminals, nonTerminalToType, parameter)
                     .SelectMany(symbol => bodies.Select(body => body.Add(symbol)))
                     .ToList();
             }
@@ -79,40 +100,73 @@ namespace EasyParse.Native
             return bodies.Select(body => this.ToProduction(method, body));
         }
 
-        private IEnumerable<Symbol> ToSymbols(HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes, ParameterInfo parameter) =>
-            this.ToSymbols(parameter, this.GetSymbolAttribute(nonTerminals, nonTerminalTypes, parameter, parameter.GetCustomAttributes<SymbolAttribute>().ToArray()));
+        private IEnumerable<Symbol> ToSymbols(
+            HashSet<NonTerminalName> nonTerminals, 
+            IDictionary<Type, List<NonTerminalName>> typeToNonTerminals, 
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            ParameterInfo parameter) =>
+            this.ToSymbols(
+                nonTerminalToType, parameter,
+                this.GetSymbolAttribute(nonTerminals, typeToNonTerminals, nonTerminalToType, parameter, parameter.GetCustomAttributes<SymbolAttribute>().ToArray()));
 
-        private IEnumerable<Symbol> ToSymbols(ParameterInfo parameter, SymbolAttribute attribute) =>
+        private IEnumerable<Symbol> ToSymbols(
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            ParameterInfo parameter, SymbolAttribute attribute) =>
             attribute is RegexAttribute regex ? new Symbol[] { RegexSymbol.Create<string>(regex.Name, regex.Expression, x => x) }
             : attribute is LiteralAttribute literal ? new Symbol[] { new LiteralSymbol(literal.Value) }
-            : attribute is FromAttribute @from ? throw new InvalidOperationException("Non-terminal symbols are not supported yet")
+            : attribute is FromAttribute @from ? this.ToNonTerminalSymbols(nonTerminalToType, @from.NonTerminals)
             : throw new InvalidOperationException($"Unsupported parameter attribute {attribute.GetType().Name}");
 
+        private IEnumerable<Symbol> ToNonTerminalSymbols(
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            IEnumerable<NonTerminalName> nonTerminals) =>
+            this.ToRules(nonTerminalToType, nonTerminals).Select(rule => new NonTerminalSymbol(rule));
+
+        private IEnumerable<IRule> ToRules(
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            IEnumerable<NonTerminalName> nonTerminals) =>
+            nonTerminals.Select(nonTerminal => new RulePlaceholder(nonTerminal, nonTerminalToType[nonTerminal]));
+
         private SymbolAttribute GetSymbolAttribute(
-            HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes, 
+            HashSet<NonTerminalName> nonTerminals,
+            IDictionary<Type, List<NonTerminalName>> typeToNonTerminals, 
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
             ParameterInfo parameter, SymbolAttribute[] attributes) =>
-            attributes.Length == 0 ? this.ToFromAttribute(nonTerminals, nonTerminalTypes, parameter)
-            : attributes.Length == 1 && attributes[0] is FromAttribute @from ? this.Valid(nonTerminals, parameter, @from)
+            attributes.Length == 0 ? this.ToFromAttribute(nonTerminals, typeToNonTerminals, nonTerminalToType, parameter)
+            : attributes.Length == 1 && attributes[0] is FromAttribute @from ? this.Valid(nonTerminals, nonTerminalToType, parameter, @from)
             : attributes.Length == 1 ? attributes[0]
             : throw new InvalidOperationException($"Parameter {parameter.Name} of method {parameter.Member.Name} has multiple symbol attributes defined");
 
-        private SymbolAttribute ToFromAttribute(HashSet<NonTerminalName> nonTerminals, IDictionary<Type, List<NonTerminalName>> nonTerminalTypes, ParameterInfo parameter) =>
-            new FromAttribute(this.Valid(nonTerminals, this.NonTerminalsFor(nonTerminalTypes, parameter.ParameterType), parameter));
+        private SymbolAttribute ToFromAttribute(
+            HashSet<NonTerminalName> nonTerminals, 
+            IDictionary<Type, List<NonTerminalName>> typeToNonTerminals, 
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            ParameterInfo parameter) =>
+            new FromAttribute(this.Valid(nonTerminals, nonTerminalToType, this.NonTerminalsFor(typeToNonTerminals, parameter.ParameterType), parameter));
 
-        private SymbolAttribute Valid(HashSet<NonTerminalName> validNonTerminals, ParameterInfo parameter, FromAttribute attribute) =>
-            new FromAttribute(this.Valid(validNonTerminals, attribute.NonTerminals, parameter));
+        private SymbolAttribute Valid(
+            HashSet<NonTerminalName> validNonTerminals,
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            ParameterInfo parameter, FromAttribute attribute) =>
+            new FromAttribute(this.Valid(validNonTerminals, nonTerminalToType, attribute.NonTerminals, parameter));
 
-        private IEnumerable<NonTerminalName> Valid(HashSet<NonTerminalName> validNonterminals, IEnumerable<NonTerminalName> nonTerminals, ParameterInfo parameter) =>
+        private IEnumerable<NonTerminalName> Valid(
+            HashSet<NonTerminalName> validNonterminals,
+            IDictionary<NonTerminalName, Type> nonTerminalToType,
+            IEnumerable<NonTerminalName> nonTerminals, ParameterInfo parameter) =>
             nonTerminals
-                .Where(nonTerminal => !validNonterminals.Contains(nonTerminal))
-                .Select<NonTerminalName, IEnumerable<NonTerminalName>>(nonTerminal => throw new InvalidOperationException(
-                    $"Parameter {parameter.Name} of method {parameter.Member.Name} is referencing a nonexistent nonterminal symbol {nonTerminal.Name}"))
-                .DefaultIfEmpty(nonTerminals)
-                .First();
+                .Select(nonTerminal => 
+                    validNonterminals.Contains(nonTerminal) ? nonTerminal
+                    : throw new InvalidOperationException(
+                        $"Parameter {parameter.Name} of method {parameter.Member.Name} is referencing a nonexistent nonterminal symbol {nonTerminal.Name}"))
+                .Select(nonTerminal => nonTerminalToType[nonTerminal].IsAssignableFrom(parameter.ParameterType) ? nonTerminal
+                    : throw new InvalidOperationException(
+                        $"Parameter {parameter.Name} of method {parameter.Member.Name} is of type {parameter.ParameterType.Name} which cannot be assigned " +
+                        $"to nonterminal symbol declared as {nonTerminalToType[nonTerminal].Name}"));
 
-        private IEnumerable<NonTerminalName> NonTerminalsFor(IDictionary<Type, List<NonTerminalName>> nonTerminalTypes, Type parameterType) =>
-            nonTerminalTypes.TryGetValue(parameterType, out List<NonTerminalName> nonTerminals) ? nonTerminals
-            : nonTerminalTypes.Where(pair => parameterType.IsAssignableFrom(pair.Key)).SelectMany(pair => pair.Value);
+        private IEnumerable<NonTerminalName> NonTerminalsFor(IDictionary<Type, List<NonTerminalName>> typeToNonTerminals, Type parameterType) =>
+            typeToNonTerminals.TryGetValue(parameterType, out List<NonTerminalName> nonTerminals) ? nonTerminals
+            : typeToNonTerminals.Where(pair => parameterType.IsAssignableFrom(pair.Key)).SelectMany(pair => pair.Value);
 
         private Production ToProduction(MethodInfo method, ImmutableList<Symbol> body) =>
             new Production(ToNonTerminal(method), body, this.ToTransform(method));
