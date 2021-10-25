@@ -44,11 +44,16 @@ namespace EasyParse.Fluent
             List<(string representation, Production production)> block = this.PrepareProductions(productions).ToList();
             int textWidth = block.Select(pair => pair.representation.Length).DefaultIfEmpty(0).Max();
 
-            return block
+            IEnumerable<(string line, NonTerminalName head)> lines = block
                 .Select(pair => 
-                    !pair.production.Reference.IsValidAsKey ? (representation: pair.representation, label: string.Empty)
-                    : (representation: pair.representation.PadRight(textWidth + 2), label: pair.production.Reference.ToString()))
-                .Select(pair => $"{pair.representation}{pair.label}");
+                    !pair.production.Reference.IsValidAsKey ? (line: pair.representation, head: pair.production.Head)
+                    : (line: $"{pair.representation.PadRight(textWidth + 2)}{pair.production.Reference.ToString()}", head: pair.production.Head));
+
+            return lines
+                .GroupBy(line => line.head)
+                .SelectMany((group, index) => 
+                    (index == 0 ? Enumerable.Empty<string>() : new string[] { string.Empty })
+                    .Concat(group.Select(pair => pair.line)));
         }
 
         private IEnumerable<(string representation, Production production)> PrepareProductions(IEnumerable<Production> productions) =>
