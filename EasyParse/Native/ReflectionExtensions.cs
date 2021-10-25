@@ -42,5 +42,8 @@ namespace EasyParse.Native
 
         private static string Printable(this ParameterInfo parameter, string parameterWord) =>
             $"{parameterWord} '{parameter.ParameterType.Name} {parameter.Name}' of method '{parameter.Member.Name}'";
+
+        public static NonTerminalName ToNonTerminalName(this ParameterInfo parameter) =>
+            new NonTerminalName($"{char.ToUpper(parameter.Name[0])}{parameter.Name.Substring(1)}");
     }
 }

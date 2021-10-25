@@ -1,5 +1,4 @@
 using System;
-using EasyParse.Native.Annotations;
 
 namespace EasyParse.Native.Annotations
 {

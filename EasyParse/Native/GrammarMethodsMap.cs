@@ -53,11 +53,7 @@ namespace EasyParse.Native
             nonTerminals.Select(nonTerminal => this.Assignable(nonTerminal, toParameter));
 
         public SymbolAttribute ToFromAttribute(ParameterInfo parameter) =>
-            new FromAttribute(this.Valid(this.NonTerminalsFor(parameter), parameter));
-
-        private IEnumerable<NonTerminalName> NonTerminalsFor(ParameterInfo parameter) =>
-            this.TypeToNonTerminals.TryGetValue(parameter.ParameterType, out List<NonTerminalName> nonTerminals) ? nonTerminals
-            : parameter.NoAssignableNonTerminals<IEnumerable<NonTerminalName>>();
+            new FromAttribute(parameter.ToNonTerminalName());
 
         private NonTerminalName Assignable(NonTerminalName assign, ParameterInfo toParameter) =>
             this.NonTerminalToType[assign] == toParameter.ParameterType ? assign

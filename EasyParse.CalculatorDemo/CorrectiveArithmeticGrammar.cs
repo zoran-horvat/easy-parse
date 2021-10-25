@@ -10,55 +10,34 @@ namespace EasyParse.CalculatorDemo
         protected override IEnumerable<Regex> IgnorePatterns =>
             new[] {new Regex(@"\s")};
 
-        public string Number(
-            [Regex("number", @"\d+")] string value) => 
+        public string Number([R("number", @"\d+")] string value) => 
             value;
 
-        public string Add(
-            [Regex("add", @"[+\-]")] string @operator) =>
+        public string Add([R("add", @"[+\-]")] string @operator) =>
             @operator;
 
-        public string Multiply(
-            [Regex("multiply", @"[*/]")] string @operator) => 
+        public string Multiply([R("multiply", @"[*/]")] string @operator) => 
             @operator;
 
-        public string Unit(
-            [From(nameof(Number))] string value) => 
-            value.ToNumber();
+        public string Unit(string number) => 
+            number.ToNumber();
 
-        public string Unit(
-            [From(nameof(Add))] string @operator, 
-            [From(nameof(Unit))] string value) =>
-            @operator == "-" ? value.Invert() : value;
+        public string Unit(string add, string unit) =>
+            add == "-" ? unit.Invert() : unit;
 
-        public string Unit(
-            [Literal("(")] string open, 
-            [From(nameof(Additive))] string value, 
-            [Literal(")")] string close) =>
-            value;
+        public string Unit([L("(")] string open, string additive, [L(")")] string close) =>
+            additive;
 
-        public string Multiplicative(
-            [From(nameof(Unit))] string value) => 
-            value;
+        public string Multiplicative(string unit) => unit;
 
-        public string Multiplicative(
-            [From(nameof(Multiplicative))] string a, 
-            [From(nameof(Multiply))] string @operator, 
-            [From(nameof(Unit))] string b) =>
-            @operator == "*" ? a.Multiply(b) : a.Divide(b);
+        public string Multiplicative(string multiplicative, string multiply, string unit) =>
+            multiply == "*" ? multiplicative.Multiply(unit) : multiplicative.Divide(unit);
 
-        public string Additive(
-            [From(nameof(Multiplicative))] string value) => 
-            value;
+        public string Additive(string multiplicative) => multiplicative;
             
-        public string Additive(
-            [From(nameof(Additive))] string left, 
-            [From(nameof(Add))] string @operator, 
-            [From(nameof(Multiplicative))] string right) =>
-            @operator == "+" ? left.Add(right) : left.Subtract(right);
+        public string Additive(string additive, string add, string multiplicative) =>
+            add == "+" ? additive.Add(multiplicative) : additive.Subtract(multiplicative);
 
-        [Start] public string Expression(
-            [From(nameof(Additive))] string value) => 
-            value;
+        [Start] public string Expression(string additive) => additive;
     }
 }

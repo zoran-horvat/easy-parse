@@ -11,6 +11,11 @@ namespace EasyParse.Native.Annotations
         {
         }
 
+        public FromAttribute(NonTerminalName name, params NonTerminalName[] otherNames) 
+            : this(new[] {name}.Concat(otherNames))
+        {
+        }
+
         internal FromAttribute(IEnumerable<string> names)
             : this(names.Select(nonTerminal => new NonTerminalName(nonTerminal)))
         {
