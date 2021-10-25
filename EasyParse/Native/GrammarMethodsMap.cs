@@ -13,6 +13,8 @@ namespace EasyParse.Native
         {
             List<MethodInfo> productions = ProductionRules(methods).ToList();
 
+            this.ProductionMethods = productions;
+
             this.NonTerminalToType = productions
                 .GroupBy(production => new NonTerminalName(production.Name), production => production)
                 .ToDictionary(group => group.Key, group => group.SameReturnType());
@@ -23,13 +25,16 @@ namespace EasyParse.Native
                 .GroupBy(method => method.ReturnType, method => new NonTerminalName(method.Name))
                 .ToDictionary(group => group.Key, group => group.ToList());
 
-            this.StartSymbol = productions
+            (this.StartSymbol, this.StartSymbolType) = productions
                 .WithAttribute<StartAttribute>()
-                .AsSingleNonTerminal(Fail.MultipleStartSymbols<NonTerminalName>);
+                .AsSingleNonTerminal(Fail.MultipleStartSymbols<(NonTerminalName, Type)>);
         }
 
         public NonTerminalName StartSymbol { get; }
 
+        public Type StartSymbolType { get; }
+
+        public IEnumerable<MethodInfo> ProductionMethods { get; }
         private IDictionary<NonTerminalName, Type> NonTerminalToType { get; }
         private HashSet<NonTerminalName> NonTerminals { get; }
         private IDictionary<Type, List<NonTerminalName>> TypeToNonTerminals { get; }

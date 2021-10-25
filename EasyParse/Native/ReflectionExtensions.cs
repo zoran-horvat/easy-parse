@@ -20,10 +20,15 @@ namespace EasyParse.Native
         internal static IEnumerable<NonTerminalName> AsDistinctNonTerminals(this IEnumerable<MethodInfo> methods) =>
             methods.Select(method => new NonTerminalName(method.Name)).Distinct();
 
-        internal static NonTerminalName AsSingleNonTerminal(this IEnumerable<MethodInfo> methods, Func<NonTerminalName> failOnSecond) =>
+        internal static IEnumerable<T> AssertSingle<T>(this IEnumerable<T> sequence, Func<T> failOnSecond) =>
+            sequence
+                .Select((item, index) => index == 0 ? item : failOnSecond());
+
+        internal static (NonTerminalName name, Type type) AsSingleNonTerminal(this IEnumerable<MethodInfo> methods, Func<(NonTerminalName, Type)> failOnSecond) =>
             methods
-                .AsDistinctNonTerminals()
-                .Select((start, index) => index == 0 ? start : failOnSecond())
+                .GroupBy(method => new NonTerminalName(method.Name), method => method.ReturnType)
+                .Select(group => (name: group.Key, type: group.First()))
+                .AssertSingle(failOnSecond)
                 .First();
 
         internal static IEnumerable<MethodInfo> WithAttribute<TAttribute>(this IEnumerable<MethodInfo> methods) where TAttribute : Attribute =>

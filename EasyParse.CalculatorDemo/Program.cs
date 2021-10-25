@@ -50,19 +50,35 @@ namespace EasyParse.CalculatorDemo
             }
         }
 
+        private static Compiler<string> BuildCorrectiveCompiler()
+        {
+            try
+            {
+                ReflectionGrammar grammar = new CorrectiveArithmeticGrammar();
+                PrintGrammarFile("Corrective reflection-based", grammar.ToGrammarFileContent());
+                return grammar.BuildCompiler<string>();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
         public static void Main(string[] args)
         {
             try
             {
                 Compiler<int> fluentCompiler = BuildFluentCompiler();
-
                 Compiler<int> reflectionCompiler = BuildReflectionCompiler();
+                Compiler<string> correctiveCompiler = BuildCorrectiveCompiler();
 
                 Console.WriteLine("Enter expressions to evaluate (blank line to exit):");
                 foreach (string line in Console.In.ReadLinesUntil(string.Empty))
                 {
                     Process("Fluent compiler", fluentCompiler, line);
                     Process("Reflection-based compiler", reflectionCompiler, line);
+                    Process("Corrective reflection-based compiler", correctiveCompiler, line);
                 }
             }
             catch (Exception ex)

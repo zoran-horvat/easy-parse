@@ -21,22 +21,22 @@ namespace EasyParse.Native
             this.IgnorePatterns.Select(pattern => new RegexSymbol(pattern.ToString(), pattern, typeof(string), x => x));
 
         public Parser BuildParser() =>
-            FluentGrammar.BuildParser(this.IgnoreSymbols, this.StartSymbol, this.GetProductions());
+            FluentGrammar.BuildParser(this.IgnoreSymbols, this.MapMethods().StartSymbol, this.GetProductions());
 
         public IEnumerable<string> ToGrammarFileContent() =>
-            new GrammarToGrammarFileFormatter().Convert(this.IgnoreSymbols, this.StartSymbol, this.GetProductions());
+            new GrammarToGrammarFileFormatter().Convert(this.IgnoreSymbols, this.MapMethods().StartSymbol, this.GetProductions());
 
         public Compiler<T> BuildCompiler<T>() =>
-            this.BuildCompiler<T>(this.StartSymbolMethod.ReturnType);
+            this.BuildCompiler<T>(this.MapMethods().StartSymbolType);
 
         public Compiler<T> BuildCompiler<T>(Type startSymbolType) =>
             typeof(T).IsAssignableFrom(startSymbolType) ? this.BuildParser().ToCompiler<T>(this.Compiler)
             : Fail.CompilerGrammarTypesMismatch<Compiler<T>>(typeof(T), startSymbolType);
 
         private GrammarMethodsMap MapMethods() =>
-            new GrammarMethodsMap(this.SelectMethods());
+            new GrammarMethodsMap(this.SelectAllMethods());
 
-        private IEnumerable<MethodInfo> SelectMethods() =>
+        private IEnumerable<MethodInfo> SelectAllMethods() =>
             this.GetType()
                 .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
                 .Where(method => method.DeclaringType == this.GetType())
@@ -49,21 +49,12 @@ namespace EasyParse.Native
             this.GetProductions(this.MapMethods());
 
         private IEnumerable<Production> GetProductions(GrammarMethodsMap map) =>
-            this.SelectMethods<NonTerminalAttribute>()
+            map.ProductionMethods
                 .SelectMany(method => this.ToProductions(map, method))
                 .Select((production, offset) => production.WithReference(RuleReference.CreateOrdinal(offset + 1)));
 
         private NonTerminalName ToNonTerminal(MethodInfo method) =>
             new NonTerminalName(method.Name);
-
-        private NonTerminalName StartSymbol =>
-            new NonTerminalName(this.StartSymbolMethod.Name);
-
-        private MethodInfo StartSymbolMethod =>
-            this.SelectMethods<StartAttribute>()
-                .Select(this.AsNonTerminal)
-                .DefaultIfEmpty<MethodInfo>(() => throw new InvalidOperationException("Start symbol not defined on grammar"))
-                .First();
 
         private IEnumerable<Production> ToProductions(GrammarMethodsMap map, MethodInfo method)
         {
@@ -121,12 +112,8 @@ namespace EasyParse.Native
         private Func<object[], object> ToTransformFunction(MethodInfo method) =>
             (object[] arguments) => method.Invoke(this, arguments);
         private MethodInfo AsNonTerminal(MethodInfo method) =>
-            method.CustomAttributes.Any(attribute => typeof(NonTerminalAttribute).IsAssignableFrom(attribute.AttributeType)) ? method
+            method.IsPublic ? method 
+            : method.CustomAttributes.Any(attribute => typeof(NonTerminalAttribute).IsAssignableFrom(attribute.AttributeType)) ? method
             : throw new ArgumentException($"Method {method.Name} must be decorated with NonTerminalAttribute");
-
-        private IEnumerable<MethodInfo> SelectMethods<TAttribute>() where TAttribute : Attribute => 
-            this.GetType()
-                .GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
-                .Where(method => method.CustomAttributes.Any(attribute => typeof(TAttribute).IsAssignableFrom(attribute.AttributeType)));
     }
 }
