@@ -39,7 +39,7 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                ReflectionGrammar grammar = new ReflectionArithmeticGrammar();
+                NativeGrammar grammar = new ReflectionArithmeticGrammar();
                 PrintGrammarFile("Reflection-based", grammar.ToGrammarFileContent());
                 return grammar.BuildCompiler<int>();
             }
@@ -54,7 +54,7 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-                ReflectionGrammar grammar = new CorrectiveArithmeticGrammar();
+                NativeGrammar grammar = new CorrectiveArithmeticGrammar();
                 PrintGrammarFile("Corrective reflection-based", grammar.ToGrammarFileContent());
                 return grammar.BuildCompiler<string>();
             }

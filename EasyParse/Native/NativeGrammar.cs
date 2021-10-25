@@ -13,7 +13,7 @@ using EasyParse.Native.Annotations;
 
 namespace EasyParse.Native
 {
-    public abstract class ReflectionGrammar
+    public abstract class NativeGrammar
     {
         protected abstract IEnumerable<Regex> IgnorePatterns { get; }
 

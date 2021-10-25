@@ -5,7 +5,7 @@ using EasyParse.Native.Annotations;
 
 namespace EasyParse.CalculatorDemo
 {
-    class ReflectionArithmeticGrammar : ReflectionGrammar
+    class ReflectionArithmeticGrammar : NativeGrammar
     {
         protected override IEnumerable<Regex> IgnorePatterns => 
             new[] {new Regex(@"\s+")};
