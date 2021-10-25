@@ -1,16 +1,16 @@
 using System.Text.RegularExpressions;
 
-namespace EasyParse.Native
+namespace EasyParse.Native.Annotations
 {
     public class RegexAttribute : SymbolAttribute
     {
         public RegexAttribute(string name, string expression)
         {
-            this.Name = name;
-            this.Expression = new Regex(expression);
+            Name = name;
+            Expression = new Regex(expression);
         }
 
         public Regex Expression { get; }
-        public string Name {get;}
+        public string Name { get; }
     }
 }

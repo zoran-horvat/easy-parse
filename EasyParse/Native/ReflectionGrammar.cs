@@ -9,6 +9,7 @@ using EasyParse.Fluent.Symbols;
 using EasyParse.Fluent.Rules;
 using System.Collections.Immutable;
 using EasyParse.ParserGenerator.Models.Rules;
+using EasyParse.Native.Annotations;
 
 namespace EasyParse.Native
 {

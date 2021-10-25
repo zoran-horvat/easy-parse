@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using EasyParse.Native;
+using EasyParse.Native.Annotations;
 
 namespace EasyParse.CalculatorDemo
 {

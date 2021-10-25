@@ -1,14 +1,13 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using EasyParse.Fluent;
 
-namespace EasyParse.Native
+namespace EasyParse.Native.Annotations
 {
     public class FromAttribute : SymbolAttribute
     {
         public FromAttribute(string name, params string[] otherNames)
-            : this(new[] {name}.Concat(otherNames))
+            : this(new[] { name }.Concat(otherNames))
         {
         }
 
@@ -19,7 +18,7 @@ namespace EasyParse.Native
 
         internal FromAttribute(IEnumerable<NonTerminalName> names)
         {
-            this.NonTerminals = names.ToList();
+            NonTerminals = names.ToList();
         }
 
         public IEnumerable<NonTerminalName> NonTerminals { get; }
