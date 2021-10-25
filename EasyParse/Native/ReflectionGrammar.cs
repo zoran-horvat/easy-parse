@@ -80,7 +80,7 @@ namespace EasyParse.Native
             GrammarMethodsMap map,
             ParameterInfo parameter, SymbolAttribute attribute) =>
             attribute is RegexAttribute regex ? new Symbol[] { RegexSymbol.Create<string>(regex.Name, regex.Expression, x => x) }
-            : attribute is LiteralAttribute literal ? new Symbol[] { new LiteralSymbol(literal.Value) }
+            : attribute is LiteralAttribute literal ? literal.Values.Select(value => (Symbol)new LiteralSymbol(value))
             : attribute is FromAttribute @from ? this.ToNonTerminalSymbols(map, @from.NonTerminals)
             : throw new InvalidOperationException($"Unsupported parameter attribute {attribute.GetType().Name}");
 

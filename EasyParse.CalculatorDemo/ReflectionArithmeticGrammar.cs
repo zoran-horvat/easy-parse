@@ -10,31 +10,18 @@ namespace EasyParse.CalculatorDemo
         protected override IEnumerable<Regex> IgnorePatterns => 
             new[] {new Regex(@"\s+")};
 
-        [NonTerminal] protected int Number(
-            [Regex("number", @"\d+")] string number) => int.Parse(number);
+        public int Unit([R("number", @"\d+")] string number) => int.Parse(number);
+        public int Unit([L("-")] string minus, int unit) => -unit;
+        public int Unit([L("(")] string open, int additive, [L(")")] string close) => additive;
 
-        [NonTerminal] protected int Unit(
-            [From(nameof(Number))] int number) => number;
-        [NonTerminal] protected int Unit(
-            [Literal("-")] string minus, [From(nameof(Number))] int number) => -number;
-        [NonTerminal] protected int Unit(
-            [Literal("(")] string open, [From(nameof(Additive))] int value, [Literal(")")] string close) => value;
+        public int Additive(int multiplicative) => multiplicative;
+        public int Additive(int additive, [L("+", "-")] string op, int multiplicative) =>
+            op == "+" ? additive + multiplicative : additive - multiplicative;
 
-        [NonTerminal] protected int Additive(
-            [From(nameof(Multiplicative), nameof(Added), nameof(Subtracted))] int value) => value;
-        [NonTerminal] protected int Added(
-            [From(nameof(Additive))] int a, [Literal("+")] string plus, [From(nameof(Multiplicative))] int b) => a + b;
-        [NonTerminal] protected int Subtracted([
-            From(nameof(Additive))] int a, [Literal("-")] string minus, [From(nameof(Multiplicative))] int b) => a - b;
+        public int Multiplicative(int unit) => unit;
+        public int Multiplicative(int multiplicative, [L("*", "/")] string op, int unit) =>
+            op == "*" ? multiplicative * unit : multiplicative / unit;
 
-        [NonTerminal] protected int Multiplicative(
-            [From(nameof(Unit), nameof(Multiplied), nameof(Divided))] int value) => value;
-        [NonTerminal] protected int Multiplied(
-            [From(nameof(Multiplicative))] int a, [Literal("*")] string star, [From(nameof(Unit))] int b) => a * b;
-        [NonTerminal] protected int Divided(
-            [From(nameof(Multiplicative))] int a, [Literal("/")] string slash, [From(nameof(Unit))] int b) => a / b;
-
-        [Start] [NonTerminal] protected int Expression(
-            [From(nameof(Additive))] int value) => value;
+        [Start] public int Expression(int additive) => additive;
     }
 }
