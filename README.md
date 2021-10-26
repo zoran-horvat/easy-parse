@@ -20,7 +20,136 @@ To add from .NET CLI, execute instruction:
 dotnet add package CodingHelmet.EasyParse
 ```
 
-## Use Case 1: Defining Grammar and Compilation Rules via Fluent API
+## Use Case 1: Defining Grammar and Compilation Rules via Native .NET Class
+
+The simplest and most readable method of defining a grammar is to write a native .NET class which exposes one method per production rule.
+
+In this section, we shall demonstrate use of native grammar class which calculates arithmetic expressions. Follow steps below to get started.
+
+1. Create a .NET 5.0 console application and name it `Calculator`
+2. Add `CodingHelmet.EasyParse` package from NuGet
+3. Edit the `Program` class to read expressions from the console before constructing the calculator:
+
+```c#
+using System;
+
+namespace Calculator
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Write("Enter expression (empty to quit): ");
+                string expression = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(expression)) break;
+                // Here will come evaluation
+            }
+        }
+    }
+}
+```
+
+### Phase 1: Defining the Minimalistic Grammar
+
+After defining an empty console application, we can start developing the grammar. The process will be iterative, to support the simplest arithmetic constructs first, and then to add more and more complex ones. You will start developing a grammar by defining a class which derives from `EasyParse.Native.NativeGrammar`.
+
+```c#
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using EasyParse.Native;
+using EasyParse.Native.Annotations;
+
+namespace Calculator
+{
+    class ArithmeticGrammar : NativeGrammar
+    {
+        protected override IEnumerable<Regex> IgnorePatterns => 
+            new[] {new Regex(@"\s+")};
+
+        [Start] public int Number([R("number", @"\d+")] string value) =>
+            int.Parse(value);
+    }
+}
+```
+
+This is the bare minimum that satisfies the rules of [`EasyParse.Native.NativeGrammar`](EasyParse\Native\NativeGrammar.cs) base class. Let's walk through the elements and explain them:
+
+1. Implement the `IgnorePatterns` abstract property - [`EasyParse.Native.NativeGrammar`](EasyParse\Native\NativeGrammar.cs) defines abstract property getter `IgnorePatterns`. Derived class must implement this property getter to return a sequence of regular expressions (`System.Text.RegularExpressions.Regex` objects), each defining a pattern that should be ignored in the input. It is common to ignore whitespace (regular expression '\s+'), or end of line (regular expression '\n').
+2. Define start symbol - Class will expose one or more public methods, where each method represents one production rule. Exactly ***one*** of the methods must be endorsed with the [`EasyParse.Native.Annotations.StartAttribute`](EasyParse\Native\Annotations\StartAttribute.cs), to mark the start symbol of the grammar.
+3. Define one public method per production rule - Name of each method defines the name of the non-terminal symbol produced by that rule. The `ArithmeticGrammar.Number()` method defines non-terminal symbol `Number`.
+4. Specify type of each non-terminal symbol - Return type of the public method will specify the type of the object constructed when non-terminal symbol is compiled. `Name` symbol will be compiled into a `System.Int32` object.
+5. Define right-hand side of each production rule - Argument list of a public method represents production rule's body, specifying terminal and non-terminal symbols in their order. An argument can either refer a non-terminal, a literal terminal, or a terminal matched by a regular expression.
+6. Specify regular expressions in rule bodies - `string value` argument of the `ArithmeticGrammar.Number()` method defines a terminal symbol matched by a regular expression, as indicated by the `R` attribute applied to the argument (instance of the [`EasyParse.Native.Annotations.RAttribute`](EasyParse\Native\Annotations\RAttribute.cs)). Regular expression is defined by a unique name and pattern. Each time that pattern is matched in the input text, a terminal symbol named `number` will be formed in the parsing tree and, eventually, passed as argument to the `ArithmeticGrammar.Number()` method.
+
+Bottom line is that `ArithmeticGrammar` class is defining a grammar which, quite informally, can be specified as:
+
+```
+Lexer:
+ignore \s+
+number matches \d+
+
+Parser:
+Number -> number
+```
+
+###  Phase 2: Building the Compiler
+
+The [`EasyParse.Native.NativeGrammar`](EasyParse\Native\NativeGrammar.cs) defines public method `BuildCompiler<T>`:
+
+```c#
+class NativeGrammar
+{
+    ...
+    public Compiler<T> BuildCompiler<T>();
+    ...
+}
+```
+
+This method can be used to obtain an object of type [`EasyParse.Parsing.Compiler<T>`](EasyParse\Parsing\Compiler.cs). This object will later be used to convert plaintext into the specified type `T`.
+
+***Important note:*** Building a compiler is a costly operation. Also, compiler is a stateless object, and hence thread-safe. Combined effect of these two is that one can opt to build a compiler object as a singleton, so that it can be used through the entire lifetime of the application.
+
+To demonstrate building and using arithmetic compiler (a.k.a. the calculator), modify `Program` class as below.
+
+```c#
+using System;
+using EasyParse.Parsing;
+
+namespace Calculator
+{
+    class Program
+    {
+        // Create a singleton compiler
+        static Compiler<int> Calculator { get; } =
+            new ArithmeticGrammar().BuildCompiler<int>();
+
+        static void Main(string[] args)
+        {
+            while (true)
+            {
+                Console.Write("Enter expression (empty to quit): ");
+                string expression = Console.ReadLine();
+                if (string.IsNullOrWhiteSpace(expression)) break;
+
+                // Apply the compiler to obtain either the object, or the error report
+                CompilationResult<int> result = Calculator.Compile(expression);
+                
+                // Print out the object (int value), or error message
+                if (result.IsSuccess)
+                    Console.WriteLine(result.Result);
+                else
+                    Console.WriteLine($"ERROR: {result.ErrorMessage}");
+            }
+        }
+    }
+}
+```
+
+
+
+## Use Case 2: Defining Grammar and Compilation Rules via Fluent API
 
 Parsing grammar can be defined by deriving a class from the [`EasyParse.Parsing.Grammar`](EasyParse/Parsing/Grammar.cs) abstract base class.
 

@@ -29,7 +29,7 @@ namespace EasyParse.Native
         public Compiler<T> BuildCompiler<T>() =>
             this.BuildCompiler<T>(this.MapMethods().StartSymbolType);
 
-        public Compiler<T> BuildCompiler<T>(Type startSymbolType) =>
+        private Compiler<T> BuildCompiler<T>(Type startSymbolType) =>
             typeof(T).IsAssignableFrom(startSymbolType) ? this.BuildParser().ToCompiler<T>(this.Compiler)
             : Fail.CompilerGrammarTypesMismatch<Compiler<T>>(typeof(T), startSymbolType);
 
@@ -109,8 +109,18 @@ namespace EasyParse.Native
         private IEnumerable<Type> ParameterTypes(MethodInfo method) =>
             method.GetParameters().Select(parameter => parameter.ParameterType);
 
-        private Func<object[], object> ToTransformFunction(MethodInfo method) =>
-            (object[] arguments) => method.Invoke(this, arguments);
+        private Func<object[], object> ToTransformFunction(MethodInfo method)
+        {
+            try
+            {
+                return (object[] arguments) => method.Invoke(this, arguments);
+            }
+            catch (TargetInvocationException e) 
+            {
+                throw e.InnerException;
+            }
+        }
+
         private MethodInfo AsNonTerminal(MethodInfo method) =>
             method.IsPublic ? method 
             : method.CustomAttributes.Any(attribute => typeof(NonTerminalAttribute).IsAssignableFrom(attribute.AttributeType)) ? method
