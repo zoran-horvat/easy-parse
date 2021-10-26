@@ -42,7 +42,7 @@ namespace EasyParse.Fluent.Rules
             {
                 Production production = pending.Dequeue();
                 IEnumerable<Production> children = production.ChildLines(produced).ToList();
-                produced.Add(children.Select(child => child.Head).Distinct());
+                produced.AddRange(children.Select(child => child.Head).Distinct());
                 pending.Enqueue(children);
                 yield return production;
             }

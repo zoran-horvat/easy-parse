@@ -14,10 +14,11 @@ namespace EasyParse
             return queue;
         }
 
-        public static void Add<T>(this HashSet<T> set, IEnumerable<T> items)
+        public static HashSet<T> AddRange<T>(this HashSet<T> set, IEnumerable<T> items)
         {
             foreach (T item in items)
                 set.Add(item);
+            return set;
         }
 
         public static void Enqueue<T>(this Queue<T> queue, IEnumerable<T> items)
