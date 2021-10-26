@@ -147,7 +147,29 @@ namespace Calculator
 }
 ```
 
+There are several additions made to previous version of the `Program` class:
 
+1. The `Calculator` static property is initialized to the compiler which results from calling `BuildCompiler<int>()` on the `ArithmeticGrammar` object. This property will be used to parse all lines of text through the entire lifetime of the application.
+2. When an input line is read from the console, it is subdued to the `Compile` method of the compiler, so to obtain compilation result strongly typed to `System.Int32` result - an instance of the [`EasyParse.Parsing.CompilationResult<T>`](EasyParse\Parsing\CompilationResult.cs) class.
+3. Compilation result object is then examined, to see if the process ended in constructing an `int` result, as desired, or in an error. Either way, the corresponding message is formatted for output.
+
+This completes support for arithmetic expressions which only consist of a single non-negative number. Below is the sample output produced by this application when run. Observe how whitespace is ignored in input.
+
+```
+Enter expression (empty to quit): 0
+0 = 0
+Enter expression (empty to quit): 5
+5 = 5
+Enter expression (empty to quit): 12
+12 = 12
+Enter expression (empty to quit):      123
+123 = 123
+Enter expression (empty to quit):    2   +   3
+ERROR: Unexpected input at 8: +   3
+Enter expression (empty to quit):
+```
+
+### Phase 3: Supporting Addition and Subtraction
 
 ## Use Case 2: Defining Grammar and Compilation Rules via Fluent API
 
