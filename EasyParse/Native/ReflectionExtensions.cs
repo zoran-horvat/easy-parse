@@ -44,8 +44,8 @@ namespace EasyParse.Native
         private static string Printable(this ParameterInfo parameter, string parameterWord) =>
             $"{parameterWord} '{parameter.ParameterType.Name} {parameter.Name}' of method '{parameter.Member.Name}'";
 
-        private static NonTerminalName ToNonTerminalName(this string name) =>
-            new NonTerminalName($"{char.ToUpper(name[0])}{name.Substring(1)}");
+        public static NonTerminalName ToNonTerminalName(this ParameterInfo parameter) =>
+            parameter.Name.ToNonTerminalName();
 
         public static NonTerminalName ToNonTerminalNameWithNoTrailingDigits(this ParameterInfo parameter) =>
             Regex.Match(parameter.Name, @"^(?<name>[^\d]+)\d+$") is Match match &&
@@ -53,5 +53,8 @@ namespace EasyParse.Native
             match.Groups["name"].Value is string name
                 ? name.ToNonTerminalName()
                 : parameter.Name.ToNonTerminalName();
+
+        private static NonTerminalName ToNonTerminalName(this string name) =>
+            new NonTerminalName($"{char.ToUpper(name[0])}{name.Substring(1)}");
     }
 }
