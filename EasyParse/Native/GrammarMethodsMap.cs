@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using EasyParse.Fluent;
 using EasyParse.Native.Annotations;
+using System.Text.RegularExpressions;
 
 namespace EasyParse.Native
 {
@@ -53,7 +54,7 @@ namespace EasyParse.Native
             nonTerminals.Select(nonTerminal => this.Assignable(nonTerminal, toParameter));
 
         public SymbolAttribute ToFromAttribute(ParameterInfo parameter) =>
-            new FromAttribute(parameter.ToNonTerminalName());
+            new FromAttribute(parameter.ToNonTerminalNameWithNoTrailingDigits());
 
         private NonTerminalName Assignable(NonTerminalName assign, ParameterInfo toParameter) =>
             this.NonTerminalToType[assign] == toParameter.ParameterType ? assign

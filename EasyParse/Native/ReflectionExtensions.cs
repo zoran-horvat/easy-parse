@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using EasyParse.Fluent;
 
 namespace EasyParse.Native
@@ -43,7 +44,14 @@ namespace EasyParse.Native
         private static string Printable(this ParameterInfo parameter, string parameterWord) =>
             $"{parameterWord} '{parameter.ParameterType.Name} {parameter.Name}' of method '{parameter.Member.Name}'";
 
-        public static NonTerminalName ToNonTerminalName(this ParameterInfo parameter) =>
-            new NonTerminalName($"{char.ToUpper(parameter.Name[0])}{parameter.Name.Substring(1)}");
+        private static NonTerminalName ToNonTerminalName(this string name) =>
+            new NonTerminalName($"{char.ToUpper(name[0])}{name.Substring(1)}");
+
+        public static NonTerminalName ToNonTerminalNameWithNoTrailingDigits(this ParameterInfo parameter) =>
+            Regex.Match(parameter.Name, @"^(?<name>[^\d]+)\d+$") is Match match &&
+            match.Success &&
+            match.Groups["name"].Value is string name
+                ? name.ToNonTerminalName()
+                : parameter.Name.ToNonTerminalName();
     }
 }
