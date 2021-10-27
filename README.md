@@ -171,6 +171,52 @@ Enter expression (empty to quit):
 
 ### Phase 3: Supporting Addition and Subtraction
 
+Now that we have support for plain numbers, we can introduce the first arithmetic operation - addition and subtraction, represented by the `+` or `-` operator. Edit the `ArithmeticGrammar` class to include changes indicated below.
+
+```c#
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using EasyParse.Native;
+using EasyParse.Native.Annotations;
+
+namespace Calculator
+{
+    class ArithmeticGrammar : NativeGrammar
+    {
+        protected override IEnumerable<Regex> IgnorePatterns => 
+            new[] {new Regex(@"\s+")};
+
+        public int Number([R("number", @"\d+")] string value) =>                           // <-- Not Start anymore
+            int.Parse(value);
+
+        [Start] public int Additive(int number1, [L("+", "-")] string op, int number2) =>  // <-- New method
+            op == "+" ? number1 + number2 : number1 - number2;
+    }
+}
+```
+
+Please note that start symbol is now called `Additive()`, and hence the `Number()` method is not adorned with the [`StartAttribute`](EasyParse\Native\Annotations\StartAttribute.cs) anymore.
+
+The `Additive()` method is defining a new non-terminal symbol, with right-hand side consisting of these symbols:
+
+* Non-terminal symbol `Number` - indicated by parameter named `number1` (digit added to distinguish it from parameter `number2`); this parameter will be matched by name (`number`, when digit `1` is stripped off) and by type (`int`) with non-terminal symbol `Number`.
+* Literal terminal symbol `+` or `-` - literals are indicated with the [`L`](EasyParse\Native\Annotations\LAttribute.cs) attribute; this attribute receives a list consisting of one or more strings; method will be invoked if any of those strings is matched against input text.
+* Another non-terminal symbol `Number` - for the purpose of writing a legal method declaration in C#, two non-terminals are made distinct as `number` and `number2`, but they both refer (by name and by type) to non-terminal defined by the `Number()` method.
+
+The `Additive()` method will be invoked when parser matches `Number`, `+`/`-`, `Number` sequence of symbols in the input, and three values (`int`, `string` and `int`, respectively) will be passed to the `Additive()` method for processing. As this method's body is uncovering, it will either add or subtract the two `int` values to produce the resulting `int`.
+
+We can run the application now, and it would produce output shown below when sample input is used.
+
+```
+Enter expression (empty to quit): 12
+ERROR: Unexpected end of input
+Enter expression (empty to quit): 12+3
+12+3 = 15
+Enter expression (empty to quit):
+```
+
+It appears that we have added one feature, but lost the one we used to have before. When a plain number is entered, parsing error is reported
+
 ## Use Case 2: Defining Grammar and Compilation Rules via Fluent API
 
 Parsing grammar can be defined by deriving a class from the [`EasyParse.Parsing.Grammar`](EasyParse/Parsing/Grammar.cs) abstract base class.
