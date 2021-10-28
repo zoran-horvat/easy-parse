@@ -215,7 +215,107 @@ Enter expression (empty to quit): 12+3
 Enter expression (empty to quit):
 ```
 
-It appears that we have added one feature, but lost the one we used to have before. When a plain number is entered, parsing error is reported
+It appears that we have added one feature, but lost the one we used to have before. When a plain number is entered, parsing error is reported, stating that more input was expected. That is because grammar's start symbol defines that for plaintext to be considered correct, it must consist of two numbers delimited with an addition or subtraction operator. New grammar is dismissing a single number as a valid expression!
+
+To correct the issue, we have to augment definition of the expression. We can accomplish that by specifying that a number is a valid additive expression in its own right, and, on top of that, that additive expressions can be formed by adding or subtracting a number from an existing additive expression.
+
+Edit the `ArithmeticGrammar` class to include changes in the `Additive()` symbol definition.
+
+```c#
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using EasyParse.Native;
+using EasyParse.Native.Annotations;
+
+namespace Calculator
+{
+    class ArithmeticGrammar : NativeGrammar
+    {
+        protected override IEnumerable<Regex> IgnorePatterns => 
+            new[] {new Regex(@"\s+")};
+
+        public int Number([R("number", @"\d+")] string value) =>
+            int.Parse(value);
+
+        [Start] public int Additive(int number) =>                                 // <-- New method
+            number;
+        public int Additive(int additive, [L("+", "-")] string op, int number) =>  // <-- Modified
+            op == "+" ? additive + number : additive - number;
+    }
+}	
+```
+
+Please note that addition is defined as left-associative in this grammar, i.e., addition and subtraction operators will be applied from left to right. That effect is ensured by placing `additive` symbol first, and only then the `number` in the right-hand side of the `Additive` production rule.
+
+When application is run, you will notice that all kinds of additions and subtractions are supported. Here is the sample output.
+
+```
+Enter expression (empty to quit): 12
+12 = 12
+Enter expression (empty to quit): 4-2
+4-2 = 2
+Enter expression (empty to quit): 12 + 45  -  26
+12 + 45  -  26 = 31
+Enter expression (empty to quit):
+```
+
+### Phase 4: Supporting Negative Numbers and Parentheses
+
+We have covered large distance so far, and you should be able to follow through the code below without help now.
+
+```c#
+using System.Collections.Generic;
+using System.Text.RegularExpressions;
+using EasyParse.Native;
+using EasyParse.Native.Annotations;
+
+namespace Calculator
+{
+    class ArithmeticGrammar : NativeGrammar
+    {
+        protected override IEnumerable<Regex> IgnorePatterns => 
+            new[] {new Regex(@"\s+")};
+
+        public int Unit([R("number", @"\d+")] string value) =>
+            int.Parse(value);
+        public int Unit([L("-")] string minus, int unit) =>                             // <-- New method
+            -unit;
+        public int Unit([L("(")] string open, int additive, [L(")")] string close) =>   // <-- New method
+            additive;
+
+        [Start] public int Additive(int unit) =>                                        // <-- Modified
+            unit;
+        public int Additive(int additive, [L("+", "-")] string op, int unit) =>         // <-- Modified
+            op == "+" ? additive + unit : additive - unit;
+    }
+}
+```
+
+Modifications, compared to previous grammar, are as follows:
+
+* What used to be called `Number` so far, will from now on be referred to as `Unit`. A unit will represent a single block of numbers and operations which is indistinguishable from a plain number (clarification follows).
+* A `Unit` is defined in one of three ways: a plain non-negative number; a minus sign followed by a unit; an additive expression placed within a pair of parentheses. Any of these is considered a unit: `15`, `-15`, `(15 + 40)`, `-(15 + 40)`. Notice that any of these forms can stand in place of a single number, which clarifies the first bullet point.
+* `Additive` symbol is still defined the same way as it used to be, only with a notable distinction that now it references the `Unit` symbol, via method parameters named `unit`. While evolving your grammars through renaming non-terminal symbols, you must never forget to rename corresponding method parameters, or otherwise resulting grammar will not be consistent and you will receive an exception when you try to build the `Compiler<T>` object at run time.
+
+Now that all new elements in this grammar have been explained, we can run the application and subdue some expressions to the new parser:
+
+```
+Enter expression (empty to quit): 25
+25 = 25
+Enter expression (empty to quit): -25
+-25 = -25
+Enter expression (empty to quit): 12--25
+12--25 = 37
+Enter expression (empty to quit): -25+12
+-25+12 = -13
+Enter expression (empty to quit): 12-(2+3)
+12-(2+3) = 7
+Enter expression (empty to quit): 12-(2-(4+6)+9)
+12-(2-(4+6)+9) = 11
+Enter expression (empty to quit):
+```
+
+### Phase 5: Adding Support for Multiplication and Division
 
 ## Use Case 2: Defining Grammar and Compilation Rules via Fluent API
 
