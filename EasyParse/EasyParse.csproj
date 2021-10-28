@@ -6,8 +6,8 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Key.snk</AssemblyOriginatorKeyFile>
-    <Version>1.3.1.0</Version>
-    <AssemblyVersion>1.3.1.0</AssemblyVersion>
+    <Version>1.3.2.0</Version>
+  <AssemblyVersion>1.3.2.0</AssemblyVersion>
     <AssemblyName>EasyParse</AssemblyName>
     <PackageId>EasyParse</PackageId>
     <Authors>Zoran Horvat</Authors>

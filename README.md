@@ -78,9 +78,17 @@ Console.WriteLine($"{s2} = {compiler.Compile(s2)}");
 This code prints correct results for both expressions:
 
 ```
-12*(3+4/2) = 60
+12*(3 + 4/2) = 60
 12+-(9/(5-2)+6) * (4-2) = -6
 ```
+
+In the remainder of this display, you will see how grammar, lexemes and parsing tree can be displayed for a grammar and input string. But please note that those scenarios are not required to use the EasyParse library. They are shown here for demonstration purposes only, and may be of practical use in debugging.
+
+The only scenario regularly applied in custom code should consist of the three steps outlined above:
+
+1. Define a class deriving from [`EasyParse.Native.NativeGrammar`](EasyParse/Native/NativeGrammar.cs) abstract class.
+2. Call `BuildCompiler<T>()` method, specifying type `T` returned by the method indicated as start symbol, to obtain an instance of `Compiler<T>` class; for performance reasons, make sure to only call `BuildCompiler<T>` once if possible, and to use the resulting `Compiler<T>` object as a singleton.
+3. Call `Compile()` method on the `Compiler<T>` for every input string or sequence of strings you desire.
 
 ### Seeing the Grammar
 
@@ -118,6 +126,89 @@ Additive -> Additive '-' Multiplicative;    #9
 The `ArithmeticGrammar` class is defining both lexer and parser. Lexer will ignore whitespace and isolate terminal symbols that are either sequences of digits, or literals `+`, `-`, `*`, `/`, `(` and `)`.
 
 When it comes to parsing, there are total of nine rules, some of them directly or indirectly recursively depending on themselves. Symbol named `Additive` is the start symbol.
+
+### Seeing the Lexer at Work
+
+If you wished to see tokens produced by the lexer, that can also be done (primarily for debugging purposes). Lexer is accessible from the [`EasyParse.Parsing.Parser`](EasyParse/Parsing/Parser.cs) object. Once the lexer is at hand, pass the input to its `Tokenize()` method as in the code below.
+
+```c#
+var parser = grammar.BuildParser();
+foreach (var lexeme in  parser.Lexer.Tokenize(Plaintext.Line(s1)))
+    Console.Write($"{lexeme} ");
+Console.WriteLine();
+```
+
+This code sample will tokenize the first test expression, and when it does, it will produce the following output:
+
+```
+[number(12)] [*] [(] [number(3)] [+] [number(4)] [/] [number(2)] [)] [End of input]
+```
+
+All lexemes except whitespace, which is marked to be ignored, are present in the output.
+
+Once again, lexer is not intended to be used directly, and this code is only shown for demonstration purposes.
+
+### Seeing the Parsing Tree
+
+When a parser is applied to input text, it builds the parsing tree. It is only after that step that methods defined in the grammar class are invoked, one method called exactly once for each node in the parsing tree to which it corresponds.
+
+If you wished to see the parsing tree, as it would be built during the call to `Compiler<T>.Compile()` method, then apply the parser object to input text and print its result out:
+
+```c#
+Console.WriteLine(s1);
+Console.WriteLine(parser.Parse(s1));
+```
+
+When this code executes, it will obtain the parsing tree constructed for the first sample string and print it out to the console.
+
+```
+12 * (3 + 4 / 2)
+ Additive [rule #7]
+ |
+ +--- Multiplicative [rule #5]
+     |
+     +--- Multiplicative [rule #4]
+     |   |
+     |   +--- Unit [rule #1]
+     |       |
+     |       +--- 12
+     |
+     +--- *
+     |
+     +--- Unit [rule #3]
+         |
+         +--- (
+         |
+         +--- Additive [rule #8]
+         |   |
+         |   +--- Multiplicative [rule #4]
+         |   |   |
+         |   |   +--- Unit [rule #1]
+         |   |       |
+         |   |       +--- 3
+         |   |
+         |   +--- +
+         |   |
+         |   +--- Additive [rule #7]
+         |       |
+         |       +--- Multiplicative [rule #6]
+         |           |
+         |           +--- Multiplicative [rule #4]
+         |           |   |
+         |           |   +--- Unit [rule #1]
+         |           |       |
+         |           |       +--- 4
+         |           |
+         |           +--- /
+         |           |
+         |           +--- Unit [rule #1]
+         |               |
+         |               +--- 2
+         |
+         +--- )
+```
+
+The tree is quite verbose, but it is easy to follow the grouping logic that was exercised by the parser when it saw the input string.
 
 ## Example 1: Defining Grammar and Compilation Rules via Native .NET Class
 
@@ -288,7 +379,7 @@ namespace Calculator
         public int Number([R("number", @"\d+")] string value) =>                           // <-- Not Start anymore
             int.Parse(value);
 
-        [Start] public int Additive(int number1, [L("+", "-")] string op, int number2) =>  // <-- New method
+        [Start] public int Additive(int number1, [L("+", "-")] string op, int number2) =>  // <-- New
             op == "+" ? number1 + number2 : number1 - number2;
     }
 }
@@ -336,7 +427,7 @@ namespace Calculator
         public int Number([R("number", @"\d+")] string value) =>
             int.Parse(value);
 
-        [Start] public int Additive(int number) =>                                 // <-- New method
+        [Start] public int Additive(int number) =>                                 // <-- New
             number;
         public int Additive(int additive, [L("+", "-")] string op, int number) =>  // <-- Modified
             op == "+" ? additive + number : additive - number;
@@ -377,9 +468,9 @@ namespace Calculator
 
         public int Unit([R("number", @"\d+")] string value) =>
             int.Parse(value);
-        public int Unit([L("-")] string minus, int unit) =>                             // <-- New method
+        public int Unit([L("-")] string minus, int unit) =>                             // <-- New
             -unit;
-        public int Unit([L("(")] string open, int additive, [L(")")] string close) =>   // <-- New method
+        public int Unit([L("(")] string open, int additive, [L(")")] string close) =>   // <-- New
             additive;
 
         [Start] public int Additive(int unit) =>                                        // <-- Modified
@@ -440,9 +531,9 @@ namespace Calculator
         public int Unit([L("(")] string open, int additive, [L(")")] string close) =>
             additive;
 
-        public int Multiplicative(int unit) =>                                              // <-- New method
+        public int Multiplicative(int unit) =>                                              // <-- New
             unit;
-        public int Multiplicative(int multiplicative, [L("*", "/")] string op, int unit) => // <-- New method
+        public int Multiplicative(int multiplicative, [L("*", "/")] string op, int unit) => // <-- New
             op == "*" ? multiplicative * unit : multiplicative / unit;
 
         [Start] public int Additive(int multiplicative) =>                                  // <-- Modified

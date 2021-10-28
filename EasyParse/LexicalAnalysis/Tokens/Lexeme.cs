@@ -15,6 +15,7 @@
         }
 
         public override string ToString() =>
-            $"[{this.Label}({this.Value})]";
+            this.Label == this.Value ? $"[{this.Value}]"
+            : $"[{this.Label}({this.Value})]";
     }
 }
