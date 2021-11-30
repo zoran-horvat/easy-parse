@@ -73,17 +73,6 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
-
-                Compiler<string> stringCompiler = new StringGrammar().BuildCompiler<string>();
-                string input = @"\n\s*#+ ";
-                string compiled = stringCompiler.Compile(input).Result;
-                Console.WriteLine($"[{input}] -> [{compiled}]");
-
-                Compiler<Grammar> compiler = new GrammarGrammar().BuildCompiler<Grammar>();
-                CompilationResult<Grammar> result = compiler.Compile(File.ReadAllLines(@"C:\Temp\Grammar.txt"));
-                Console.WriteLine(result);
-                return;
-
                 Compiler<int> fluentCompiler = BuildFluentCompiler();
                 Compiler<int> reflectionCompiler = BuildReflectionCompiler();
                 Compiler<string> correctiveCompiler = BuildCorrectiveCompiler();

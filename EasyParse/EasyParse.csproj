@@ -16,27 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="ParserGenerator\GrammarCompiler\GrammarGrammar.txt" />
-    <None Remove="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml" />
-    <None Remove="ParserGenerator\GrammarCompiler\StringGrammar.txt" />
-    <None Remove="ParserGenerator\GrammarCompiler\StringParserDefinition.xml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="ParserGenerator\GrammarCompiler\GrammarGrammar.txt" />
-    <Content Include="ParserGenerator\GrammarCompiler\StringGrammar.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\GrammarParserDefinition.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-    <EmbeddedResource Include="ParserGenerator\GrammarCompiler\StringParserDefinition.xml">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.7.1" />
   </ItemGroup>
 
