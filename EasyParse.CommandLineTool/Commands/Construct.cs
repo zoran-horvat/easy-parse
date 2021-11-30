@@ -21,7 +21,7 @@ namespace EasyParse.CommandLineTool.Commands
 
         private ParserDefinition CreateParserDefinition(FileInfo grammar) =>
             new GrammarLoader()
-                .From(grammar.FullName)
+                .LoadFrom(grammar.FullName)
                 .BuildParser();
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Reflection;
+using System;
 using System.Collections.Generic;
 using EasyParse.Parsing.Nodes.Errors;
 
@@ -27,6 +28,10 @@ namespace EasyParse.Parsing
             {
                 return parsingResult.IsSuccess ? this.OnParsed(parsingResult) : this.OnParsingFailed(parsingResult);
             }
+            catch (TargetInvocationException invocationException)
+            {
+                return CompilationResult<T>.Error(invocationException.InnerException.Message);
+            }
             catch (Exception ex)
             {
                 return CompilationResult<T>.Error(ex.Message);
@@ -38,6 +43,10 @@ namespace EasyParse.Parsing
             try
             {
                 return this.OnCompiled((object)parsingResult.Compile(this.SymbolCompiler));
+            }
+            catch (TargetInvocationException invocationException)
+            {
+                return CompilationResult<T>.Error(invocationException.InnerException.ToString());
             }
             catch (Exception ex)
             {

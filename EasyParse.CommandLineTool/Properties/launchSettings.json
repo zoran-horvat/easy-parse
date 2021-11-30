@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "EasyParse.CommandLineTool": {
+      "commandName": "Project",
+      "commandLineArgs": "-grammar=\"C:\\Temp\\Grammar.txt\" -compile"
+    }
+  }
+}

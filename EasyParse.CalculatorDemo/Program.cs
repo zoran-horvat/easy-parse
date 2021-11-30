@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Xml.Linq;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -7,6 +8,9 @@ using EasyParse.LexicalAnalysis.Tokens;
 using EasyParse.Native;
 using EasyParse.Parsing;
 using EasyParse.Text;
+using EasyParse.ParserGenerator.GrammarCompiler;
+using EasyParse.ParserGenerator.Models.Rules;
+using System.IO;
 
 namespace EasyParse.CalculatorDemo
 {
@@ -69,6 +73,17 @@ namespace EasyParse.CalculatorDemo
         {
             try
             {
+
+                Compiler<string> stringCompiler = new StringGrammar().BuildCompiler<string>();
+                string input = @"\n\s*#+ ";
+                string compiled = stringCompiler.Compile(input).Result;
+                Console.WriteLine($"[{input}] -> [{compiled}]");
+
+                Compiler<Grammar> compiler = new GrammarGrammar().BuildCompiler<Grammar>();
+                CompilationResult<Grammar> result = compiler.Compile(File.ReadAllLines(@"C:\Temp\Grammar.txt"));
+                Console.WriteLine(result);
+                return;
+
                 Compiler<int> fluentCompiler = BuildFluentCompiler();
                 Compiler<int> reflectionCompiler = BuildReflectionCompiler();
                 Compiler<string> correctiveCompiler = BuildCorrectiveCompiler();
@@ -81,9 +96,13 @@ namespace EasyParse.CalculatorDemo
                     Process("Corrective reflection-based compiler", correctiveCompiler, line);
                 }
             }
+            catch (TargetInvocationException invocationException)
+            {
+                Console.WriteLine(invocationException.InnerException);
+            }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine(ex);
             }
         }
 

@@ -46,7 +46,7 @@ namespace EasyParse.ParserGenerator.Models.Rules
         private Grammar Add(Lexeme lexeme) =>
             this.LexemesRepresentation.Any(existing => existing.Pattern.ToString().Equals(lexeme.Pattern.ToString())) ? this
             : new Grammar(this.StartSymbol, this.RulesRepresentation, this.LexemesRepresentation.Add(lexeme));
-        
+
         public int SortOrderFor(NonTerminal nonTerminal) =>
             Array.IndexOf(this.SortOrder.ToArray(), nonTerminal);
 

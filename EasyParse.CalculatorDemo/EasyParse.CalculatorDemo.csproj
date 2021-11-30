@@ -43,7 +43,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="CodingHelmet.EasyParse" Version="1.3.2" />
     <PackageReference Include="System.Xml.XDocument" Version="4.3.0" />
   </ItemGroup>
 

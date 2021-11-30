@@ -2,33 +2,37 @@
 using System.IO;
 using EasyParse.ParserGenerator;
 using EasyParse.ParserGenerator.Models;
+using EasyParse.ParserGenerator.Models.Rules;
 using EasyParse.Parsing;
 
 namespace EasyParse.CommandLineTool.Commands
 {
     class Compile : GrammarCommand
     {
-        private FileInfo DestinationFile(FileInfo grammar) =>
-            new FileInfo(Path.Combine(Directory.GetCurrentDirectory(), this.DestinationFileName(grammar)));
+        private static FileInfo DestinationFile(FileInfo grammar) =>
+            new(Path.Combine(Directory.GetCurrentDirectory(), DestinationFileName(grammar)));
 
-        private string DestinationFileName(FileInfo grammar) =>
+        private static string DestinationFileName(FileInfo grammar) =>
             Path.ChangeExtension(grammar.Name, ".xml");
 
         public Compile(FileInfo grammar) : base(grammar) { }
 
         protected override void Execute(FileInfo grammar)
         {
-            this.CreateDestinationFile(grammar);
-            Console.WriteLine($"Created parser definition in {this.DestinationFile(grammar).FullName}");
+            CreateDestinationFile(grammar);
+            Console.WriteLine($"Created parser definition in {DestinationFile(grammar).FullName}");
         }
 
-        private void CreateDestinationFile(FileInfo grammar) =>
-            this.CreateDestinationFile(grammar, new GrammarLoader().From(grammar.FullName).BuildParser());
+        private static void CreateDestinationFile(FileInfo grammarSource)
+        {
+            CompilationResult<Grammar> grammar = new GrammarLoader().TryLoadFrom(grammarSource.FullName);
+            if (grammar.IsSuccess)
+                CreateDestinationFile(grammarSource, grammar.Result.BuildParser());
+            else
+                throw new Exception($"Error loading grammar: {grammar.ErrorMessage}");
+        }
 
-        private void CreateDestinationFile(FileInfo grammar, ParserDefinition definition) =>
-            this.CreateDestinationFile(grammar, definition, Parser.From(definition));
-
-        private void CreateDestinationFile(FileInfo grammar, ParserDefinition definition, Parser parser) =>
-            definition.ToXml().Save(this.DestinationFile(grammar).FullName);
+        private static void CreateDestinationFile(FileInfo grammar, ParserDefinition definition) =>
+            definition.ToXml().Save(DestinationFile(grammar).FullName);
     }
 }

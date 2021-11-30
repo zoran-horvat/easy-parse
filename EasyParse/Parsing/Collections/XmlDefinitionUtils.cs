@@ -19,7 +19,7 @@ namespace EasyParse.Parsing.Collections
                 .ToDictionary(tuple => new StateIndexAndLabel(tuple.state, tuple.label), tuple => tuple.toState) 
                 ?? new Dictionary<StateIndexAndLabel, int>();
 
-        public static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition) =>
+        public static IDictionary<StatePattern, RulePattern> ExtractReduce(XDocument definition) => 
             ExtractReduce(definition, ExtractRules(definition));
 
         public static IDictionary<StateIndexAndLabel, int> ExtractGoto(XDocument definition) =>
