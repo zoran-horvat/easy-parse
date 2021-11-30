@@ -31,7 +31,7 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
-# Visual Studio 2015/2017 cache/options directory
+# Visual Studio and VS Code cache/options directory
 .vs/
 .vscode/
 
