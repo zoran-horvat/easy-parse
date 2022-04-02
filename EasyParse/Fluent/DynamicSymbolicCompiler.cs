@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using EasyParse.Fluent.Rules;
 using EasyParse.Fluent.Symbols;
 using EasyParse.ParserGenerator.Models.Rules;
@@ -64,15 +65,33 @@ namespace EasyParse.Fluent
                 .GroupBy(symbol => symbol.Name)
                 .Select(group => group.First());
 
-        public object CompileTerminal(string label, string value) =>
-            TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value)
-            : value;
+        public object CompileTerminal(string label, string value)
+        {
+            try
+            {
+                return TerminalTransforms.TryGetValue(label, out Func<string, object> transform) ? transform(value)
+                : value;
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
 
-        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children) =>
-            TryFindProduction(production)
-                .Select(production => production.Transform.Function(children))
-                .DefaultIfEmpty(() => CompileErrorTransform(location, label, children))
-                .First();
+        public object CompileNonTerminal(Location location, string label, RuleReference production, object[] children)
+        {
+            try
+            {
+                return TryFindProduction(production)
+                    .Select(production => production.Transform.Function(children))
+                    .DefaultIfEmpty(() => CompileErrorTransform(location, label, children))
+                    .First();
+            }
+            catch (TargetInvocationException ex)
+            {
+                throw ex.InnerException;
+            }
+        }
 
         private IEnumerable<Production> TryFindProduction(RuleReference productionReference) =>
             Productions.TryGetValue(productionReference, out Production production) ? new[] { production }
