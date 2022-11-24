@@ -58,6 +58,26 @@ namespace EasyParse.Fluent
             : ContainsLiterals ? NonLiteralsTo<TResult>(transform, argumentTypes)
             : ToRule<TResult>(transform, argumentTypes);
 
+        public IRule ToLiteral<TResult>(Func<string, TResult> transform)
+        {
+            string SingleString(object[] x)
+            {
+                if (x.Length != 1)
+                {
+                    return ThrowIncorrectArgumentsCount<string>(1);
+                }
+
+                return (string) x.Take(1).First();
+            }
+
+            return ToRule<TResult>(arguments => transform(SingleString(arguments)), new[] { typeof(string) });
+        }
+
+        public IRule ToLiteral()
+        {
+            return ToLiteral(s => s);
+        }
+
         private IRule NonLiteralsTo<TResult>(Func<object[], object> transform, Type[] argumentTypes) =>
             NonLiteralsTo<TResult>(transform, InjectLiteralsTo(argumentTypes).ToArray(), NonLiteralIndices);
 
@@ -100,6 +120,9 @@ namespace EasyParse.Fluent
 
         private int NonLiteralsCount =>
             Body.Count(symbol => symbol is not LiteralSymbol);
+
+        private int LiteralsCount =>
+            Body.Count(symbol => symbol is LiteralSymbol);
 
         private bool ContainsLiterals =>
             Body.Any(symbol => symbol is LiteralSymbol);
